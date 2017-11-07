@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 		if (!map.isEmpty() && StringUtils.isNotBlank(map.get("name"))) {
 			String name = map.get("name");
 			if (name.length() > 13) {
-				map.put("name", name.substring(0, name.length() - 1) + "...");
+				map.put("name", name.substring(0, 13) + "...");
 			}
 		}
 		return map;

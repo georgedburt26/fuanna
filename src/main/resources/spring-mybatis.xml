@@ -4,6 +4,7 @@
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
@@ -12,37 +13,52 @@
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
-      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
+      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xs
+      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<!-- spring的属性加载器，加载properties文件中的属性 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/fuanna?useUnicode=true&amp;characterEncoding=UTF-8" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="driverClassName" value="${driver}" />
+		<property name="url"
+			value="${url}?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
 		<!--maxActive: 最大连接数量 -->
-		<property name="maxActive" value="150" />
+		<property name="maxActive" value="${maxActive}" />
 		<!--minIdle: 最小空闲连接 -->
-		<property name="minIdle" value="5" />
+		<property name="minIdle" value="${minIdle}" />
 		<!--maxIdle: 最大空闲连接 -->
-		<property name="maxIdle" value="20" />
+		<property name="maxIdle" value="${maxIdle}" />
 		<!--initialSize: 初始化连接 -->
-		<property name="initialSize" value="30" />
-		<property name="maxWait" value="1000" />
+		<property name="initialSize" value="${initialSize}" />
+		<property name="maxWait" value="${maxWait}" />
 		<!-- 连接被泄露时是否打印：与removeAbandoned，removeAbandonedTimeout一起设置 -->
-		<property name="logAbandoned" value="true" />
+		<property name="logAbandoned" value="${logAbandoned}" />
 		<!--removeAbandoned: 是否自动回收超时连接 -->
-		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandoned" value="${removeAbandoned}" />
 		<!--removeAbandonedTimeout: 当一个连接活动的时间超过多久被认定为是泄露的或不正常的 -->
-		<property name="removeAbandonedTimeout" value="10" />
-		<property name="timeBetweenEvictionRunsMillis" value="10000" />
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}" />
 		<!-- 在每次空闲连接回收器线程(如果有)运行时检查的连接数量 -->
-		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="numTestsPerEvictionRun" value="${numTestsPerEvictionRun}" />
 		<!-- 1000 * 60 * 30 连接在池中保持空闲而不被空闲连接回收器线程 -->
-		<property name="minEvictableIdleTimeMillis" value="30000" />
-		<property name="validationQuery" value="SELECT 1" />
-		<property name="testOnBorrow" value="true" />
-		<property name="testOnReturn" value="true" />
-		<property name="testWhileIdle" value="true" />
+		<property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}" />
+		<property name="validationQuery" value="${validationQuery}" />
+		<property name="testOnBorrow" value="${testOnBorrow}" />
+		<property name="testOnReturn" value="${testOnReturn}" />
+		<property name="testWhileIdle" value="${testWhileIdle}" />
 	</bean>
 	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
