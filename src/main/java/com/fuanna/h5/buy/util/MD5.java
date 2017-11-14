@@ -4,15 +4,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
-
-    public static void main(String[] args) {
-        MD5("sunzn");
-    }
-
-    public static String MD5(String str) {
+	
+    public static String encrypt(String str) {
         String result = "";
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
+        	MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(str.getBytes());
             byte b[] = md.digest();
             int i;
@@ -27,7 +23,7 @@ public class MD5 {
             }
             result = buf.toString();
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return result;
     }
