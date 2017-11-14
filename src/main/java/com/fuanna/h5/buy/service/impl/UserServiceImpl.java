@@ -9,12 +9,13 @@ import com.fuanna.h5.buy.model.User;
 import com.fuanna.h5.buy.service.UserService;
 
 @Component
+@Transactional
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserMapper userMapper;
 	
-	@Transactional
+
 	public long addUser(User user) {
 		return userMapper.addUser(user);
 	}

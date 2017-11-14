@@ -3,6 +3,8 @@ package com.fuanna.h5.buy.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,7 @@ import com.fuanna.h5.buy.model.Category;
 import com.fuanna.h5.buy.service.ProductService;
 
 @Component
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
