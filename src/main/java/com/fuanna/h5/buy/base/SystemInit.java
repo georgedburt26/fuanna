@@ -44,7 +44,7 @@ public class SystemInit {
 		}catch(Exception e) {
 			logger.error("JDBC连接失败", e);
 		}
-		logger.info("JDBC连接成功");
+		logger.info("数据库|" + BaseConfig.getJdbcConfig("url") + "|JDBC连接成功");
 	}
 	
 	private void initHttpsClient() {

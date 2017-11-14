@@ -133,7 +133,7 @@
 	float: left;
 }
 
-.button-search input,img {
+.button-search input, img {
 	vertical-align: middle;
 }
 
@@ -200,39 +200,6 @@
 	height: 10%;
 }
 </style>
-<script src="js/jquery.min.js"></script>
-<script src="js/swiper.min.js"></script>
-<script src="js/masonry.pkgd.min.js"></script>
-<script>
-	$(function() {
-		var winHeight = $(window).height();
-		function initWindow() {
-			$("#category-list ul li").height(winHeight * 0.05);
-			$("#category-list ul li").css("line-height",
-					(winHeight * 0.05) + "px");
-			$("#banner").height(winHeight * 0.4);
-			$(".button-radius").width($(".button-radius").height());
-			$(".item").height($(".item").width() * 1.2);
-			$(".item img").height($(".item").height() * 0.7);
-			$(".item").css("font-size", ($(".item").width() / 13) + "px");
-			var searchTextWidth = $("#search-img-input").width() * 0.8;
-			$("#searchText").width(searchTextWidth);
-			$("#category-list-p").attr("hide", "true");
-			$("#category-list-p").css("margin-top",
-					(-1 * $("#category-list").height()) + "px");
-			$("#category-list-p").css("margin-left",
-					($("#top").width() * 0.05) + "px");
-			$('body').height($('body')[0].clientHeight);
-			$('body').css({
-				'height' : winHeight
-			});
-		}
-		initWindow();
-		$(window).resize(function() {
-			initWindow();
-		});
-	});
-</script>
 </head>
 <body>
 	<div id="top"
@@ -305,13 +272,13 @@
 				<div id="goods">
 					<div id="container" class="container">
 						<c:forEach items="${productList}" var="item">
-						<div class="item">
-							<div>
-								<img src="img/3.jpg">
+							<div class="item">
+								<div>
+									<img src="img/3.jpg">
+								</div>
+								<div class="description">${item.name}</div>
+								<div class="price">Y${item.price}元</div>
 							</div>
-							<div class="description">${item.name}</div>
-							<div class="price">Y${item.price}元</div>
-						</div>
 						</c:forEach>
 					</div>
 				</div>
@@ -342,6 +309,36 @@
 			</ul>
 		</div>-->
 	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/swiper.min.js"></script>
+	<script src="js/masonry.pkgd.min.js"></script>
+	<script>
+		$(function() {
+			var winHeight = $(window).height();
+			function initWindow() {
+				$("#category-list ul li").height(winHeight * 0.05);
+				$("#category-list ul li").css("line-height",
+						(winHeight * 0.05) + "px");
+				$("#banner").height(winHeight * 0.4);
+				$(".button-radius").width($(".button-radius").height());
+				$(".item").height($(".item").width() * 1.2);
+				$(".item img").height($(".item").height() * 0.7);
+				$(".item").css("font-size", ($(".item").width() / 13) + "px");
+				var searchTextWidth = $("#search-img-input").width() * 0.8;
+				$("#searchText").width(searchTextWidth);
+				$("#category-list-p").attr("hide", "true");
+				$("#category-list-p").css("margin-top",
+						(-1 * $("#category-list").height()) + "px");
+				$("#category-list-p").css("margin-left",
+						($("#top").width() * 0.05) + "px");
+				$('body').height($('body')[0].clientHeight);
+			}
+			initWindow();
+			$(window).resize(function() {
+				initWindow();
+			});
+		});
+	</script>
 	<script type="text/javascript">
 		$('#main')
 				.scroll(
