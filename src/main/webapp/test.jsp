@@ -14,30 +14,22 @@
 <input type="submit" value="上传">
 </form>
 <script>
-var formData = new FormData($("#fileToUpload")[0]);
+var formData = new FormData($("#fileToUpload"));
 $("#upload").click(function() {
 	$.ajax({ 
 		url : "upload.do", 
 		type : 'POST', 
 		data : formData, 
-		// 告诉jQuery不要去处理发送的数据
-		processData : false, 
-		// 告诉jQuery不要去设置Content-Type请求头
-		contentType : false,
-		beforeSend:function(){
-		console.log("正在进行，请稍候");
-		},
-		success : function(responseStr) {
-			alert(responseStr);
-		if(responseStr.status===0){
-		console.log("成功"+responseStr);
-		}else{
-		console.log("失败");
-		}
-		}, 
-		error : function(responseStr) { 
-		console.log("error");
-		} 
+        async: false,  
+        cache: false,  
+        contentType: false,  
+        processData: false,  
+        success: function (returndata) {  
+            alert(returndata.msg);  
+        },  
+        error: function (returndata) {  
+            alert(returndata);  
+        }  
 		});
 });
 
