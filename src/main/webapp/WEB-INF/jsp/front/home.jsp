@@ -9,7 +9,7 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 <title>扶沟富安娜</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
-<link href="css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="http://www.swiper.com.cn/dist/css/swiper.min.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 #top {
 	border-bottom: 1px solid #EEEEEE;
@@ -309,8 +309,8 @@
 			</ul>
 		</div>-->
 	</div>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/swiper.min.js"></script>
+	<script src="http://libs.baidu.com/jquery/1.8.3/jquery.js"></script>
+	<script src="http://www.swiper.com.cn/dist/js/swiper.min.js"></script>
 	<script src="js/masonry.pkgd.min.js"></script>
 	<script>
 		$(function() {
