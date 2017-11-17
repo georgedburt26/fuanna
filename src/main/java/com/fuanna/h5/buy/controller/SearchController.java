@@ -1,4 +1,4 @@
-package com.fuanna.h5.buy.action;
+package com.fuanna.h5.buy.controller;
 
 public class SearchController {
 

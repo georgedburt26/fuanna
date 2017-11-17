@@ -13,6 +13,7 @@
 <input type="button" id="upload" value="上传">
 <input type="submit" value="上传">
 </form>
+<a class="weui-btn weui-btn_primary submit-btn" id="scanQRCode" type="button">扫一扫</a>
 <script>
 var formData = new FormData($("#fileToUpload"));
 $("#upload").click(function() {

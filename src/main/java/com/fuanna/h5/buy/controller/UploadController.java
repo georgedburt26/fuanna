@@ -1,4 +1,4 @@
-package com.fuanna.h5.buy.action;
+package com.fuanna.h5.buy.controller;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -40,8 +40,8 @@ public class UploadController {
 	public static final SimpleDateFormat sdf = new SimpleDateFormat(
 			"yyyyMMddHHmmss");
 
-	@RequestMapping({ "/upload.do" })
-	public String uploadFile(@RequestParam("file") CommonsMultipartFile file,
+	@RequestMapping({ "/qiNiuUpload.do" })
+	public String uploadFileToQiNiu(@RequestParam("file") CommonsMultipartFile file,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
 		// 构造一个带指定Zone对象的配置类
 		Configuration cfg = new Configuration(Zone.zone1());

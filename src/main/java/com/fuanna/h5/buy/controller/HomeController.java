@@ -1,4 +1,4 @@
-package com.fuanna.h5.buy.action;
+package com.fuanna.h5.buy.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;

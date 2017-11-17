@@ -1,18 +1,13 @@
 * {
-	margin: 0px;
-	padding: 0px;
+	margin: 0rem;
+	padding: 0rem;
 }
-
-html, body {
+html{
+	font-size:62.5%;
+}
+body {
+	font-size: 1.2rem;
 	font-family: "Microsoft YaHei";
 	color:#868686;
     height:100%;
-}
-.shade {
-	height:900px;
-	width:100%;
-	position:absolute;
-	z-index:1;
-	background-color:#666666;
-	opacity: 0.5;
 }
