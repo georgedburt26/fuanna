@@ -140,7 +140,7 @@
 .search input {
 	margin-left: 0.5rem;
 	border: 0rem;
-	border-bottom: 1rem solid #DDDDDD;
+	border-bottom: 0.1rem solid #DDDDDD;
 	outline: none;
 	height: 100%;
 	line-height: 100%;
