@@ -19,28 +19,38 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mysql.jdbc.StringUtils;
 
 public class CommonController {
 
+	private static final Logger logger = Logger
+			.getLogger(CommonController.class);
 	// 使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
 	public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
 
 	private static final Random random = new Random();
 
 	@RequestMapping({ "/imageCode.do" })
-	public String imageCode(HttpServletRequest request, HttpServletResponse response) {
+	public String imageCode(HttpServletRequest request,
+			HttpServletResponse response) {
 		try {
+			String page = request.getParameter("page");
 			int w = 65, h = 20;
 			String code = generateVerifyCode(4);
 			int verifySize = code.length();
-			BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+			BufferedImage image = new BufferedImage(w, h,
+					BufferedImage.TYPE_INT_RGB);
 			Random rand = new Random();
 			Graphics2D g2 = image.createGraphics();
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
 			Color[] colors = new Color[5];
-			Color[] colorSpaces = new Color[] { Color.WHITE, Color.CYAN, Color.GRAY, Color.LIGHT_GRAY, Color.MAGENTA,
-					Color.ORANGE, Color.PINK, Color.YELLOW };
+			Color[] colorSpaces = new Color[] { Color.WHITE, Color.CYAN,
+					Color.GRAY, Color.LIGHT_GRAY, Color.MAGENTA, Color.ORANGE,
+					Color.PINK, Color.YELLOW };
 			float[] fractions = new float[colors.length];
 			for (int i = 0; i < colors.length; i++) {
 				colors[i] = colorSpaces[rand.nextInt(colorSpaces.length)];
@@ -85,10 +95,13 @@ public class CommonController {
 			char[] chars = code.toCharArray();
 			for (int i = 0; i < verifySize; i++) {
 				AffineTransform affine = new AffineTransform();
-				affine.setToRotation(Math.PI / 4 * rand.nextDouble() * (rand.nextBoolean() ? 1 : -1),
+				affine.setToRotation(
+						Math.PI / 4 * rand.nextDouble()
+								* (rand.nextBoolean() ? 1 : -1),
 						(w / verifySize) * i + fontSize / 2, h / 2);
 				g2.setTransform(affine);
-				g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
+				g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h
+						/ 2 + fontSize / 2 - 10);
 			}
 
 			g2.dispose();
@@ -97,12 +110,14 @@ public class CommonController {
 			response.setHeader("Cache-Control", "no-cache");
 			response.setDateHeader("Expires", 0);
 			response.setContentType("image/jpeg");
-			ServletOutputStream responseOutputStream = response.getOutputStream();
+			ServletOutputStream responseOutputStream = response
+					.getOutputStream();
 			ImageIO.write(image, "JPEG", responseOutputStream);
 			responseOutputStream.flush();
 			responseOutputStream.close();
+			request.getSession().setAttribute(page + "_imageCode", code);
 		} catch (Exception e) {
-
+			logger.error("生成二维码失败", e);
 		}
 		return null;
 	}
@@ -133,7 +148,7 @@ public class CommonController {
 		return verifyCode.toString();
 	}
 
-	/**     私有方法      **/
+	/** 私有方法 **/
 	private static Color getRandColor(int fc, int bc) {
 		if (fc > 255)
 			fc = 255;
@@ -178,7 +193,9 @@ public class CommonController {
 
 		for (int i = 0; i < h1; i++) {
 			double d = (double) (period >> 1)
-					* Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
+					* Math.sin((double) i / (double) period
+							+ (6.2831853071795862D * (double) phase)
+							/ (double) frames);
 			g.copyArea(0, i, w1, 1, (int) d, 0);
 			if (borderGap) {
 				g.setColor(color);
@@ -198,7 +215,9 @@ public class CommonController {
 		int phase = 7;
 		for (int i = 0; i < w1; i++) {
 			double d = (double) (period >> 1)
-					* Math.sin((double) i / (double) period + (6.2831853071795862D * (double) phase) / (double) frames);
+					* Math.sin((double) i / (double) period
+							+ (6.2831853071795862D * (double) phase)
+							/ (double) frames);
 			g.copyArea(i, 0, 1, h1, 0, (int) d);
 			if (borderGap) {
 				g.setColor(color);
