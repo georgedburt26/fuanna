@@ -1,4 +1,4 @@
-package com.fuanna.h5.buy.controller;
+package com.fuanna.h5.buy.controller.common;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
