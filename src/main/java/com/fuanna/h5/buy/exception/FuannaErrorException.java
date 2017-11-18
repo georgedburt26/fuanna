@@ -4,7 +4,6 @@ public class FuannaErrorException extends Exception{
 	
 	private String errorCode;
 	private String errorMsg;
-	private String redirectUrl;
 	private Object data;
 	
 	public FuannaErrorException() {
@@ -15,11 +14,10 @@ public class FuannaErrorException extends Exception{
 		super(e);
 	}
 	
-	public FuannaErrorException(String errorCode, String errorMsg, String redirectUrl) {
+	public FuannaErrorException(String errorCode, String errorMsg) {
 		super();
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
-		this.redirectUrl = redirectUrl;
 	}
 	
 	public FuannaErrorException(String errorCode, String errorMsg, Object data) {
@@ -43,14 +41,6 @@ public class FuannaErrorException extends Exception{
 
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
-	}
-
-	public String getRedirectUrl() {
-		return redirectUrl;
-	}
-
-	public void setRedirectUrl(String redirectUrl) {
-		this.redirectUrl = redirectUrl;
 	}
 
 	public Object getData() {

@@ -21,9 +21,9 @@ import com.fuanna.h5.buy.service.UserService;
 
 @Controller
 @RequestMapping
-public class HomeController{
+public class ShopController{
 	
-	private static final Logger logger = Logger.getLogger(HomeController.class);
+	private static final Logger logger = Logger.getLogger(ShopController.class);
 	
 	private static final Random random = new Random();
 	
@@ -35,7 +35,7 @@ public class HomeController{
 	@Autowired
 	ProductService productService;
 
-	@RequestMapping("/home.do")
+	@RequestMapping("/shop.do")
 	public String homeInit(HttpServletRequest request, HttpServletResponse response) {
 		idSets.clear();
 		List<Category> categoryList = productService.listCategories();
@@ -48,6 +48,6 @@ public class HomeController{
 		List<Map<String, String>> productList = productService.listProduct(ids);
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("productList", productList);
-		return "/front/home";
+		return "/front/shop";
 	}
 }

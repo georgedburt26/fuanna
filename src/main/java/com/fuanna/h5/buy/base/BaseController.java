@@ -17,12 +17,12 @@ import com.fuanna.h5.buy.util.JsonUtils;
 
 public class BaseController {
 
-	protected void error(String errorMsg, boolean isJson) throws FuannaErrorException {
-		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, isJson);
+	protected void error(String errorMsg, Object data) throws FuannaErrorException {
+		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, data);
 	}
 	
-	protected void errorSendRedirectUrl(String errorMsg, String redirectUrl) throws FuannaErrorException {
-		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, redirectUrl);
+	protected void error(String errorMsg) throws FuannaErrorException {
+		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg);
 	}
 	
 //	protected void error(String errorMsg, RedirectAttributes model) throws FuannaErrorException {

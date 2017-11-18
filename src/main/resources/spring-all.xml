@@ -58,7 +58,9 @@
 
 	<bean id="fuannaErrorHandler" class="com.fuanna.h5.buy.base.FuannaErrorHandler"></bean>
 	<aop:config>
-		<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))"
+		<!--<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))"
+			id="pointcut" />-->
+		<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller.admin.*.*(..))"
 			id="pointcut" />
 		<aop:aspect id="fuannaErrorAspect" ref="fuannaErrorHandler">
 			<aop:around method="handle" pointcut-ref="pointcut" />

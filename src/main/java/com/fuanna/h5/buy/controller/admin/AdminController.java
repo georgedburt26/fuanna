@@ -28,11 +28,6 @@ public class AdminController extends BaseController {
 
 	@Autowired
 	AdminMapper adminMapper;
-
-	@RequestMapping("/admin/login.do")
-	public String login() {
-		return "/admin/login";
-	}
 	
 	@RequestMapping("/admin/index.do")
 	public String index() {
@@ -42,30 +37,29 @@ public class AdminController extends BaseController {
 	@RequestMapping("/admin/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> map,
 			RedirectAttributes model) throws Exception {
-		String url = "redirect:/admin/login.do";//redirectUrl
+		String url = "forward:/login.jsp";//redirectUrl
 		String username = map.get("username");
 		if (StringUtils.isBlank(username)) {
-			errorSendRedirectUrl("用户名不能为空", url);
+			error("用户名不能为空", url);
 		}
 		String password = map.get("password");
 		if (StringUtils.isBlank(password)) {
-			errorSendRedirectUrl("密码不能为空", url);
+			error("密码不能为空", url);
 		}
 		String imageCode = map.get("imageCode");
 		boolean isMatch = Pattern.matches("^(\\w){4}$", imageCode);
 		if (StringUtils.isBlank(imageCode) || !isMatch) {
-			errorSendRedirectUrl("验证码格式不对", url);
+			error("验证码格式不对", url);
 		}
 		if (!imageCode.equals(session().getAttribute("admin_imageCode"))) {
-			errorSendRedirectUrl("请输入正确验证码", url);
+			error("请输入正确验证码", url);
 		}
 		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password));
 		if (admin == null) {
-			errorSendRedirectUrl("用户名或密码错误", url);
+			error("用户名或密码错误", url);
 		}
-		model.addAttribute("");
 		session().setAttribute("admin", admin);
-		url = "redirect:/admin/index.do";
+		url = "redirect:/admin/index.do";//登陆成功
 		return url;
 	}
 }
