@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 <title>扶沟富安娜家纺仓库管理系统</title>
 <script>
-window.location.href = "login.jsp";
+window.location.href = "login.do";
 </script>
 </body>
 </html>

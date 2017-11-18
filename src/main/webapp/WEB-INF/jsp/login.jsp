@@ -3,7 +3,6 @@
 <%@ include file="/lib.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +30,7 @@
 				</div>
 			</div>
 			<div class="am-u-sm-10 login-am-center">
-				<form class="am-form" action="login.do" id="doc-vld-msg">
+				<form class="am-form" action="adminLogin.do" id="doc-vld-msg">
 					<fieldset>
 						<div class="am-form-group">
 							<input type="text" class="am-form-field" name="username"

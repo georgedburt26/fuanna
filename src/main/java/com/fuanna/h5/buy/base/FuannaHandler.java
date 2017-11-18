@@ -26,8 +26,13 @@ public class FuannaHandler {
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		Object rtn = null;
 		Object data = null;
+		RedirectAttributes model = null;
 		try {
 			Object[] args = pjp.getArgs();
+			for (Object arg : args) {
+				if (arg instanceof RedirectAttributes)
+					model = (RedirectAttributes) arg;
+			}
 			rtn = pjp.proceed(args);
 		} catch (Throwable e) {
 			String errorMsg = "系统内部错误";
@@ -36,9 +41,9 @@ public class FuannaHandler {
 				errorMsg = fe.getErrorMsg();
 				data = fe.getData();
 				rtn = fe.getRedirect();
-				if (rtn != null) {
-					request.setAttribute(FuannaConstraints.ERROR_CODE, ErrorCode.SB);
-					request.setAttribute(FuannaConstraints.ERROR_MSG, errorMsg);
+				if (rtn != null && model != null) {
+					model.addFlashAttribute(FuannaConstraints.ERROR_CODE, ErrorCode.SB.toString());
+					model.addFlashAttribute(FuannaConstraints.ERROR_MSG, errorMsg);
 					return rtn;
 				}
 			}else {

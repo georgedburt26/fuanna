@@ -25,14 +25,19 @@ public class AdminController extends BaseController {
 	@Autowired
 	AdminMapper adminMapper;
 	
+	@RequestMapping("/login.do")
+	public String login() {
+		return "/login";
+	}
+	
 	@RequestMapping("/index.do")
 	public String index() {
-		return "/admin/index";
+		return "/index";
 	}
 
-	@RequestMapping("/login.do")
+	@RequestMapping("/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> map, RedirectAttributes model) throws Exception {
-		String url = "redirect:/login.jsp";//redirectUrl
+		String url = "redirect:/login.do";//redirectUrl
 		String username = map.get("username");
 		if (StringUtils.isBlank(username)) {
 			sendToUrl("用户名不能为空", url);

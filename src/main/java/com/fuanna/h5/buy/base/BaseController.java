@@ -22,14 +22,9 @@ public class BaseController {
 	}
 	
 	protected void sendToUrl(String errorMsg, String redirect) throws FuannaErrorException {
-		String action = request().getRequestURI().replaceAll(request().getContextPath(), "");
-		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, redirect, action);
+//		String action = request().getRequestURI().replaceAll(request().getContextPath(), "");
+		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, redirect);
 	}
-	
-//	protected void error(String errorMsg, RedirectAttributes model) throws FuannaErrorException {
-//		model.addFlashAttribute(ErrorCode.SB.toString(), errorMsg);
-//		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg);
-//	}
 	
 	protected void send(ErrorCode errorCode, String errorMsg, Object data) {
 		RstResult rstResult = new RstResult(ErrorCode.CG, errorMsg, data);

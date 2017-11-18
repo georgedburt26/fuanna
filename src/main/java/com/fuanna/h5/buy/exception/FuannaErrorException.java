@@ -24,6 +24,13 @@ public class FuannaErrorException extends Exception{
 		this.action = action;
 	}
 	
+	public FuannaErrorException(String errorCode, String errorMsg, String redirect) {
+		super();
+		this.errorCode = errorCode;
+		this.errorMsg = errorMsg;
+		this.redirect = redirect;
+	}
+	
 	public FuannaErrorException(String errorCode, String errorMsg, Object data) {
 		super();
 		this.errorCode = errorCode;
