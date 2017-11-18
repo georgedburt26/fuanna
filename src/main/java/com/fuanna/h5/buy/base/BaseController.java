@@ -17,12 +17,13 @@ import com.fuanna.h5.buy.util.JsonUtils;
 
 public class BaseController {
 
-	protected void error(String errorMsg, Object data) throws FuannaErrorException {
+	protected void send(String errorMsg, Object data) throws FuannaErrorException {
 		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, data);
 	}
 	
-	protected void error(String errorMsg) throws FuannaErrorException {
-		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg);
+	protected void sendToUrl(String errorMsg, String redirect) throws FuannaErrorException {
+		String action = request().getRequestURI().replaceAll(request().getContextPath(), "");
+		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, redirect, action);
 	}
 	
 //	protected void error(String errorMsg, RedirectAttributes model) throws FuannaErrorException {
@@ -30,7 +31,7 @@ public class BaseController {
 //		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg);
 //	}
 	
-	protected void msg(ErrorCode errorCode, String errorMsg, Object data) {
+	protected void send(ErrorCode errorCode, String errorMsg, Object data) {
 		RstResult rstResult = new RstResult(ErrorCode.CG, errorMsg, data);
 		JsonUtils.printObject(rstResult);
 	}

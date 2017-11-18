@@ -1,20 +1,29 @@
 package com.fuanna.h5.buy.base;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fuanna.h5.buy.enumeration.ErrorCode;
+import com.fuanna.h5.buy.enumeration.FuannaConstraints;
 import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.util.JsonUtils;
+import com.google.code.kaptcha.Constants;
 
-public class FuannaErrorHandler {
+public class FuannaHandler {
 
 	private static final Logger logger = Logger
-			.getLogger(FuannaErrorHandler.class);
-
+			.getLogger(FuannaHandler.class);
+	
 	private Object handle(ProceedingJoinPoint pjp) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		Object rtn = null;
 		Object data = null;
 		try {
@@ -26,11 +35,18 @@ public class FuannaErrorHandler {
 				FuannaErrorException fe = (FuannaErrorException) e;
 				errorMsg = fe.getErrorMsg();
 				data = fe.getData();
+				rtn = fe.getRedirect();
+				if (rtn != null) {
+					request.setAttribute(FuannaConstraints.ERROR_CODE, ErrorCode.SB);
+					request.setAttribute(FuannaConstraints.ERROR_MSG, errorMsg);
+					return rtn;
+				}
 			}else {
-				logger.error("系统内部错误" + e.getMessage(), e);
-				if (data == null) {
-				rtn = "redirect:/500.jsp";
-				return rtn;
+				data = "系统内部错误" + e.getMessage();
+				logger.error(data, e);
+				if(!ajax){
+					rtn = "redirect:/500.jsp";
+					return rtn;
 				}
 			}
 			JsonUtils.printObject(new RstResult(ErrorCode.SB, errorMsg, data));

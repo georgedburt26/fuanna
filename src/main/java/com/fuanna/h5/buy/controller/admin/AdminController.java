@@ -12,12 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fuanna.h5.buy.base.BaseController;
-import com.fuanna.h5.buy.enumeration.ErrorCode;
-import com.fuanna.h5.buy.enumeration.FuannaConstraints;
-import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.mapper.AdminMapper;
 import com.fuanna.h5.buy.model.Admin;
-import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.util.MD5;
 
 @Controller
@@ -29,37 +25,37 @@ public class AdminController extends BaseController {
 	@Autowired
 	AdminMapper adminMapper;
 	
-	@RequestMapping("/admin/index.do")
+	@RequestMapping("/index.do")
 	public String index() {
 		return "/admin/index";
 	}
 
-	@RequestMapping("/admin/adminLogin.do")
-	public String adminLogin(@RequestParam Map<String, String> map,
-			RedirectAttributes model) throws Exception {
-		String url = "forward:/login.jsp";//redirectUrl
+	@RequestMapping("/login.do")
+	public String adminLogin(@RequestParam Map<String, String> map, RedirectAttributes model) throws Exception {
+		String url = "redirect:/login.jsp";//redirectUrl
 		String username = map.get("username");
 		if (StringUtils.isBlank(username)) {
-			error("用户名不能为空", url);
+			sendToUrl("用户名不能为空", url);
 		}
 		String password = map.get("password");
 		if (StringUtils.isBlank(password)) {
-			error("密码不能为空", url);
+			sendToUrl("密码不能为空", url);
 		}
 		String imageCode = map.get("imageCode");
 		boolean isMatch = Pattern.matches("^(\\w){4}$", imageCode);
 		if (StringUtils.isBlank(imageCode) || !isMatch) {
-			error("验证码格式不对", url);
+			sendToUrl("验证码格式不对", url);
 		}
 		if (!imageCode.equals(session().getAttribute("admin_imageCode"))) {
-			error("请输入正确验证码", url);
+			session().removeAttribute("admin_imageCode");
+			sendToUrl("请输入正确验证码", url);
 		}
 		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password));
 		if (admin == null) {
-			error("用户名或密码错误", url);
+			sendToUrl("用户名或密码错误", url);
 		}
 		session().setAttribute("admin", admin);
-		url = "redirect:/admin/index.do";//登陆成功
+		url = "redirect:/index.do";//登陆成功
 		return url;
 	}
 }

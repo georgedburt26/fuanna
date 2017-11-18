@@ -56,13 +56,13 @@
 		</property>
 	</bean>
 
-	<bean id="fuannaErrorHandler" class="com.fuanna.h5.buy.base.FuannaErrorHandler"></bean>
+	<bean id="fuannaHandler" class="com.fuanna.h5.buy.base.FuannaHandler"></bean>
 	<aop:config>
 		<!--<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))"
 			id="pointcut" />-->
 		<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller.admin.*.*(..))"
 			id="pointcut" />
-		<aop:aspect id="fuannaErrorAspect" ref="fuannaErrorHandler">
+		<aop:aspect id="fuannaErrorAspect" ref="fuannaHandler">
 			<aop:around method="handle" pointcut-ref="pointcut" />
 		</aop:aspect>
 

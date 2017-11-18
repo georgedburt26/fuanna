@@ -44,12 +44,12 @@
 
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/front/cart.do" />
+			<mvc:mapping path="/shop/cart.do" />
 			<bean class="com.fuanna.h5.buy.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
         <!-- 后台管理登陆拦截器  -->
 		<mvc:interceptor>
-			<mvc:mapping path="/front/cart.do" />
+			<mvc:mapping path="/**" />
 			<bean class="com.fuanna.h5.buy.interceptor.AdminLoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="am-u-sm-10 login-am-center">
-				<form class="am-form" action="admin/adminLogin.do" id="doc-vld-msg">
+				<form class="am-form" action="login.do" id="doc-vld-msg">
 					<fieldset>
 						<div class="am-form-group">
 							<input type="text" class="am-form-field" name="username"
