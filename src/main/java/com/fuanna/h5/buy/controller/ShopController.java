@@ -48,6 +48,6 @@ public class ShopController{
 		List<Map<String, String>> productList = productService.listProduct(ids);
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("productList", productList);
-		return "/front/shop";
+		return "/shop/index";
 	}
 }
