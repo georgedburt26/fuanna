@@ -26,6 +26,7 @@
   <div class="am-g myapp-login">
 	<div class="myapp-login-logo-block  tpl-login-max">
 		<div class="myapp-login-logo-text">
+		<img src="">
 		</div>
 		<div class="am-u-sm-10 login-am-center">
 			<form class="am-form">
