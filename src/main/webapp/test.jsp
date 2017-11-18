@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ include file="/lib.jsp"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,7 +15,7 @@
 <input type="submit" value="上传">
 </form>
 <a class="weui-btn weui-btn_primary submit-btn" id="scanQRCode" type="button">扫一扫</a>
-<img src="imageCode.do?page=test" />
+<img src="imageCode.do" />
 <script>
 var formData = new FormData($("#fileToUpload"));
 $("#upload").click(function() {

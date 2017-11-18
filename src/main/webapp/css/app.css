@@ -1862,7 +1862,6 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 }
 
 .myapp-login-logo-text {
-	background:url(../img/loginLogo.jpg) no-repeat;
 	background-size:100%;
     margin-top: 3rem;
     margin-bottom: 3rem;
