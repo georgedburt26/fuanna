@@ -17,9 +17,52 @@
       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 	<import resource="spring-mybatis.xml" />
 	<mvc:annotation-driven />
-    <mvc:default-servlet-handler/>
+	<mvc:default-servlet-handler />
 	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
 	<context:component-scan base-package="com.fuanna.h5.buy" />
-	
-	<bean id="testJdbc" class="com.fuanna.h5.buy.base.SystemInit" init-method="init"></bean>
+
+	<bean id="systemInit" class="com.fuanna.h5.buy.base.SystemInit"
+		init-method="init"></bean>
+
+	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+		<property name="config">
+			<bean class="com.google.code.kaptcha.util.Config">
+				<constructor-arg>
+					<props>
+						<!-- 是否有边框 可选yes 或者 no -->
+						<prop key="kaptcha.border">no</prop>
+						<!-- 边框颜色 -->
+						<!-- <prop key="kaptcha.border.color">233,236,243</prop> -->
+						<!-- 验证码文本字符颜色 -->
+						<prop key="kaptcha.textproducer.font.color">211,211,211</prop>
+						<!-- 验证码文本字符大小 -->
+						<prop key="kaptcha.textproducer.font.size">40</prop>
+						<!-- 验证码图片的宽度 默认200 -->
+						<!--<prop key="kaptcha.image.width">125</prop> -->
+						<!-- 验证码图片的高度 默认50 -->
+						<!--<prop key="kaptcha.image.height">45</prop> -->
+						<!-- 验证码文本字符长度 默认为5 -->
+						<prop key="kaptcha.textproducer.char.length">4</prop>
+						<prop key="kaptcha.background.clear.from">255,255,255</prop>
+						<prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.ShadowGimpy</prop>
+						<!-- 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 
+							1, fontSize) -->
+						<prop key="kaptcha.textproducer.font.names">微软雅黑</prop>
+						<prop key="kaptcha.noise.color">190,190,190</prop>
+					</props>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="fuannaErrorHandler" class="com.fuanna.h5.buy.base.FuannaErrorHandler"></bean>
+	<aop:config>
+		<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))"
+			id="pointcut" />
+		<aop:aspect id="fuannaErrorAspect" ref="fuannaErrorHandler">
+			<aop:around method="handle" pointcut-ref="pointcut" />
+		</aop:aspect>
+
+	</aop:config>
 </beans>

@@ -2,6 +2,9 @@ package com.fuanna.h5.buy.model;
 
 import java.io.Serializable;
 
+import com.fuanna.h5.buy.enumeration.ErrorCode;
+import com.fuanna.h5.buy.exception.FuannaErrorException;
+
 public class RstResult implements Serializable{
 
 	/**
@@ -9,28 +12,32 @@ public class RstResult implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String errorCode;
+	private ErrorCode errorCode;
 	
 	private String errorMsg;
 	
 	private Object data;
 	
-	public RstResult(String errorCode, String errorMsg) {
+	public RstResult(ErrorCode errorCode, String errorMsg){
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
 	}
 	
-	public RstResult(String errorCode, String errorMsg, Object data) {
+	public RstResult(ErrorCode errorCode, String errorMsg, Object data){
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
 		this.data = data;
 	}
-
-	public String getErrorCode() {
-		return errorCode;
+	
+	public RstResult() {
+		
 	}
 
-	public void setErrorCode(String errorCode) {
+	public String getErrorCode() {
+		return errorCode.toString();
+	}
+
+	public void setErrorCode(ErrorCode errorCode) {
 		this.errorCode = errorCode;
 	}
 

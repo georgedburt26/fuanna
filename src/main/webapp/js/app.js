@@ -46,7 +46,57 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
     $('.tpl-left-nav').toggle();
     $('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
 })
+function showmsg(errorCode, errorMsg) {
+	if (errorCode == '0000') {
+		$("body").append("<div class='am-alert am-alert-success' style='top:0;left: 0; right: 0; width: 20%; margin: 0 auto; position: fixed; z-index: 9999' data-am-alert>" +
+                         "<p style='text-align:center;'>" + errorMsg + "</p>" +
+                         "</div>");
+		$(".am-alert-success").alert();
+		$(".am-alert-success").fadeOut(3000, function() {
+					$(this).remove();
+	});	
+	}
+	if (errorCode == '9999') {
+			$("body").append("<div class='am-alert am-alert-danger' style='top:0;left: 0; right: 0; width: 20%; margin: 0 auto; position: fixed; z-index: 9999' data-am-alert>" +
+			                 "<p style='text-align:center;'>" + errorMsg + "</p>" +
+		                     "</div>");
+	}
+	$(".am-alert-danger").alert();
+	$(".am-alert-danger").fadeOut(3000, function() {
+				$(this).remove();
+	});
+}
+(function(){
+    var test;
+    this.test = function(a,b){
+    	alert(123);
+    };
+}).call(this);
 
+$('#doc-vld-msg')
+.validator(
+		{
+			onValid : function(validity) {
+				$(validity.field).closest('.am-form-group')
+						.find('.am-alert').hide();
+			},
+			onInValid : function(validity) {
+				var $field = $(validity.field);
+				var $group = $field
+						.closest('.am-form-group');
+				var $alert = $group.find('.am-alert');
+				// 使用自定义的提示信息 或 插件内置的提示信息
+				var msg = $field.data('validationMessage')
+						|| this
+								.getValidationMessage(validity);
+				if (!$alert.length) {
+					$alert = $(
+							'<div class="am-alert am-alert-danger"></div>')
+							.hide().appendTo($group);
+				}
+				$alert.html(msg).show();
+			}
+		});
 
 // 页面数据
 var pageData = {
@@ -85,7 +135,8 @@ var pageData = {
 
 
 
-        // document.addEventListener('touchmove', function(e) { e.preventDefault(); }, false);
+        // document.addEventListener('touchmove', function(e) {
+		// e.preventDefault(); }, false);
 
         // ==========================
         // 百度图表A http://echarts.baidu.com/

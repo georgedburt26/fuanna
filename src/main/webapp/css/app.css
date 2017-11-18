@@ -1868,13 +1868,17 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     font-family: Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", FontAwesome, sans-serif;
     color: #fff;
     font-weight: bold;
-    font-size: 4rem;
+    font-size: 2.5rem;
     text-align: center;
     width: 100%;
 }
 
+.myapp-login-logo-text img{
+	width:100%;
+}
+
 .myapp-login-logo-text span {
-    color: #53d192;
+    color: #696969;
 }
 
 .myapp-login-logo-text i {
@@ -1920,17 +1924,19 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     float: none;
 }
 
+.login-am-center .am-form .am-form-group:first-child input {
+    border-radius: 6px 6px 0px 0px;
+}
+
 .login-am-center .am-form input {
     background: #fff;
     border: none;
-    font-size: 12px;
+    font-size: 15px;
     line-height: 30px;
     text-indent: 10px;
-    border-radius: 0px 0px 6px 6px;
-}
-
-.login-am-center .am-form .am-form-group:first-child input {
-    border-radius: 6px 6px 0px 0px;
+    border:1px solid #e9ecf3;
+    border-radius: 0px 0px 6px 6px; 
+    vertical-align:middle;
 }
 
 .login-am-center .am-btn-default {

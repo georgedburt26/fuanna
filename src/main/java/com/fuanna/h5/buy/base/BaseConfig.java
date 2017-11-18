@@ -13,6 +13,8 @@ public class BaseConfig {
 
 	private static Logger logger = Logger.getLogger(BaseConfig.class);
 	
+	private static final Properties BASE_CONFIG = new Properties();
+	
 	private static final Properties JDBC_CONFIG = new Properties();
 	
 	private static final Properties QINIU_CONFIG = new Properties();
@@ -20,6 +22,8 @@ public class BaseConfig {
 	private static final String JDBC_PATH = "//jdbc.properties";
 	
 	private static final String QINIU_PATH = "//qiniu.properties";
+	
+	private static final String CONFIG_PATH = "//config.properties";
 	
     private static final Map<String, ReadWriteLock> rwls = new HashMap<String, ReadWriteLock>();
 	
@@ -35,6 +39,12 @@ public class BaseConfig {
         } catch (IOException e) {  
             logger.error("QINIU_CONFIG获取失败" + e.getMessage(), e);  
         }
+        
+        try(InputStream in = BaseConfig.class.getResourceAsStream(CONFIG_PATH)){
+        	BASE_CONFIG.load(in);
+        } catch (IOException e) {  
+            logger.error("BASE_CONFIG获取失败" + e.getMessage(), e);  
+        }
     }
     
     public static String getJdbcConfig(String name) {
@@ -43,5 +53,9 @@ public class BaseConfig {
     
     public static String getQiNiuConfig(String name) {
     	return QINIU_CONFIG.getProperty(name);
+    }
+    
+    public static String getBaseConfig(String name) {
+    	return BASE_CONFIG.getProperty(name);
     }
 }

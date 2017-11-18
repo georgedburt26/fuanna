@@ -35,7 +35,7 @@ public class HomeController{
 	@Autowired
 	ProductService productService;
 
-	@RequestMapping({"/home.do"})
+	@RequestMapping("/home.do")
 	public String homeInit(HttpServletRequest request, HttpServletResponse response) {
 		idSets.clear();
 		List<Category> categoryList = productService.listCategories();
