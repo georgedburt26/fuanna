@@ -20,10 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysql.jdbc.StringUtils;
 
+@Controller
 public class CommonController {
 
 	private static final Logger logger = Logger
@@ -38,7 +40,7 @@ public class CommonController {
 			HttpServletResponse response) {
 		try {
 			String page = request.getParameter("page");
-			int w = 65, h = 20;
+			int w = 100, h = 30;
 			String code = generateVerifyCode(4);
 			int verifySize = code.length();
 			BufferedImage image = new BufferedImage(w, h,

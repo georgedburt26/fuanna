@@ -41,10 +41,10 @@ public class SystemInit {
 	private void testJdbc() throws Exception{
 		try {
 			jdbcTestMapper.test();
+			logger.info("数据库|" + BaseConfig.getJdbcConfig("url") + "|JDBC连接成功");
 		}catch(Exception e) {
-			logger.error("JDBC连接失败", e);
+			logger.error("数据库|" + BaseConfig.getJdbcConfig("url") + "|JDBC连接失败", e);
 		}
-		logger.info("数据库|" + BaseConfig.getJdbcConfig("url") + "|JDBC连接成功");
 	}
 	
 	private void initHttpsClient() {
