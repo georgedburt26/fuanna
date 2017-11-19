@@ -2,19 +2,24 @@ package com.fuanna.h5.buy.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fuanna.h5.buy.model.Admin;
 
 public class AdminLoginInterceptor implements HandlerInterceptor{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		System.out.println(request.getContextPath());
-		if (request.getSession().getAttribute("admin") == null) {
-			response.sendRedirect("/login.jsp");
-			return false;
+		// 创建session
+		HttpSession session = request.getSession();
+		Admin admin = (Admin)session.getAttribute("admin");
+		if (admin == null) {
+			// 重定向
+			request.getRequestDispatcher("/login.do").forward(request, response);
 		}
 		return true;
 	}
@@ -23,8 +28,6 @@ public class AdminLoginInterceptor implements HandlerInterceptor{
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -33,5 +36,4 @@ public class AdminLoginInterceptor implements HandlerInterceptor{
 			throws Exception {
 		// TODO Auto-generated method stub
 	}
-
 }

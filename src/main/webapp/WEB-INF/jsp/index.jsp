@@ -13,22 +13,30 @@
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link rel="icon" type="image/png" href="assets/i/favicon.png">
 <link rel="apple-touch-icon-precomposed"
-	href="assets/i/app-icon72x72@2x.png">
+	href="<%=basePath%>admin/app-icon72x72@2x.png">
 <meta name="apple-mobile-web-app-title" content="Amaze UI" />
 <link rel="stylesheet" href="<%=basePath%>css/amazeui.min.css" />
 <link rel="stylesheet" href="<%=basePath%>css/admin.css">
 <link rel="stylesheet" href="<%=basePath%>css/app.css">
 <script src="<%=basePath%>js/echarts.min.js"></script>
 </head>
-
+<style>
+.am-icon-list:before {
+    line-height:75px;
+}
+.am-icon-sign-out:before {
+    line-height:75px;
+}
+</style>
 <body data-type="index">
 
 
 	<header class="am-topbar am-topbar-inverse admin-header">
 	<div class="am-topbar-brand">
-		<a href="javascript:;" class="tpl-logo"> <img
-			src="<%=basePath%>img/admin/logo.png" alt="">
-		</a>
+	<div>
+		<img
+			src="<%=basePath%>/img/admin/loginLogo.jpg" class="tpl-logo" alt="">
+	</div>
 	</div>
 	<div
 		class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
@@ -166,7 +174,7 @@
 					<li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
 				</ul>
 			</li>
-			<li><a href="###" class="tpl-header-list-link"><span
+			<li><a href="logout.do" class="tpl-header-list-link"><span
 					class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
 		</ul>
 	</div>
@@ -182,7 +190,7 @@
 
 
 		<div class="tpl-left-nav tpl-left-nav-hover">
-			<div class="tpl-left-nav-title">Amaze UI 列表</div>
+			<div class="tpl-left-nav-title">功能列表</div>
 			<div class="tpl-left-nav-list">
 				<ul class="tpl-left-nav-menu">
 					<li class="tpl-left-nav-item"><a href="index.html"
@@ -229,11 +237,11 @@
 							</a></li>
 						</ul></li>
 
-					<li class="tpl-left-nav-item"><a href="login.html"
+				<!-- 	<li class="tpl-left-nav-item"><a href="login.html"
 						class="nav-link tpl-left-nav-link-list"> <i
 							class="am-icon-key"></i> <span>登录</span>
 
-					</a></li>
+					</a></li> -->
 				</ul>
 			</div>
 		</div>

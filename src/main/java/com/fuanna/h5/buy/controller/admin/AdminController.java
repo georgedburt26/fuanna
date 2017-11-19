@@ -24,16 +24,6 @@ public class AdminController extends BaseController {
 
 	@Autowired
 	AdminMapper adminMapper;
-	
-	@RequestMapping("/login.do")
-	public String login() {
-		return "/login";
-	}
-	
-	@RequestMapping("/index.do")
-	public String index() {
-		return "/index";
-	}
 
 	@RequestMapping("/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> map, RedirectAttributes model) throws Exception {
@@ -52,7 +42,6 @@ public class AdminController extends BaseController {
 			sendToUrl("验证码格式不对", url);
 		}
 		if (!imageCode.equals(session().getAttribute("admin_imageCode"))) {
-			session().removeAttribute("admin_imageCode");
 			sendToUrl("请输入正确验证码", url);
 		}
 		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password));

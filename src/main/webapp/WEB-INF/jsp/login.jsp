@@ -63,6 +63,8 @@
 	<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
 	<script src="<%=basePath%>js/amazeui.min.js"></script>
 	<script src="<%=basePath%>js/app.js"></script>
-	<script>showmsg('${errorCode}', '${errorMsg}');</script>
+	<script>
+	showmsg('${errorCode}', '${errorMsg}');
+	</script>
 </body>
 </html>

@@ -48,23 +48,21 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
 })
 function showmsg(errorCode, errorMsg) {
 	if (errorCode == '0000') {
-		$("body").append("<div class='am-alert am-alert-success' style='top:0;left: 0; right: 0; width: 20%; margin: 0 auto; position: fixed; z-index: 9999' data-am-alert>" +
-                         "<p style='text-align:center;'>" + errorMsg + "</p>" +
-                         "</div>");
-		$(".am-alert-success").alert();
-		$(".am-alert-success").fadeOut(3000, function() {
+		$("body").append("<div class='am-form-group'><div class='fuana-alert fuanna-success' id='fuana-success-alert'>" +
+                "<p style='text-align:center;margin:0px;'>" + errorMsg + "</p>" +
+                "</div></div>");
+		$("#fuana-success-alert").fadeOut(3000, function() {
 					$(this).remove();
 	});	
 	}
 	if (errorCode == '9999') {
-			$("body").append("<div class='am-alert am-alert-danger' style='top:0;left: 0; right: 0; width: 20%; margin: 0 auto; position: fixed; z-index: 9999' data-am-alert>" +
-			                 "<p style='text-align:center;'>" + errorMsg + "</p>" +
-		                     "</div>");
-	}
-	$(".am-alert-danger").alert();
-	$(".am-alert-danger").fadeOut(3000, function() {
+			$("body").append("<div class='am-form-group'><div class='fuanna-alert fuanna-fail' id='fuanna-fail-alert'>" +
+			        "<p>" + errorMsg + "</p>" +
+			        "</div></div>");
+			$("#fuanna-fail-alert").fadeOut(3000, function() {
 				$(this).remove();
 	});
+	}
 }
 (function(){
     var test;
@@ -90,8 +88,7 @@ $('#doc-vld-msg')
 						|| this
 								.getValidationMessage(validity);
 				if (!$alert.length) {
-					$alert = $(
-							'<div class="am-alert am-alert-danger"></div>')
+					$alert = $('<div class="am-alert am-alert-danger"></div>')
 							.hide().appendTo($group);
 				}
 				$alert.html(msg).show();

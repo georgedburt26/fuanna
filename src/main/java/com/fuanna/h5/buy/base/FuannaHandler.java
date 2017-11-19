@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.core.Ordered;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,12 +17,12 @@ import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.util.JsonUtils;
 import com.google.code.kaptcha.Constants;
 
-public class FuannaHandler {
+public class FuannaHandler{
 
 	private static final Logger logger = Logger
 			.getLogger(FuannaHandler.class);
 	
-	private Object handle(ProceedingJoinPoint pjp) {
+	private Object round(ProceedingJoinPoint pjp) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		Object rtn = null;
@@ -58,5 +59,12 @@ public class FuannaHandler {
 			return null;
 		}
 		return rtn == null ? null : rtn;
+	}
+	
+	public void afterReturn() {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		if (request.getRequestURL().toString().contains("/adminLogin.do")) {
+			request.getSession().removeAttribute("admin_imageCode");	
+		}
 	}
 }

@@ -55,16 +55,33 @@
 			</bean>
 		</property>
 	</bean>
-
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/shop/cart.do" />
+			<bean class="com.fuanna.h5.buy.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+		<!--后台管理登陆拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/imageCode.do"/>
+			<mvc:exclude-mapping path="/login.do"/>
+			<mvc:exclude-mapping path="/adminLogin.do"/>
+			<bean class="com.fuanna.h5.buy.interceptor.AdminLoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors> 
+	
 	<bean id="fuannaHandler" class="com.fuanna.h5.buy.base.FuannaHandler"></bean>
 	<aop:config>
-		<!--<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))"
-			id="pointcut" />-->
-		<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller.admin.*.*(..))"
+		<!--<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))" 
+			id="pointcut" /> -->
+		<aop:pointcut
+			expression="execution(public * com.fuanna.h5.buy.controller.admin.*.*(..)) and 
+			           !execution(public * com.fuanna.h5.buy.controller.admin.AdminController.login(..))"
 			id="pointcut" />
 		<aop:aspect id="fuannaErrorAspect" ref="fuannaHandler">
-			<aop:around method="handle" pointcut-ref="pointcut" />
+			<aop:around method="round" pointcut-ref="pointcut" />
+			<aop:after-returning method="afterReturn" pointcut-ref="pointcut" />
 		</aop:aspect>
-
 	</aop:config>
 </beans>
