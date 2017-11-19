@@ -171,7 +171,7 @@
 				<ul class="am-dropdown-content">
 					<li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
 					<li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-					<li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+					<li><a href="logout.do"><span class="am-icon-power-off"></span> 退出</a></li>
 				</ul>
 			</li>
 			<li><a href="logout.do" class="tpl-header-list-link"><span
@@ -201,6 +201,10 @@
 							class="am-icon-bar-chart"></i> <span>数据表</span> <i
 							class="tpl-left-nav-content tpl-badge-danger"> 12 </i>
 					</a></li>
+					<li class="tpl-left-nav-item"><a href="chart.html"
+						class="nav-link tpl-left-nav-link-list"> <i class="am-icon-barcode"></i><span>数据表</span> <i
+							class="tpl-left-nav-content tpl-badge-danger"> 12 </i>
+					</a></li>
 
 					<li class="tpl-left-nav-item"><a href="javascript:;"
 						class="nav-link tpl-left-nav-link-list"> <i
@@ -221,7 +225,8 @@
 											<span>文字列表</span>
 
 									</a></li>
-						</ul></li>
+						</ul>
+						</li>
 
 					<li class="tpl-left-nav-item"><a href="javascript:;"
 						class="nav-link tpl-left-nav-link-list"> <i
@@ -251,12 +256,6 @@
 
 
 		<div class="tpl-content-wrapper">
-			<ol class="am-breadcrumb">
-				<li><a href="#" class="am-icon-home">首页</a></li>
-				<li><a href="#">分类</a></li>
-				<li class="am-active">内容</li>
-			</ol>
-
 			<div class="row">
 				<div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
 					<div class="dashboard-stat blue">

@@ -34,7 +34,6 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 
 @Controller
-@RequestMapping
 public class UploadController {
 
 	private static final Logger logger = Logger

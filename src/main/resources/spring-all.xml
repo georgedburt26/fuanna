@@ -66,6 +66,7 @@
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/imageCode.do"/>
 			<mvc:exclude-mapping path="/login.do"/>
+			<mvc:exclude-mapping path="/login.do"/>
 			<mvc:exclude-mapping path="/adminLogin.do"/>
 			<bean class="com.fuanna.h5.buy.interceptor.AdminLoginInterceptor" />
 		</mvc:interceptor>
