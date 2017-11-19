@@ -75,9 +75,10 @@
 	<aop:config>
 		<!--<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))" 
 			id="pointcut" /> -->
+			<!-- execution(public * com.fuanna.h5.buy.controller.admin.*.*(..)) and 
+			     !execution(public * com.fuanna.h5.buy.controller.admin.AdminController.*(..))-->
 		<aop:pointcut
-			expression="execution(public * com.fuanna.h5.buy.controller.admin.*.*(..)) and 
-			           !execution(public * com.fuanna.h5.buy.controller.admin.AdminController.login(..))"
+			expression="execution(public * com.fuanna.h5.buy.controller.admin.AdminController.*(..))"
 			id="pointcut" />
 		<aop:aspect id="fuannaErrorAspect" ref="fuannaHandler">
 			<aop:around method="round" pointcut-ref="pointcut" />
