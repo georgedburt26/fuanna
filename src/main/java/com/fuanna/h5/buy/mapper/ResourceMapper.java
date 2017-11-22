@@ -9,18 +9,29 @@ import com.fuanna.h5.buy.model.Resource;
 
 public interface ResourceMapper {
 
-	@Select({ "<script>" + 
-			  "select DISTINCT(resourceId) from f_role_resource where 1 = 1 " + 
-				"<if test=' roles != null '>" +
-				"and roleId in " +
-				"<foreach collection='roles' index='index' item='item' open='(' separator=',' close=')'>" +  
-	            "#{item} " + 
-	            "</foreach> " +
-	            "</if>" +
-	            "</script>"
-			})
-	public List<Long> listResourceIdByRoles(@Param("roles")List<Long> roles);
+//	@Select({ "<script>" + 
+//			  "select DISTINCT(resourceId) from f_role_resource where 1 = 1 " + 
+//				"<if test=' roles != null '>" +
+//				"and roleId in " +
+//				"<foreach collection='roles' index='index' item='item' open='(' separator=',' close=')'>" +  
+//	            "#{item} " + 
+//	            "</foreach> " +
+//	            "</if>" +
+//	            "</script>"
+//			})
+//	public List<Long> listResourceIdByAdminId(long adminId);
 	
-	@Select({"select * from f_resource where id = #{0} and parentId = #{}"})
-	public Resource queryResourceById(long id, int isTop);
+	@Select({"<script>" + 
+		     "select * from f_resource as r where id in (select DISTINCT(resourceId) from f_role_resource where 1 = 1 and roleId in (select roleId from f_admin where id = #{adminId})) " +
+			 "<if test='isTop'>" +
+			 " and r.parentId is null " +
+	         "</if>" +
+			 "<if test='type != null'>" +
+			 " and type = #{2} " +
+	         "</if>" +
+			 "</script>"})
+	public List<Resource> listResourceByAdminId(@Param("adminId")long adminId, @Param("isTop")boolean isTop, @Param("type")Integer type);
+
+	@Select({ "select * from f_resource where parentId = #{0}" })
+	public List<Resource> queryResourceByParentId(long parentId);
 }
