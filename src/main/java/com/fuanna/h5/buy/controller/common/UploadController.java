@@ -3,16 +3,10 @@ package com.fuanna.h5.buy.controller.common;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.enterprise.inject.New;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
-import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.fuanna.h5.buy.base.BaseConfig;
-import com.fuanna.h5.buy.enumeration.ErrorCode;
+import com.fuanna.h5.buy.constraints.ErrorCode;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.util.JsonUtils;
 import com.fuanna.h5.buy.util.RandomUtil;

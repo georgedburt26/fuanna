@@ -2,20 +2,17 @@ package com.fuanna.h5.buy.base;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.springframework.core.Ordered;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fuanna.h5.buy.enumeration.ErrorCode;
-import com.fuanna.h5.buy.enumeration.FuannaConstraints;
+import com.fuanna.h5.buy.constraints.ErrorCode;
+import com.fuanna.h5.buy.constraints.FuannaConstraints;
 import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.util.JsonUtils;
-import com.google.code.kaptcha.Constants;
 
 public class FuannaHandler{
 

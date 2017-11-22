@@ -5,10 +5,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fuanna.h5.buy.enumeration.ErrorCode;
-import com.fuanna.h5.buy.enumeration.FuannaConstraints;
+import com.fuanna.h5.buy.constraints.ErrorCode;
 import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.RstResult;

@@ -1,4 +1,4 @@
-package com.fuanna.h5.buy.enumeration;
+package com.fuanna.h5.buy.constraints;
 
 public enum ErrorCode {
 	CG("0000"),

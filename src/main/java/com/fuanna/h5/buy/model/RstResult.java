@@ -2,7 +2,7 @@ package com.fuanna.h5.buy.model;
 
 import java.io.Serializable;
 
-import com.fuanna.h5.buy.enumeration.ErrorCode;
+import com.fuanna.h5.buy.constraints.ErrorCode;
 import com.fuanna.h5.buy.exception.FuannaErrorException;
 
 public class RstResult implements Serializable{
