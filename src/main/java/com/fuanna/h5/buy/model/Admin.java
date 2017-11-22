@@ -1,9 +1,14 @@
 package com.fuanna.h5.buy.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Admin {
+public class Admin implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private String username;
 	private String password;
