@@ -27,11 +27,16 @@ public interface ResourceMapper {
 			 " and r.parentId is null " +
 	         "</if>" +
 			 "<if test='type != null'>" +
-			 " and type = #{2} " +
+			 " and type = #{type} " +
 	         "</if>" +
 			 "</script>"})
-	public List<Resource> listResourceByAdminId(@Param("adminId")long adminId, @Param("isTop")boolean isTop, @Param("type")Integer type);
+	public List<Resource> queryResourceByAdminId(@Param("adminId")long adminId, @Param("isTop")boolean isTop, @Param("type")Integer type);
 
-	@Select({ "select * from f_resource where parentId = #{0}" })
-	public List<Resource> queryResourceByParentId(long parentId);
+	@Select({ "<script>" +
+			  "select * from f_resource where 1 = 1 " + 
+			  "<if test='#{0} != null'>" +
+			  " and parentId = #{0} " +
+		      "</if>" +
+			  "</script>"})
+	public List<Resource> queryResourceByParentId(Long parentId);
 }

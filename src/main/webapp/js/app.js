@@ -46,12 +46,15 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
     $('.tpl-left-nav').toggle();
     $('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
 })
+
 function showmsg(errorCode, errorMsg) {
+	$("#fuana-success-alert").remove();
+	$("#fuanna-fail-alert").remove();
 	if (errorCode == '0000') {
 		$("body").append("<div class='am-form-group'><div class='fuana-alert fuanna-success' id='fuana-success-alert'>" +
                 "<p style='text-align:center;margin:0px;'>" + errorMsg + "</p>" +
                 "</div></div>");
-		$("#fuana-success-alert").fadeOut(3000, function() {
+		$("#fuana-success-alert").fadeOut(5000, function() {
 					$(this).remove();
 	});	
 	}
@@ -59,7 +62,7 @@ function showmsg(errorCode, errorMsg) {
 			$("body").append("<div class='am-form-group'><div class='fuanna-alert fuanna-fail' id='fuanna-fail-alert'>" +
 			        "<p>" + errorMsg + "</p>" +
 			        "</div></div>");
-			$("#fuanna-fail-alert").fadeOut(3000, function() {
+			$("#fuanna-fail-alert").fadeOut(5000, function() {
 				$(this).remove();
 	});
 	}

@@ -20,32 +20,27 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 	ResourceMapper resourceMapper;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
-		String url = request.getRequestURI().replaceAll(
-				request.getContextPath(), "");
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		String url = request.getRequestURI().replaceAll(request.getContextPath(), "");
 		// 创建session
 		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
 		if (admin == null) {
-			request.setAttribute("errorCode", "9999");
-			request.setAttribute("errorMsg", "请先登录");
 			// 重定向
-			request.getRequestDispatcher("/login.do")
-					.forward(request, response);
+			response.sendRedirect("login.do");
+			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler,
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception ex)
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		// TODO Auto-generated method stub
 	}

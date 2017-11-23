@@ -1,6 +1,8 @@
 package com.fuanna.h5.buy.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Resource implements Serializable{
 
@@ -24,6 +26,8 @@ public class Resource implements Serializable{
 	private Integer type;
 	
 	private String icon;
+	
+	private List<Resource> resources;
 
 	public long getId() {
 		return id;
@@ -89,5 +93,11 @@ public class Resource implements Serializable{
 		this.icon = icon;
 	}
 	
-	
+	public List<Resource> getResources() {
+		return resources;
+	}
+
+	public void setResources(List<Resource> resources) {
+		this.resources = resources;
+	}
 }
