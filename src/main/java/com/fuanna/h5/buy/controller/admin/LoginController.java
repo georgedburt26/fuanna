@@ -11,15 +11,14 @@ import com.fuanna.h5.buy.base.BaseController;
 import com.fuanna.h5.buy.mapper.ResourceMapper;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.Resource;
+import com.fuanna.h5.buy.service.AdminService;
 
 @Controller
 public class LoginController extends BaseController {
 
-	private static final Logger logger = Logger.getLogger(AdminController.class);
-
 	@Autowired
-	ResourceMapper resourceMapper;
-
+	AdminService adminService;
+	
 	@RequestMapping("/login.do")
 	public String login() {
 		return "/login";
@@ -28,10 +27,8 @@ public class LoginController extends BaseController {
 	@RequestMapping("/index.do")
 	public String index() {
 		Admin admin = (Admin) session().getAttribute("admin");
-		List<Resource> topResources = resourceMapper.queryResourceByAdminId(admin.getId(), true, 1);
-		for (Resource topResource : topResources) {
-			findResources(topResource);
-		}
+		List<Resource> resources = adminService.queryResourcesByAdminId(admin.getId());
+		session().setAttribute("resources", resources);
 		return "/index";
 	}
 
@@ -39,15 +36,5 @@ public class LoginController extends BaseController {
 	public String logout() {
 		session().removeAttribute("admin");
 		return "redirect:/login.do";
-	}
-
-	private void findResources(Resource topResource) {
-		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
-		if (resources != null && !resources.isEmpty()) {
-			topResource.setResources(resources);
-			for (Resource resource : resources) {
-				findResources(resource);
-			}
-		}
 	}
 }

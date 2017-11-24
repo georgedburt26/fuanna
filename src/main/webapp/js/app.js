@@ -37,6 +37,13 @@ $('.tpl-left-nav-link-list').on('click', function() {
         $(this).siblings('.tpl-left-nav-sub-menu').slideToggle(80)
             .end()
             .find('.tpl-left-nav-more-ico').toggleClass('tpl-left-nav-more-ico-rotate');
+        $(this).addClass("active");
+        $(this).siblings().toggleClass("active");
+    })
+$('.tpl-left-nav-sub-menu li a').on('click', function() {
+	alert(1);
+        $(this).addClass("active");
+        $(this).siblings().removeClass("active");
     })
     // ==========================
     // 头部导航隐藏菜单
@@ -46,57 +53,6 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
     $('.tpl-left-nav').toggle();
     $('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
 })
-
-function showmsg(errorCode, errorMsg) {
-	$("#fuana-success-alert").remove();
-	$("#fuanna-fail-alert").remove();
-	if (errorCode == '0000') {
-		$("body").append("<div class='am-form-group'><div class='fuana-alert fuanna-success' id='fuana-success-alert'>" +
-                "<p style='text-align:center;margin:0px;'>" + errorMsg + "</p>" +
-                "</div></div>");
-		$("#fuana-success-alert").fadeOut(5000, function() {
-					$(this).remove();
-	});	
-	}
-	if (errorCode == '9999') {
-			$("body").append("<div class='am-form-group'><div class='fuanna-alert fuanna-fail' id='fuanna-fail-alert'>" +
-			        "<p>" + errorMsg + "</p>" +
-			        "</div></div>");
-			$("#fuanna-fail-alert").fadeOut(5000, function() {
-				$(this).remove();
-	});
-	}
-}
-(function(){
-    var test;
-    this.test = function(a,b){
-    	alert(123);
-    };
-}).call(this);
-
-$('#doc-vld-msg')
-.validator(
-		{
-			onValid : function(validity) {
-				$(validity.field).closest('.am-form-group')
-						.find('.am-alert').hide();
-			},
-			onInValid : function(validity) {
-				var $field = $(validity.field);
-				var $group = $field
-						.closest('.am-form-group');
-				var $alert = $group.find('.am-alert');
-				// 使用自定义的提示信息 或 插件内置的提示信息
-				var msg = $field.data('validationMessage')
-						|| this
-								.getValidationMessage(validity);
-				if (!$alert.length) {
-					$alert = $('<div class="am-alert am-alert-danger"></div>')
-							.hide().appendTo($group);
-				}
-				$alert.html(msg).show();
-			}
-		});
 
 // 页面数据
 var pageData = {

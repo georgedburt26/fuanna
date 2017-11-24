@@ -15,18 +15,12 @@ import com.fuanna.h5.buy.util.JsonUtils;
 
 public class BaseController {
 
-	protected void send(String errorMsg, Object data) throws FuannaErrorException {
-		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, data);
+	protected void error(String errorMsg) throws FuannaErrorException {
+		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, null);
 	}
 	
-	protected void sendToUrl(String errorMsg, String redirect) throws FuannaErrorException {
-//		String action = request().getRequestURI().replaceAll(request().getContextPath(), "");
+	protected void error(String errorMsg, String redirect) throws FuannaErrorException {
 		throw new FuannaErrorException(ErrorCode.SB.toString(), errorMsg, redirect);
-	}
-	
-	protected void send(ErrorCode errorCode, String errorMsg, Object data) {
-		RstResult rstResult = new RstResult(ErrorCode.CG, errorMsg, data);
-		JsonUtils.printObject(rstResult);
 	}
 	
 	protected HttpSession session() {

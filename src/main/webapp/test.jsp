@@ -9,9 +9,8 @@
 	<script src="js/jquery.min.js"></script>
 </head>
 <body>
-<form action="upload.do" method="post" id="iconForm" enctype="multipart/form-data">
+<form action="qiNiuUpload.do" method="post" id="iconForm" enctype="multipart/form-data">
 <input type="file" id="fileToUpload" name="file"/>
-<input type="button" id="upload" value="上传">
 <input type="submit" value="上传">
 </form>
 <a class="weui-btn weui-btn_primary submit-btn" id="scanQRCode" type="button">扫一扫</a>

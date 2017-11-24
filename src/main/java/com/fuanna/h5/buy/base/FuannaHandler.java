@@ -22,8 +22,8 @@ public class FuannaHandler{
 	private Object round(ProceedingJoinPoint pjp) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-		Object rtn = null;
-		Object data = null;
+		Object redirectUrl = null;
+		String errorMsg = null;
 		RedirectAttributes model = null;
 		try {
 			Object[] args = pjp.getArgs();
@@ -31,31 +31,27 @@ public class FuannaHandler{
 				if (arg instanceof RedirectAttributes)
 					model = (RedirectAttributes) arg;
 			}
-			rtn = pjp.proceed(args);
+			return pjp.proceed(args);
 		} catch (Throwable e) {
-			String errorMsg = "系统内部错误";
+			errorMsg = "系统内部错误";
 			if (e instanceof FuannaErrorException) {
 				FuannaErrorException fe = (FuannaErrorException) e;
 				errorMsg = fe.getErrorMsg();
-				data = fe.getData();
-				rtn = fe.getRedirect();
-				if (rtn != null && model != null) {
+				redirectUrl = fe.getRedirect();
+				if (redirectUrl != null && model != null) {
 					model.addFlashAttribute(FuannaConstraints.ERROR_CODE, ErrorCode.SB.toString());
 					model.addFlashAttribute(FuannaConstraints.ERROR_MSG, errorMsg);
-					return rtn;
+					return redirectUrl;
 				}
 			}else {
-				data = "系统内部错误" + e.getMessage();
-				logger.error(data, e);
+				logger.error(errorMsg + e.getMessage(), e);
 				if(!ajax){
-					rtn = "redirect:/500.jsp";
-					return rtn;
+					redirectUrl = "redirect:/500.jsp";
+					return redirectUrl;
 				}
 			}
-			JsonUtils.printObject(new RstResult(ErrorCode.SB, errorMsg, data));
-			return null;
+			return new RstResult(ErrorCode.SB, errorMsg, null);
 		}
-		return rtn == null ? null : rtn;
 	}
 	
 	public void afterReturn() {
