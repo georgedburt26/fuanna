@@ -2,6 +2,7 @@ package com.fuanna.h5.buy.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.fuanna.h5.buy.model.Admin;
@@ -14,11 +15,35 @@ public interface AdminMapper {
 	@Select({ "select * from f_admin where id = #{0}"})
 	public Admin queryAdminById(long id);
 	
-	@Select({ "select * from f_admin where id = #{0}"})
-	public List<Admin> listAdmin();
+	@Select({"<script>" +  
+		     "select * from f_admin where 1 = 1 " + 
+			  "<if test='name != null'>" +
+			  " and name = '%'#{name}'%' " +
+		      "</if>" +
+			  "<if test='mobilePhone != null'>" +
+			  " and mobilePhone = #{mobilePhone} " +
+		      "</if>" +
+			  "<if test='email != null'>" +
+			  " and email = #{email} " +
+		      "</if>" +
+			  "order by id desc " +
+			  "<if test='offset != null & limit != null'>" +
+			  " limit #{offset}, #{limit}" +
+		      "</if>" +
+		     "</script>"})
+	public List<Admin> listAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("email")String email, @Param("offset")Integer offset, @Param("limit")Integer limit);
 	
 	@Select({ "<script>" + 
-		      "select count(id) from f_admin where name = #{0}" +
+		      "select count(id) from f_admin where 1 = 1 " +
+			  "<if test='name != null'>" +
+			  " and name = '%'#{name}'%' " +
+		      "</if>" +
+			  "<if test='mobilePhone != null'>" +
+			  " and mobilePhone = #{mobilePhone} " +
+		      "</if>" +
+			  "<if test='email != null'>" +
+			  " and email = #{email} " +
+		      "</if>" +
 		      "</script>"})
-	public int countAdmin(String name, String mobilePhone, String email);
+	public int countAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("email")String email);
 }
