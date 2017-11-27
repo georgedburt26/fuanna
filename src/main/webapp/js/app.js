@@ -38,10 +38,10 @@ $('.tpl-left-nav-link-list').on('click', function() {
             .end()
             .find('.tpl-left-nav-more-ico').toggleClass('tpl-left-nav-more-ico-rotate');
         $(this).addClass("active");
-        $(this).siblings().toggleClass("active");
+        $(this).parent().siblings().find("a").removeClass("active");
     })
+    
 $('.tpl-left-nav-sub-menu li a').on('click', function() {
-	alert(1);
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
     })
@@ -53,6 +53,19 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
     $('.tpl-left-nav').toggle();
     $('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
 })
+
+function pageContent(url) {
+	if (url != null && url != "") {
+		$(".tpl-content-wrapper").load(url, function(responseTxt,statusTxt,xhr){
+			if(xhr.status == 404){
+				$(this).load("404.jsp");
+				}
+			if(xhr.status == 500){
+				$(this).load("500.jsp");
+				}
+			});
+		}
+	}
 
 // 页面数据
 var pageData = {

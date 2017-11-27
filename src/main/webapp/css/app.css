@@ -461,7 +461,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 
 .tpl-content-wrapper {
 	padding-left: 255px;
-	padding-top: 10px;
+	padding-top: 0px;
 }
 
 .tpl-content-wrapper-hover {

@@ -54,4 +54,9 @@ public class AdminController extends BaseController {
 		url = "redirect:/index.do";//登陆成功
 		return url;
 	}
+	
+	@RequestMapping("/adminManage.do")
+	public String adminManage() {
+		return "/content_admin_manage";
+	}
 }
