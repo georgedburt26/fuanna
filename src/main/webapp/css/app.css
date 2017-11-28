@@ -1051,6 +1051,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 	{
 	border-top: 1px solid #F2F5F8;
 	color: #93a2a9;
+	text-align:center;
 }
 
 .font-green {

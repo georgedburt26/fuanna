@@ -57,7 +57,8 @@ public class AdminController extends BaseController {
 	
 	@RequestMapping("/adminManage.do")
 	public String adminManage() {
-		adminService.listAdmin(null, null, null, null, null);
+		List<Admin> admins = adminService.listAdmin(null, null, null, null, null);
+		session().setAttribute("admins", admins);
 		return "/content_admin_manage";
 	}
 }

@@ -42,7 +42,6 @@ public class CommonController {
 
 			// 生成验证码文本
 			String capText = captchaProducer.createText();
-			session.setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
 			// 利用生成的字符串构建图片
 			BufferedImage bi = captchaProducer.createImage(capText);
 			out = response.getOutputStream();

@@ -27,7 +27,7 @@ public interface AdminMapper {
 			  " and email = #{email} " +
 		      "</if>" +
 			  "order by id desc " +
-			  "<if test='offset != null & limit != null'>" +
+			  "<if test='offset != null and limit != null'>" +
 			  " limit #{offset}, #{limit}" +
 		      "</if>" +
 		     "</script>"})
