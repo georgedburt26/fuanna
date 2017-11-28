@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ include file="/lib.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="tpl-portlet-components">
 	<div class="tpl-block">
@@ -10,16 +11,16 @@
 						<button type="button" class="am-btn am-btn-default am-btn-success">
 							<span class="am-icon-plus"></span> 新增
 						</button>
-						<button type="button"
+					<!--	<button type="button"
 							class="am-btn am-btn-default am-btn-secondary">
 							<span class="am-icon-save"></span> 保存
 						</button>
 						<button type="button" class="am-btn am-btn-default am-btn-warning">
 							<span class="am-icon-archive"></span> 审核
-						</button>
+						</button>-->
 						<button type="button" class="am-btn am-btn-default am-btn-danger">
 							<span class="am-icon-trash-o"></span> 删除
-						</button>
+						</button> 
 					</div>
 				</div>
 			</div>
@@ -108,56 +109,36 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><input type="checkbox"></td>
-								<td>1</td>
-								<td><a href="#">Business management</a></td>
-								<td>default</td>
-								<td class="am-hide-sm-only">测试1号</td>
-								<td class="am-hide-sm-only">2014年9月4日 7:28:47</td>
-								<td class="am-hide-sm-only">2014年9月4日 7:28:47</td>
-								<td>
-									<div class="am-btn-toolbar">
-										<div class="am-btn-group am-btn-group-xs">
-											<button
-												class="am-btn am-btn-default am-btn-xs am-text-secondary">
-												<span class="am-icon-pencil-square-o"></span> 编辑
-											</button>
-											<button
-												class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-												<span class="am-icon-trash-o"></span> 删除
-											</button>
+							<c:forEach var="admin" items="${admins}" varStatus="status">
+								<tr>
+									<td><input class="tpl-table-fz-data-check" type="checkbox"></td>
+									<td>${status.index + 1}</td>
+									<td><a href="#">${admin.username}</a></td>
+									<td>${admin.name}</td>
+									<td class="am-hide-sm-only">${admin.mobilePhone}</td>
+									<td class="am-hide-sm-only">${admin.email}</td>
+									<td class="am-hide-sm-only"><fmt:formatDate
+											value="${admin.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+									<td>
+										<div class="am-btn-toolbar" style="display: inline-block">
+											<div class="am-btn-group am-btn-group-xs">
+												<button
+													class="am-btn am-btn-default am-btn-xs am-hide-sm-only">
+													<span class="am-icon-file-text-o"></span>查看
+												</button>
+												<button
+													class="am-btn am-btn-default am-btn-xs am-text-secondary">
+													<span class="am-icon-pencil-square-o"></span> 编辑
+												</button>
+												<button
+													class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
+													<span class="am-icon-trash-o"></span> 删除
+												</button>
+											</div>
 										</div>
-									</div>
-								</td>
-							</tr>
-														<tr>
-								<td><input type="checkbox"></td>
-								<td>1</td>
-								<td><a href="#">Business management</a></td>
-								<td>default</td>
-								<td class="am-hide-sm-only">测试1号</td>
-								<td class="am-hide-sm-only">2014年9月4日 7:28:47</td>
-								<td class="am-hide-sm-only">2014年9月4日 7:28:47</td>
-								<td>
-									<div class="am-btn-toolbar">
-										<div class="am-btn-group am-btn-group-xs">
-											<button
-												class="am-btn am-btn-default am-btn-xs am-text-secondary">
-												<span class="am-icon-pencil-square-o"></span> 编辑
-											</button>
-											<button
-												class="am-btn am-btn-default am-btn-xs am-hide-sm-only">
-												<span class="am-icon-copy"></span> 复制
-											</button>
-											<button
-												class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-												<span class="am-icon-trash-o"></span> 删除
-											</button>
-										</div>
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 					<div class="am-cf">

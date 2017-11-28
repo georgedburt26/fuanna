@@ -54,6 +54,10 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
     $('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
 })
 
+$('.tpl-table-fz-check').on('click', function() {
+	$('.tpl-table-fz-data-check').attr("checked",'checked');
+});
+
 function pageContent(url) {
 	if (url != null && url != "") {
 		$(".tpl-content-wrapper").load(url, function(responseTxt,statusTxt,xhr){

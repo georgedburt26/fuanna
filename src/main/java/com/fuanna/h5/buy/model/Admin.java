@@ -17,6 +17,7 @@ public class Admin implements Serializable{
 	private String email;
 	private String headImg;
 	private String role;
+	private String roleName;
 	private Date createTime;
 	public long getId() {
 		return id;
@@ -72,6 +73,11 @@ public class Admin implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 	
 }
