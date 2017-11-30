@@ -14,6 +14,7 @@ import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.service.AdminService;
 
 @Controller
+@RequestMapping("/admin")
 public class LoginController extends BaseController {
 
 	@Autowired
@@ -21,7 +22,11 @@ public class LoginController extends BaseController {
 	
 	@RequestMapping("/login.do")
 	public String login() {
-		return "/login";
+		Admin admin = (Admin) session().getAttribute("admin");
+		if (admin != null) {
+			return "redirect:/admin/index.do";
+		}
+		return "/admin/login";
 	}
 
 	@RequestMapping("/index.do")
@@ -29,12 +34,12 @@ public class LoginController extends BaseController {
 		Admin admin = (Admin) session().getAttribute("admin");
 		List<Resource> resources = adminService.queryResourcesByAdminId(admin.getId());
 		session().setAttribute("resources", resources);
-		return "/index";
+		return "/admin/index";
 	}
 
 	@RequestMapping("/logout.do")
 	public String logout() {
 		session().removeAttribute("admin");
-		return "redirect:/login.do";
+		return "redirect:/admin/login.do";
 	}
 }

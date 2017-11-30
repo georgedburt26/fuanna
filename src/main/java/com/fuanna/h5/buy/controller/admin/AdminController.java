@@ -19,6 +19,7 @@ import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.service.AdminService;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController extends BaseController {
 
 	private static final Logger logger = Logger
@@ -29,7 +30,7 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> map, RedirectAttributes model) throws Exception {
-		String url = "redirect:/login.do";//redirectUrl
+		String url = "redirect:/admin/login.do";//redirectUrl
 		String username = map.get("username");
 		if (StringUtils.isBlank(username)) {
 			error("用户名不能为空", url);
@@ -51,14 +52,15 @@ public class AdminController extends BaseController {
 			error("用户名或密码错误", url);
 		}
 		session().setAttribute("admin", admin);
-		url = "redirect:/index.do";//登陆成功
+		url = "redirect:/admin/index.do";//登陆成功
 		return url;
 	}
 	
+	/********权限管理*********/
 	@RequestMapping("/adminManage.do")
 	public String adminManage() {
 		List<Admin> admins = adminService.listAdmin(null, null, null, null, null);
 		request().setAttribute("admins", admins);
-		return "/admin_manage";
+		return "/admin/admin_manage";
 	}
 }

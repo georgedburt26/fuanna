@@ -60,12 +60,13 @@ $('.tpl-table-fz-check').on('click', function() {
 
 function pageContent(url) {
 	if (url != null && url != "") {
+		$(".tpl-content-wrapper").html("<i class='am-icon-spinner am-icon-spin'></i>加载中...");
 		$(".tpl-content-wrapper").load(url, function(responseTxt,statusTxt,xhr){
 			if(xhr.status == 404){
-				$(this).load("404.jsp");
+				$(this).load("404.html");
 				}
 			if(xhr.status == 500){
-				$(this).load("500.jsp");
+				$(this).load("500.html");
 				}
 			});
 		}

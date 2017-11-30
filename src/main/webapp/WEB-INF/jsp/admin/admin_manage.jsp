@@ -11,7 +11,7 @@
 						<button type="button" class="am-btn am-btn-default am-btn-success">
 							<span class="am-icon-plus"></span> 新增
 						</button>
-					<!--	<button type="button"
+						<!--	<button type="button"
 							class="am-btn am-btn-default am-btn-secondary">
 							<span class="am-icon-save"></span> 保存
 						</button>
@@ -20,7 +20,7 @@
 						</button>-->
 						<button type="button" class="am-btn am-btn-default am-btn-danger">
 							<span class="am-icon-trash-o"></span> 删除
-						</button> 
+						</button>
 					</div>
 				</div>
 			</div>
@@ -94,7 +94,7 @@
 		<div class="am-g">
 			<div class="am-u-sm-12">
 				<form class="am-form">
-					<table class="am-table  am-table-hover table-main">
+					<table class="am-table  am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
 								<th class="table-check"><input type="checkbox"
@@ -113,7 +113,7 @@
 								<tr>
 									<td><input class="tpl-table-fz-data-check" type="checkbox"></td>
 									<td>${status.index + 1}</td>
-									<td><a href="#">${admin.username}</a></td>
+									<td>${admin.username}</td>
 									<td>${admin.name}</td>
 									<td class="am-hide-sm-only">${admin.mobilePhone}</td>
 									<td class="am-hide-sm-only">${admin.email}</td>
@@ -163,3 +163,70 @@
 		</div>
 	</div>
 </div>
+<script>
+	$('#datatable')
+			.dataTable(
+					{
+						"oLanguage" : { //语言设置
+							"sProcessing" : "正在加载中......",
+							"sLengthMenu" : "每页显示 _MENU_ 条记录",
+							"sZeroRecords" : "对不起，查询不到相关数据！",
+							"sEmptyTable" : "表中无数据存在！",
+							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+							"sSearch" : "搜索",
+							"oPaginate" : {
+								"sFirst" : "首页",
+								"sPrevious" : "上一页",
+								"sNext" : "下一页",
+								"sLast" : "末页"
+							}
+						},
+						bAutoWidth : false, //自动适应宽度
+						"bFilter" : false, //查询
+						"bSort" : true, //排序
+						"bInfo" : false, //页脚信息
+						"bLengthChange" : false, //改变每页显示数据数量
+						"bServerSide" : true, //服务器数据
+						"sAjaxSource" : '/XXX/XXX/GetList',
+						"bProcessing" : true, //当datatable获取数据时候是否显示正在处理提示信息。 
+						"bPaginate" : true, //显示分页器
+						"iDisplayLength " : 10, //一页显示条数
+						"aoColumns" : [
+								{
+									//自定义列
+									"sName" : "Id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
+									"mDataProp" : "Id", //获取数据列名
+									"sClass" : "center", //样式
+									"bStorable" : false, //该列不排序
+									"render" : function(data, type, row) { //列渲染
+										return '<label class="position-relative">'
+												+ '<input type="checkbox" class="ace" value="'+data+'"/>'
+												+ '<span class="lbl"></span>'
+												+ '</label>';
+									}
+								}, {
+									"sName" : "Name",
+									"mDataProp" : "Name",
+									"bSearchable" : true, //检索可用
+									"bStorable" : true
+								}, {
+									"sName" : "CustomerSN",
+									"mDataProp" : "CustomerSN",
+									"bSearchable" : false,
+									"bStorable" : false
+								}, {
+									"mDataProp" : "City",
+									"sName" : "City"
+								}, {
+									"sName" : "Address",
+									"mDataProp" : "Address"
+								}, {
+									"sName" : "Contact",
+									"mDataProp" : "Contact"
+								}, {
+									"sName" : "ContactPhone",
+									"mDataProp" : "ContactPhone"
+								} ]
+					});
+</script>
