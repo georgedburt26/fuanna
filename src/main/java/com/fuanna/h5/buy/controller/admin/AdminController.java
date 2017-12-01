@@ -59,7 +59,13 @@ public class AdminController extends BaseController {
 	/********权限管理*********/
 	@RequestMapping("/adminManage.do")
 	public String adminManage() {
+		return "/admin/admin_manage";
+	}
+	
+	@RequestMapping("/adminManageList.do")
+	public String adminManageList() {
 		List<Admin> admins = adminService.listAdmin(null, null, null, null, null);
+		int count = adminService.countAdmin(null, null, null);
 		request().setAttribute("admins", admins);
 		return "/admin/admin_manage";
 	}
