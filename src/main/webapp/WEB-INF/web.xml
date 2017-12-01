@@ -60,7 +60,7 @@
 	</welcome-file-list>
 	<!-- 配置SESSION超时，单位是分钟 -->
 	<session-config>
-		<session-timeout>15</session-timeout>
+		<session-timeout>30</session-timeout>
 	</session-config>
 	    <error-page>
         <error-code>404</error-code>

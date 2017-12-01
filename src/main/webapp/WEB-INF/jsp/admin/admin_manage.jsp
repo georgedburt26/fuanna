@@ -99,7 +99,6 @@
 							<tr>
 								<th class="table-check"><input type="checkbox"
 									class="tpl-table-fz-check"></th>
-								<th class="table-index">序号</th>
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
@@ -108,8 +107,8 @@
 								<th class="table-set">操作</th>
 							</tr>
 						</thead>
-						<tbody>
-							<c:forEach var="admin" items="${admins}" varStatus="status">
+						<!--<tbody>
+						 	<c:forEach var="admin" items="${admins}" varStatus="status">
 								<tr>
 									<td><input class="tpl-table-fz-data-check" type="checkbox"></td>
 									<td>${status.index + 1}</td>
@@ -139,9 +138,9 @@
 									</td>
 								</tr>
 							</c:forEach>
-						</tbody>
+						</tbody>-->
 					</table>
-					<div class="am-cf">
+					<!--<div class="am-cf">
 
 						<div class="am-fr">
 							<ul class="am-pagination tpl-pagination">
@@ -155,7 +154,7 @@
 							</ul>
 						</div>
 					</div>
-					<hr>
+					<hr>-->
 
 				</form>
 			</div>
@@ -163,6 +162,7 @@
 		</div>
 	</div>
 </div>
+<script src="js/jquery.dataTables.min.js"></script>
 <script>
 	$('#datatable')
 			.dataTable(
@@ -182,51 +182,61 @@
 								"sLast" : "末页"
 							}
 						},
-						bAutoWidth : false, //自动适应宽度
+						"bAutoWidth" : false, //自动适应宽度
 						"bFilter" : false, //查询
 						"bSort" : true, //排序
 						"bInfo" : false, //页脚信息
 						"bLengthChange" : false, //改变每页显示数据数量
 						"bServerSide" : true, //服务器数据
-						"sAjaxSource" : '/XXX/XXX/GetList',
+						"sAjaxSource" : "admin/adminManageList.do",
 						"bProcessing" : true, //当datatable获取数据时候是否显示正在处理提示信息。 
 						"bPaginate" : true, //显示分页器
 						"iDisplayLength " : 10, //一页显示条数
+						"sAjaxDataProp" : "aData",//是服务器分页的标志，必须有
 						"aoColumns" : [
 								{
 									//自定义列
-									"sName" : "Id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
-									"mDataProp" : "Id", //获取数据列名
+									"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
+									"mDataProp" : "id", //获取数据列名
 									"sClass" : "center", //样式
 									"bStorable" : false, //该列不排序
 									"render" : function(data, type, row) { //列渲染
 										return '<label class="position-relative">'
-												+ '<input type="checkbox" class="ace" value="'+data+'"/>'
+												+ '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>'
 												+ '<span class="lbl"></span>'
 												+ '</label>';
 									}
 								}, {
-									"sName" : "Name",
-									"mDataProp" : "Name",
-									"bSearchable" : true, //检索可用
-									"bStorable" : true
+									"sName" : "username",
+									"mDataProp" : "username",
+								},{
+									"sName" : "mobilePhone",
+									"mDataProp" : "mobilePhone",
 								}, {
-									"sName" : "CustomerSN",
-									"mDataProp" : "CustomerSN",
-									"bSearchable" : false,
-									"bStorable" : false
+									"sName" : "email",
+									"mDataProp" : "email",
 								}, {
-									"mDataProp" : "City",
-									"sName" : "City"
-								}, {
-									"sName" : "Address",
-									"mDataProp" : "Address"
-								}, {
-									"sName" : "Contact",
-									"mDataProp" : "Contact"
-								}, {
-									"sName" : "ContactPhone",
-									"mDataProp" : "ContactPhone"
-								} ]
+									"mDataProp" : "createTime",
+									"sName" : "createTime"
+								}],
+						"fnServerData" : function(sSource, aData, fnCallback) {
+			                $.ajax({
+			                    url : sSource,//这个就是请求地址对应sAjaxSource
+			                    data : {"aData":JSON.stringify(aData)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+			                    type : 'post',
+			                    dataType : 'json',
+			                    async : false,
+			                    success : function(result) {
+			                    	if (result.errorCode == '9999') {
+			                    		showmsg(result.errorCode, result.errorMsg);
+			                    		return;
+			                    	}
+			                        fnCallback(result.data);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+			                    },
+			                    error : function(msg) {
+		                    		showmsg("9999", "系统繁忙，请稍后再试.");
+			                    }
+			                });
+			            }
 					});
 </script>

@@ -14,32 +14,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fuanna.h5.buy.base.BaseController;
+import com.fuanna.h5.buy.constraints.ErrorCode;
 import com.fuanna.h5.buy.model.Admin;
-import com.fuanna.h5.buy.model.Resource;
+import com.fuanna.h5.buy.model.DataTable;
+import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
+import com.fuanna.h5.buy.util.JsonUtils;
+
+import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController extends BaseController {
 
-	private static final Logger logger = Logger
-			.getLogger(AdminController.class);
+	private static final Logger logger = Logger.getLogger(AdminController.class);
 
 	@Autowired
 	AdminService adminService;
 
 	@RequestMapping("/adminLogin.do")
-	public String adminLogin(@RequestParam Map<String, String> map, RedirectAttributes model) throws Exception {
-		String url = "redirect:/admin/login.do";//redirectUrl
-		String username = map.get("username");
+	public String adminLogin(@RequestParam Map<String, String> params, RedirectAttributes model) throws Exception {
+		String url = "redirect:/admin/login.do";// redirectUrl
+		String username = params.get("username");
 		if (StringUtils.isBlank(username)) {
 			error("用户名不能为空", url);
 		}
-		String password = map.get("password");
+		String password = params.get("password");
 		if (StringUtils.isBlank(password)) {
 			error("密码不能为空", url);
 		}
-		String imageCode = map.get("imageCode");
+		String imageCode = params.get("imageCode");
 		boolean isMatch = Pattern.matches("^(\\w){4}$", imageCode);
 		if (StringUtils.isBlank(imageCode) || !isMatch) {
 			error("验证码格式不对", url);
@@ -52,21 +56,39 @@ public class AdminController extends BaseController {
 			error("用户名或密码错误", url);
 		}
 		session().setAttribute("admin", admin);
-		url = "redirect:/admin/index.do";//登陆成功
+		url = "redirect:/admin/index.do";// 登陆成功
 		return url;
 	}
-	
-	/********权限管理*********/
+
+	/******** 权限管理 *********/
 	@RequestMapping("/adminManage.do")
 	public String adminManage() {
 		return "/admin/admin_manage";
 	}
-	
+
 	@RequestMapping("/adminManageList.do")
-	public String adminManageList() {
-		List<Admin> admins = adminService.listAdmin(null, null, null, null, null);
-		int count = adminService.countAdmin(null, null, null);
-		request().setAttribute("admins", admins);
-		return "/admin/admin_manage";
+	public @ResponseBody RstResult adminManageList() throws Exception {
+		RstResult rstResult = null;
+		String data = request().getParameter("aData");
+		if (StringUtils.isNotBlank(data)) {
+			Integer sEcho = null, iDisplayStart = null, iDisplayLength = null;
+			JSONArray json = JSONArray.fromObject(data);
+			for (int i = 0; i < json.size(); i++) {
+				if (json.getJSONObject(i).getString("name").equals("sEcho")) {
+					sEcho = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayStart")) {
+					iDisplayStart = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayLength")) {
+					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+			}
+			List<Admin> admins = adminService.listAdmin(null, null, null, iDisplayStart, iDisplayLength);
+			int count = adminService.countAdmin(null, null, null);
+			DataTable dataTable = new DataTable(sEcho + 1, count, admins.size(), admins);
+			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
+		}
+		return rstResult;
 	}
 }
