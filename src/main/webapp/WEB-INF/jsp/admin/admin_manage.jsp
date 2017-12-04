@@ -98,8 +98,8 @@
 					<table class="am-table  am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
-								<th class="table-check"><input type="checkbox"
-									class="tpl-table-fz-check"></th>
+								<th class="table-check" style="text-align:center">
+								<input type="checkbox" class="tpl-table-fz-data-check" value="2"></th>
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
@@ -109,7 +109,7 @@
 							</tr>
 						</thead>
 						<tbody>
-						 	<!--<c:forEach var="admin" items="${admins}" varStatus="status">
+							<!--<c:forEach var="admin" items="${admins}" varStatus="status">
 								<tr>
 									<td><input class="tpl-table-fz-data-check" type="checkbox"></td>
 									<td>${status.index + 1}</td>
@@ -184,64 +184,91 @@
 								"sLast" : "末页"
 							}
 						},
-						"bProcessing": false,
-						"bLengthChange": true, //改变每页显示数据数量
-						"bAutoWidth" : true, //自动适应宽度
+						"bProcessing" : false,
+						"bLengthChange" : true, //改变每页显示数据数量
+						"bAutoWidth" : false, //自动适应宽度
 						"bFilter" : false, //查询
 						"bSort" : false, //排序
 						"bInfo" : true, //页脚信息
 						"bServerSide" : true, //服务器数据
-						"sAjaxSource" : "admin/adminManageList.do", 
+						"bDestroy": true,
+						"bSortCellsTop": true, 
+						"sAjaxSource" : "admin/adminManageList.do",
 						"bPaginate" : true, //显示分页器
+						"sPaginationType": "full_numbers",
 						"iDisplayLength " : 10, //一页显示条数
-						"sAjaxDataProp" : "aData",//是服务器分页的标志，必须有
+						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
+						"sZeroRecords": "没有检索到数据",
 						"aoColumns" : [
 								{
 									//自定义列
 									"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
 									"mDataProp" : "id", //获取数据列名
-									"sClass" : "center", //样式
-									"bStorable" : false, //该列不排序
 									"render" : function(data, type, row) { //列渲染
-										return '<label class="position-relative">'
-												+ '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>'
-												+ '<span class="lbl"></span>'
-												+ '</label>';
+										return '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>';
 									}
-								}, {
+								},
+								{
 									"sName" : "username",
 									"mDataProp" : "username",
-								},{
+								},
+								{
 									"sName" : "name",
 									"mDataProp" : "name",
-								},{
+								},
+								{
 									"sName" : "mobilePhone",
 									"mDataProp" : "mobilePhone",
-								}, {
+								},
+								{
 									"sName" : "email",
 									"mDataProp" : "email",
-								}, {
+								},
+								{
 									"mDataProp" : "createTime",
 									"sName" : "createTime"
-								}],
-						"fnServerData" : function(sSource, aData, fnCallback) {
-			                $.ajax({
-			                    url : sSource,//这个就是请求地址对应sAjaxSource
-			                    data : {"aData":JSON.stringify(aData)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
-			                    type : 'post',
-			                    dataType : 'json',
-			                    async : false,
-			                    success : function(result) {
-			                    	if (result.errorCode == '9999') {
-			                    		showmsg(result.errorCode, result.errorMsg);
-			                    		return;
-			                    	}
-			                        fnCallback(result.data);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
-			                    },
-			                    error : function(msg) {
-		                    		showmsg("9999", "系统繁忙，请稍后再试.");
-			                    }
-			                });
-			            }
+								},
+								{
+									"render" : function() {
+										return "<div class='am-btn-toolbar' style='display: inline-block'>"
+												+ "<div class='am-btn-group am-btn-group-xs'> "
+												+ "<button " +
+											"class='am-btn am-btn-default am-btn-xs am-hide-sm-only'>"
+												+ "<span class='am-icon-file-text-o'></span>查看"
+												+ "</button>"
+												+ "<button " +
+											"class='am-btn am-btn-default am-btn-xs am-text-secondary'>"
+												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
+												+ "</button>"
+												+ "<button " +
+											"class='am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only'>"
+												+ "<span class='am-icon-trash-o'></span> 删除"
+												+ "</button>"
+												+ "</div>"
+												+ "</div>"
+									}
+								} ],
+						"fnServerData" : function(source, rows, fnCallback) {
+							$.ajax({
+								url : source,//这个就是请求地址对应sAjaxSource
+								data : {
+									"rows" : JSON.stringify(rows)
+								},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+								type : 'post',
+								dataType : 'json',
+								async : false,
+								success : function(result) {
+									if (result.errorCode == '9999') {
+										showmsg(result.errorCode,
+												result.errorMsg);
+										return;
+									}
+									fnCallback(result.data);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+								},
+								error : function(msg) {
+									showmsg("9999", "系统繁忙，请稍后再试.");
+								}
+							});
+						}
 					});
 </script>

@@ -43,6 +43,8 @@ $('.tpl-left-nav-link-list').on(
 		})
 
 $('.tpl-left-nav-sub-menu li a').on('click', function() {
+	$(".tpl-left-nav-link-list").removeClass("active");
+	$(this).parent().parent().parent().find("a").addClass("active");
 	$(this).addClass("active");
 	$(this).siblings().removeClass("active");
 })

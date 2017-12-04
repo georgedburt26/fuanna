@@ -16,17 +16,17 @@ public class DataTable implements Serializable{
 	
 	private Integer iTotalDisplayRecords;
 	
-	private List aData;
+	private List rows;
 
 	public DataTable() {
 		
 	}
 	
-	public DataTable(Integer sEcho, Integer iTotalRecords, Integer iTotalDisplayRecords, List aData) {
+	public DataTable(Integer sEcho, Integer iTotalRecords, Integer iTotalDisplayRecords, List rows) {
 		this.sEcho = sEcho;
 		this.iTotalRecords = iTotalRecords;
 		this.iTotalDisplayRecords = iTotalDisplayRecords;
-		this.aData = aData;
+		this.rows = rows;
 	}
 	
 	public Integer getsEcho() {
@@ -53,12 +53,11 @@ public class DataTable implements Serializable{
 		this.iTotalDisplayRecords = iTotalDisplayRecords;
 	}
 
-	public List<Object> getaData() {
-		return aData;
+	public List getRows() {
+		return rows;
 	}
 
-	public void setaData(List<Object> aData) {
-		this.aData = aData;
+	public void setRows(List rows) {
+		this.rows = rows;
 	}
-
 }
