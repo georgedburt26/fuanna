@@ -47,7 +47,7 @@ public class FuannaHandler{
 				boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 				logger.error(errorMsg + e.getMessage(), e);
 				if(!ajax){
-					redirectUrl = "redirect:/500.jsp";
+					redirectUrl = "redirect:/500.html";
 					return redirectUrl;
 				}
 			}
