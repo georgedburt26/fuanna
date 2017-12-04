@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/lib.jsp"%>
+<link rel="stylesheet" href="css/amazeui.datatables.min.css" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="tpl-portlet-components">
 	<div class="tpl-block">
@@ -107,8 +108,8 @@
 								<th class="table-set">操作</th>
 							</tr>
 						</thead>
-						<!--<tbody>
-						 	<c:forEach var="admin" items="${admins}" varStatus="status">
+						<tbody>
+						 	<!--<c:forEach var="admin" items="${admins}" varStatus="status">
 								<tr>
 									<td><input class="tpl-table-fz-data-check" type="checkbox"></td>
 									<td>${status.index + 1}</td>
@@ -137,8 +138,8 @@
 										</div>
 									</td>
 								</tr>
-							</c:forEach>
-						</tbody>-->
+							</c:forEach>-->
+						</tbody>
 					</table>
 					<!--<div class="am-cf">
 
@@ -162,7 +163,8 @@
 		</div>
 	</div>
 </div>
-<script src="js/jquery.dataTables.min.js"></script>
+
+<script src="js/amazeui.datatables.min.js"></script>
 <script>
 	$('#datatable')
 			.dataTable(
@@ -182,14 +184,14 @@
 								"sLast" : "末页"
 							}
 						},
-						"bAutoWidth" : false, //自动适应宽度
+						"bProcessing": false,
+						"bLengthChange": true, //改变每页显示数据数量
+						"bAutoWidth" : true, //自动适应宽度
 						"bFilter" : false, //查询
-						"bSort" : true, //排序
-						"bInfo" : false, //页脚信息
-						"bLengthChange" : false, //改变每页显示数据数量
+						"bSort" : false, //排序
+						"bInfo" : true, //页脚信息
 						"bServerSide" : true, //服务器数据
-						"sAjaxSource" : "admin/adminManageList.do",
-						"bProcessing" : true, //当datatable获取数据时候是否显示正在处理提示信息。 
+						"sAjaxSource" : "admin/adminManageList.do", 
 						"bPaginate" : true, //显示分页器
 						"iDisplayLength " : 10, //一页显示条数
 						"sAjaxDataProp" : "aData",//是服务器分页的标志，必须有
@@ -209,6 +211,9 @@
 								}, {
 									"sName" : "username",
 									"mDataProp" : "username",
+								},{
+									"sName" : "name",
+									"mDataProp" : "name",
 								},{
 									"sName" : "mobilePhone",
 									"mDataProp" : "mobilePhone",
