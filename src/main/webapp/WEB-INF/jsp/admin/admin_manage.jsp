@@ -163,7 +163,30 @@
 		</div>
 	</div>
 </div>
+<style>
+.am-datatable-info {
+	float:left;
+}
+#datatable_length {
+    font-size:1.4rem;
+    color:#555;
+	float:left;
+	margin-left:1rem;
+}
+.am-datatable-length label {
+    display:inline-block;
+    font-weight:normal;
+    vertical-align: middle;
+}
 
+.am-datatable-length select{
+    outline: none;
+    }
+
+.dataTables_paginate {
+	float:right;
+}
+</style>
 <script src="js/amazeui.datatables.min.js"></script>
 <script>
 	$('#datatable')
@@ -174,8 +197,8 @@
 							"sLengthMenu" : "每页显示 _MENU_ 条记录",
 							"sZeroRecords" : "对不起，查询不到相关数据！",
 							"sEmptyTable" : "表中无数据存在！",
-							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
-							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+							"sInfo" : "当前显示 _START_ 到 _END_ 条",
+							"sInfoFiltered" : "，共 _MAX_ 条记录",
 							"sSearch" : "搜索",
 							"oPaginate" : {
 								"sFirst" : "首页",
@@ -184,7 +207,8 @@
 								"sLast" : "末页"
 							}
 						},
-						"bProcessing" : false,
+						"dom":'<tr><ilp>',
+						"bProcessing" : true,
 						"bLengthChange" : true, //改变每页显示数据数量
 						"bAutoWidth" : false, //自动适应宽度
 						"bFilter" : false, //查询
