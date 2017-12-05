@@ -98,8 +98,8 @@
 					<table class="am-table  am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
-								<th class="table-check" style="text-align:center">
-								<input type="checkbox" class="tpl-table-fz-data-check" value="2"></th>
+								<th class="table-check" style="text-align: center"><input
+									type="checkbox" class="tpl-table-fz-data-check" value="2"></th>
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
@@ -165,26 +165,29 @@
 </div>
 <style>
 .am-datatable-info {
-	float:left;
-}
-#datatable_length {
-    font-size:1.4rem;
-    color:#555;
-	float:left;
-	margin-left:1rem;
-}
-.am-datatable-length label {
-    display:inline-block;
-    font-weight:normal;
-    vertical-align: middle;
+	float: left;
 }
 
-.am-datatable-length select{
-    outline: none;
-    }
+#datatable_length {
+	font-size: 1.4rem;
+	color: #555;
+	float: left;
+	margin-left: 1rem;
+}
+
+.am-datatable-length label {
+	display: inline-block;
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+.am-datatable-length select {
+	display: inline-block;
+	width: auto;
+}
 
 .dataTables_paginate {
-	float:right;
+	float: right;
 }
 </style>
 <script src="js/amazeui.datatables.min.js"></script>
@@ -193,7 +196,6 @@
 			.dataTable(
 					{
 						"oLanguage" : { //语言设置
-							"sProcessing" : "正在加载中......",
 							"sLengthMenu" : "每页显示 _MENU_ 条记录",
 							"sZeroRecords" : "对不起，查询不到相关数据！",
 							"sEmptyTable" : "表中无数据存在！",
@@ -207,22 +209,22 @@
 								"sLast" : "末页"
 							}
 						},
-						"dom":'<tr><ilp>',
-						"bProcessing" : true,
+						"dom" : '<tr><ilp>',
+						"bProcessing" : false,
 						"bLengthChange" : true, //改变每页显示数据数量
 						"bAutoWidth" : false, //自动适应宽度
 						"bFilter" : false, //查询
 						"bSort" : false, //排序
 						"bInfo" : true, //页脚信息
-						"bServerSide" : true, //服务器数据
-						"bDestroy": true,
-						"bSortCellsTop": true, 
+						"bDestroy" : true,
+						"bServerSide" : true,
+						"bSortCellsTop" : true,
 						"sAjaxSource" : "admin/adminManageList.do",
 						"bPaginate" : true, //显示分页器
-						"sPaginationType": "full_numbers",
+						"sPaginationType" : "full_numbers",
 						"iDisplayLength " : 10, //一页显示条数
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
-						"sZeroRecords": "没有检索到数据",
+						"sZeroRecords" : "没有检索到数据",
 						"aoColumns" : [
 								{
 									//自定义列
