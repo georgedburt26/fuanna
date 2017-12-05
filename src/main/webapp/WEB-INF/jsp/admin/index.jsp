@@ -16,6 +16,7 @@
 	href="<%=basePath%>admin/app-icon72x72@2x.png">
 <meta name="apple-mobile-web-app-title" content="Amaze UI" />
 <link rel="stylesheet" href="<%=basePath%>css/amazeui.min.css" />
+<link rel="stylesheet" href="<%=basePath%>css/amazeui.datatables.min.css" />
 <link rel="stylesheet" href="<%=basePath%>css/admin.css">
 <link rel="stylesheet" href="<%=basePath%>css/app.css">
 <script src="<%=basePath%>js/echarts.min.js"></script>
@@ -37,8 +38,8 @@
 		</div>
 	</div>
 	<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
+	<script src="<%=basePath%>js/amazeui.datatables.min.js"></script>
 	<script src="<%=basePath%>js/amazeui.min.js"></script>
-	<script src="<%=basePath%>js/iscroll.js"></script>
 	<script src="<%=basePath%>js/app.js"></script>
 	<script src="<%=basePath%>js/msg.js"></script>
 </body>

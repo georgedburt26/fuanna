@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/lib.jsp"%>
-<link rel="stylesheet" href="css/amazeui.datatables.min.css" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="tpl-portlet-components">
 	<div class="tpl-block">
@@ -98,8 +96,9 @@
 					<table class="am-table  am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
-								<th class="table-check" style="text-align: center"><input
-									type="checkbox" class="tpl-table-fz-data-check" value="2"></th>
+								<th class="table-check"
+									style="text-align: center; padding: 0px; vertical-align: middle;"><input
+									type="checkbox" class="tpl-table-fz-check" value="2"></th>
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
@@ -108,54 +107,7 @@
 								<th class="table-set">操作</th>
 							</tr>
 						</thead>
-						<tbody>
-							<!--<c:forEach var="admin" items="${admins}" varStatus="status">
-								<tr>
-									<td><input class="tpl-table-fz-data-check" type="checkbox"></td>
-									<td>${status.index + 1}</td>
-									<td>${admin.username}</td>
-									<td>${admin.name}</td>
-									<td class="am-hide-sm-only">${admin.mobilePhone}</td>
-									<td class="am-hide-sm-only">${admin.email}</td>
-									<td class="am-hide-sm-only"><fmt:formatDate
-											value="${admin.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td>
-										<div class="am-btn-toolbar" style="display: inline-block">
-											<div class="am-btn-group am-btn-group-xs">
-												<button
-													class="am-btn am-btn-default am-btn-xs am-hide-sm-only">
-													<span class="am-icon-file-text-o"></span>查看
-												</button>
-												<button
-													class="am-btn am-btn-default am-btn-xs am-text-secondary">
-													<span class="am-icon-pencil-square-o"></span> 编辑
-												</button>
-												<button
-													class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-													<span class="am-icon-trash-o"></span> 删除
-												</button>
-											</div>
-										</div>
-									</td>
-								</tr>
-							</c:forEach>-->
-						</tbody>
 					</table>
-					<!--<div class="am-cf">
-
-						<div class="am-fr">
-							<ul class="am-pagination tpl-pagination">
-								<li class="am-disabled"><a href="#">«</a></li>
-								<li class="am-active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">»</a></li>
-							</ul>
-						</div>
-					</div>
-					<hr>-->
 
 				</form>
 			</div>
@@ -190,7 +142,6 @@
 	float: right;
 }
 </style>
-<script src="js/amazeui.datatables.min.js"></script>
 <script>
 	$('#datatable')
 			.dataTable(
@@ -223,6 +174,7 @@
 						"bPaginate" : true, //显示分页器
 						"sPaginationType" : "full_numbers",
 						"iDisplayLength " : 10, //一页显示条数
+						"sScrollX": "100%",
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
 						"sZeroRecords" : "没有检索到数据",
 						"aoColumns" : [

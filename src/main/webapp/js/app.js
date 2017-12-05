@@ -57,8 +57,8 @@ $('.tpl-header-nav-hover-ico').on('click', function() {
 	$('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
 })
 
-$('.tpl-table-fz-check').on('click', function() {
-	$('.tpl-table-fz-data-check').attr("checked", 'checked');
+$('body').on('click', ".tpl-table-fz-check", function() {
+	$('.tpl-table-fz-data-check').prop("checked", $(this).is(':checked'));
 });
 
 function pageContent(url) {

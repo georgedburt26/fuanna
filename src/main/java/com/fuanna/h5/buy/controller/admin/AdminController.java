@@ -87,7 +87,7 @@ public class AdminController extends BaseController {
 			List<Admin> rows = adminService.listAdmin(null, null, null, iDisplayStart, iDisplayLength);
 			int count = adminService.countAdmin(null, null, null);
 			if (sEcho != null) {
-			DataTable dataTable = new DataTable(sEcho + 1, count, rows.size(), rows);
+			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
 			}
 		}

@@ -34,20 +34,21 @@ public class AdminServiceImpl implements AdminService{
 	public List<Resource> queryResourcesByAdminId(long adminId) {
 		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, true, 1);
 		for (Resource topResource : topResources) {
-			findResources(topResource);
+			List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
+			topResource.setResources(resources);
 		}
 		return topResources;
 	}
 	
-	private void findResources(Resource topResource) {
-		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
-		if (resources != null && !resources.isEmpty()) {
-			topResource.setResources(resources);
-			for (Resource resource : resources) {
-				findResources(resource);
-			}
-		}
-	}
+//	private void findResources(Resource topResource) {
+//		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
+//		if (resources != null && !resources.isEmpty()) {
+//			topResource.setResources(resources);
+//			for (Resource resource : resources) {
+//				findResources(resource);
+//			}
+//		}
+//	}
 
 	@Override
 	public int countAdmin(String name, String mobilePhone, String email) {
