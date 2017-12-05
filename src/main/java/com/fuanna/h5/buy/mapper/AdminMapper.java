@@ -17,7 +17,7 @@ public interface AdminMapper {
 	public Admin queryAdminById(long id);
 	
 	@Select({"<script>" +  
-		     "select * from f_admin where 1 = 1 " + 
+		     "select admin.*, GROUP_CONCAT(role.`name`) as roleName from f_admin as admin left join f_role as role on instr(admin.role, role.id) where 1 = 1 " + 
 			  "<if test='name != null'>" +
 			  " and name = '%'#{name}'%' " +
 		      "</if>" +
@@ -27,9 +27,10 @@ public interface AdminMapper {
 			  "<if test='email != null'>" +
 			  " and email = #{email} " +
 		      "</if>" +
-			  "order by id desc " +
+		      " group by admin.id " +
+			  " order by id desc " +
 			  "<if test='offset != null and limit != null'>" +
-			  " limit #{offset}, #{limit}" +
+			  " limit #{offset}, #{limit} " +
 		      "</if>" +
 		     "</script>"})
 	public List<Admin> listAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("email")String email, @Param("offset")Integer offset, @Param("limit")Integer limit);

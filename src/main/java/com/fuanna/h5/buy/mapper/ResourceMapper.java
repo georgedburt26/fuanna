@@ -22,7 +22,7 @@ public interface ResourceMapper {
 //	public List<Long> listResourceIdByAdminId(long adminId);
 	
 	@Select({"<script>" + 
-		     "select * from f_resource as r where id in (select DISTINCT(resourceId) from f_role_resource where 1 = 1 and roleId in (select roleId from f_admin where id = #{adminId})) " +
+		     "select * from f_resource as r where id in (select DISTINCT(resourceId) from f_role_resource where 1 = 1 and roleId in (select role from f_admin where id = #{adminId})) " +
 			 "<if test='isTop'>" +
 			 " and r.parentId is null " +
 	         "</if>" +

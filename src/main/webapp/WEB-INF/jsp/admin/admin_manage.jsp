@@ -207,8 +207,8 @@
 									"mDataProp" : "email",
 								},								
 								{
-									"sName" : "role",
-									"mDataProp" : "role",
+									"sName" : "roleName",
+									"mDataProp" : "roleName",
 								},
 								{
 									"mDataProp" : "createTime",

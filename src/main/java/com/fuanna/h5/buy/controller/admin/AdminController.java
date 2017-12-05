@@ -115,6 +115,13 @@ public class AdminController extends BaseController {
 	
 	@RequestMapping("/adminIndex.do")
 	public String addAdminIndex() {
-		return "/admin_index";
+		String type = request().getParameter("type");
+		if ("2".equals(type)) {//查看
+			
+		}
+		if ("3".equals(type)) {//修改
+			
+		}
+		return "/admin/admin_index";
 	}
 }
