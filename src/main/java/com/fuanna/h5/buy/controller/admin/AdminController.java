@@ -1,5 +1,6 @@
 package com.fuanna.h5.buy.controller.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -19,7 +20,6 @@ import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.DataTable;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
-import com.fuanna.h5.buy.util.JsonUtils;
 
 import net.sf.json.JSONArray;
 
@@ -86,11 +86,35 @@ public class AdminController extends BaseController {
 			}
 			List<Admin> rows = adminService.listAdmin(null, null, null, iDisplayStart, iDisplayLength);
 			int count = adminService.countAdmin(null, null, null);
-			if (sEcho != null) {
 			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
-			}
 		}
 		return rstResult;
+	}
+	
+	@RequestMapping("/deleteAdmin.do")
+	public @ResponseBody RstResult deleteAdmin() throws Exception {
+		RstResult rstResult = null;
+		List<Long> idlist = new ArrayList<Long>();
+		String ids = request().getParameter("ids");
+		if (StringUtils.isBlank(ids)) {
+			error("参数不能为空");
+		}
+		for (String id : ids.split(",")) {
+			idlist.add(Long.parseLong(id));
+		}
+		int rtn = adminService.deleteAdmin(idlist);
+		if (rtn > 0) {
+			rstResult = new RstResult(ErrorCode.CG, "删除成功");
+		}
+		else {
+			rstResult = new RstResult(ErrorCode.SB, "删除失败");
+		}
+		return rstResult;
+	}
+	
+	@RequestMapping("/adminIndex.do")
+	public String addAdminIndex() {
+		return "/admin_index";
 	}
 }

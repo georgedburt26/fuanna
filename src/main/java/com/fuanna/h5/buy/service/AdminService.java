@@ -15,4 +15,6 @@ public interface AdminService {
 	public int countAdmin(String name, String mobilePhone, String email);
 	
 	public List<Admin> listAdmin(String name, String mobilePhone, String email, Integer offset, Integer limit);
+	
+	public int deleteAdmin(List<Long> ids);
 }

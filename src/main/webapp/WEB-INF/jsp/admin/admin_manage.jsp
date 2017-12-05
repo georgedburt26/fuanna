@@ -7,7 +7,8 @@
 			<div class="am-u-sm-12 am-u-md-6">
 				<div class="am-btn-toolbar">
 					<div class="am-btn-group am-btn-group-xs">
-						<button type="button" class="am-btn am-btn-default am-btn-success">
+						<button type="button" id="addAdmin"
+							class="am-btn am-btn-default am-btn-success">
 							<span class="am-icon-plus"></span> 新增
 						</button>
 						<!--	<button type="button"
@@ -17,7 +18,8 @@
 						<button type="button" class="am-btn am-btn-default am-btn-warning">
 							<span class="am-icon-archive"></span> 审核
 						</button>-->
-						<button type="button" class="am-btn am-btn-default am-btn-danger">
+						<button type="button" id="deleteAdmin"
+							class="am-btn am-btn-default am-btn-danger">
 							<span class="am-icon-trash-o"></span> 删除
 						</button>
 					</div>
@@ -103,6 +105,7 @@
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
 								<th class="table-email">邮箱</th>
+								<th class="table-role">角色</th>
 								<th class="table-createTime">创建日期</th>
 								<th class="table-set">操作</th>
 							</tr>
@@ -143,7 +146,7 @@
 }
 </style>
 <script>
-	$('#datatable')
+	var dataTable = $('#datatable')
 			.dataTable(
 					{
 						"oLanguage" : { //语言设置
@@ -174,9 +177,10 @@
 						"bPaginate" : true, //显示分页器
 						"sPaginationType" : "full_numbers",
 						"iDisplayLength " : 10, //一页显示条数
-						"sScrollX": "100%",
+						"sScrollX" : "100%",
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
 						"sZeroRecords" : "没有检索到数据",
+						"retrieve" : true,//保证只有一个table实例  
 						"aoColumns" : [
 								{
 									//自定义列
@@ -201,6 +205,10 @@
 								{
 									"sName" : "email",
 									"mDataProp" : "email",
+								},								
+								{
+									"sName" : "role",
+									"mDataProp" : "role",
 								},
 								{
 									"mDataProp" : "createTime",
@@ -249,4 +257,26 @@
 							});
 						}
 					});
+	$("#addAdmin").click(function() {
+		pageContent("admin/adminIndex.do?type=1");
+	});
+	$("#deleteAdmin").click(function() {
+		if ($(".tpl-table-fz-data-check:checked").length == 0) {
+			showmsg("9999", "请选择要删除的选项");
+			return;
+		}
+		var ids = new Array();
+		$(".tpl-table-fz-data-check:checked").each(function() {
+			ids.push($(this).val());
+		});
+		deleteAdmin(ids.join(","));
+	});
+	function deleteAdmin(ids) {
+		$.post("admin/deleteAdmin.do", {
+			"ids" : ids
+		}, function(data) {
+			showmsg(data.errorCode, data.errorMsg);
+			dataTable.fnDraw();
+		});
+	}
 </script>

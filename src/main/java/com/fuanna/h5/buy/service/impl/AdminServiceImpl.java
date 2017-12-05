@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fuanna.h5.buy.mapper.AdminMapper;
 import com.fuanna.h5.buy.mapper.ResourceMapper;
@@ -58,6 +59,12 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Admin> listAdmin(String name, String mobilePhone, String email, Integer offset, Integer limit) {
 		return adminMapper.listAdmin(name, mobilePhone, email, offset, limit);
+	}
+
+	@Override
+	@Transactional
+	public int deleteAdmin(List<Long> ids) {
+		return adminMapper.deleteAdmin(ids);
 	}
 
 }

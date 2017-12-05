@@ -29,6 +29,6 @@ public class MD5 {
     }
     
     public static void main(String[] args) {
-		System.out.println(encrypt("126ztx126"));
+		System.out.println(encrypt("@haozi555"));
 	}
 }
