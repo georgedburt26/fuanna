@@ -64,20 +64,45 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
-							<div class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-								<button class="am-btn am-btn-primary am-dropdown-toggle" 
-									data-am-dropdown data-am-dropdown-toggle>
-									下拉列表 <span class="am-icon-caret-down"></span>
-								</button>
-								<ul class="am-dropdown-content">
-									<li class="am-dropdown-header">标题</li>
-									<li><a href="#">快乐的方式不只一种</a></li>
-									<li class="am-active"><a href="#">最荣幸是</a></li>
-									<li><a href="#">谁都是造物者的光荣</a></li>
-									<li class="am-disabled"><a href="#">就站在光明的角落</a></li>
-									<li class="am-divider"></li>
-									<li><a href="#">天空海阔 要做最坚强的泡沫</a></li>
-								</ul>
+							<div class="doc-example">
+								<select multiple data-am-selected minchecked="2"
+									maxchecked="3" id="demo-maxchecked" style="display: none;"><option
+										value="a">Apple</option>
+									<option value="b">Banana</option>
+									<option value="o">Orange</option>
+									<option value="m">Mango</option></select>
+								<div class="am-selected am-dropdown am-dropdown-up"
+									id="am-selected-c8n6r" data-am-dropdown>
+									<button type="button"
+										class="am-selected-btn am-btn am-dropdown-toggle am-btn-default">
+										<span class="am-selected-status am-fl">点击选择...</span> <i
+											class="am-selected-icon am-icon-caret-up"></i>
+									</button>
+									<div class="am-selected-content am-dropdown-content"
+										style="min-width: 200px;">
+										<h2 class="am-selected-header">
+											<span class="am-icon-chevron-left">返回</span>
+										</h2>
+										<ul class="am-selected-list">
+											<li class="" data-index="0" data-group="0" data-value="a">
+												<span class="am-selected-text">Apple</span> <i
+												class="am-icon-check"></i>
+											</li>
+											<li class="" data-index="1" data-group="0" data-value="b">
+												<span class="am-selected-text">Banana</span> <i
+												class="am-icon-check"></i>
+											</li>
+											<li class="" data-index="2" data-group="0" data-value="o">
+												<span class="am-selected-text">Orange</span> <i
+												class="am-icon-check"></i>
+											</li>
+											<li class="" data-index="3" data-group="0" data-value="m">
+												<span class="am-selected-text">Mango</span> <i
+												class="am-icon-check"></i>
+											</li>
+										</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -114,4 +139,5 @@
 					$alert.html(msg).show();
 				}
 			});
+	$('[data-am-dropdown]').dropdown();
 </script>
