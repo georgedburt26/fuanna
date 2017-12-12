@@ -242,7 +242,6 @@
 								},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
 								type : 'post',
 								dataType : 'json',
-								async : false,
 								success : function(result) {
 									if (result.errorCode == '9999') {
 										showmsg(result.errorCode,

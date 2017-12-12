@@ -63,14 +63,24 @@ $('body').on('click', ".tpl-table-fz-check", function() {
 
 function pageContent(url) {
 	if (url != null && url != "") {
-		$(".tpl-content-wrapper").html(
-				"<i class='am-icon-spinner am-icon-spin'></i>加载中...");
+//		$(".tpl-content-wrapper").html("");
+//		var progress = $.AMUI.progress
+//				.configure({
+//					barSelector : '[role="nprogress-bar"]',
+//					parent : '.tpl-content-wrapper',
+//					template : "<div class='am-progress am-progress-striped am-progress-sm am-active '>"
+//							+ "<div class='am-progress-bar am-progress-bar-secondary' role='nprogress-bar'  style='width:30%'></div>"
+//							+ "</div>"
+//				});
+//		progress.start();
+		 $(".tpl-content-wrapper").html(
+		 "<i class='am-icon-spinner am-icon-spin'></i>加载中...");
 		$(".tpl-content-wrapper").load(url,
 				function(responseTxt, statusTxt, xhr) {
+//					progress.done();
 					if (responseTxt.indexOf("adminLogin.do") >= 0) {
 						window.location.href = "admin/login.do";
 					}
-
 					if (xhr.status == 404) {
 						$(this).load("404.html");
 					}
@@ -323,7 +333,7 @@ var pageData = {
 			}, {
 				indicator : (function() {
 					var res = [];
-					for (var i = 1; i <= 12; i++) {
+					for ( var i = 1; i <= 12; i++) {
 						res.push({
 							text : i + '月',
 							max : 100
