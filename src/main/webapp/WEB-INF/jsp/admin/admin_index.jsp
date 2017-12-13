@@ -64,44 +64,34 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
-							<div class="doc-example">
-								<select multiple data-am-selected minchecked="2"
-									maxchecked="3" id="demo-maxchecked" style="display: none;"><option
-										value="a">Apple</option>
-									<option value="b">Banana</option>
-									<option value="o">Orange</option>
-									<option value="m">Mango</option></select>
-								<div class="am-selected am-dropdown am-dropdown-up"
-									id="am-selected-c8n6r" data-am-dropdown>
-									<button type="button"
-										class="am-selected-btn am-btn am-dropdown-toggle am-btn-default">
-										<span class="am-selected-status am-fl">点击选择...</span> <i
-											class="am-selected-icon am-icon-caret-up"></i>
-									</button>
-									<div class="am-selected-content am-dropdown-content"
-										style="min-width: 200px;">
-										<h2 class="am-selected-header">
-											<span class="am-icon-chevron-left">返回</span>
-										</h2>
-										<ul class="am-selected-list">
-											<li class="" data-index="0" data-group="0" data-value="a">
-												<span class="am-selected-text">Apple</span> <i
-												class="am-icon-check"></i>
-											</li>
-											<li class="" data-index="1" data-group="0" data-value="b">
-												<span class="am-selected-text">Banana</span> <i
-												class="am-icon-check"></i>
-											</li>
-											<li class="" data-index="2" data-group="0" data-value="o">
-												<span class="am-selected-text">Orange</span> <i
-												class="am-icon-check"></i>
-											</li>
-											<li class="" data-index="3" data-group="0" data-value="m">
-												<span class="am-selected-text">Mango</span> <i
-												class="am-icon-check"></i>
-											</li>
-										</ul>
-									</div>
+							<input type="text" id="role" minLength="1" required />
+							<div class="am-selected am-dropdown am-dropdown-up"
+								id="am-selected-c8n6r" data-am-dropdown>
+								<button type="button"
+									class="am-selected-btn am-btn am-dropdown-toggle am-btn-default">
+									<span class="am-selected-status am-fl" id="select-value">点击选择...</span>
+									<i class="am-selected-icon am-icon-caret-up"></i>
+								</button>
+								<div class="am-selected-content am-dropdown-content"
+									style="min-width: 200px;">
+									<ul class="am-selected-list">
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class="am-selected-text">Apple</span> <i
+											class="am-icon-check"></i>
+										</li>
+										<li class="" data-index="1" data-group="0" data-value="b">
+											<span class="am-selected-text">Banana</span> <i
+											class="am-icon-check"></i>
+										</li>
+										<li class="" data-index="2" data-group="0" data-value="o">
+											<span class="am-selected-text">Orange</span> <i
+											class="am-icon-check"></i>
+										</li>
+										<li class="" data-index="3" data-group="0" data-value="m">
+											<span class="am-selected-text">Mango</span> <i
+											class="am-icon-check"></i>
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
@@ -109,7 +99,7 @@
 
 					<div class="am-form-group">
 						<div class="am-u-sm-9 am-u-sm-push-3">
-							<button type="button" class="am-btn am-btn-primary">提交</button>
+							<button type="button" id="save" class="am-btn am-btn-primary">提交</button>
 						</div>
 					</div>
 				</form>
@@ -120,6 +110,7 @@
 <script>
 	$('#doc-vld-msg').validator(
 			{
+				ignore: '',
 				onValid : function(validity) {
 					$(validity.field).closest('.am-u-sm-9').find('.am-alert')
 							.hide();
@@ -140,4 +131,18 @@
 				}
 			});
 	$('[data-am-dropdown]').dropdown();
+	$('body').on('click', ".am-selected-list li", function() {
+		$(this).toggleClass("am-checked");
+		var values = new Array();
+		var role = new Array();
+		$(".am-checked").each(function() {
+			values.push($(this).find(".am-selected-text").text());
+			role.push($(this).attr("data-value"));
+		});
+		$("#select-value").text(values.length == 0 ? "点击选择..." : values.join(","));
+		$("#role").val(role.join(","));
+	});
+	$("#save").on('click', function() {
+		$('#doc-vld-msg').validator('isFormValid');
+	});
 </script>

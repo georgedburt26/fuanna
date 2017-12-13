@@ -9,30 +9,30 @@
 	<script src="js/jquery.min.js"></script>
 </head>
 <body>
-<form action="qiNiuUpload.do" method="post" id="iconForm" enctype="multipart/form-data">
+<form action="tencentUpload.do" method="post" id="iconForm" enctype="multipart/form-data">
 <input type="file" id="fileToUpload" name="file"/>
 <input type="submit" value="上传">
+<input type="button" id="ajax" value="ajax">
 </form>
-<a class="weui-btn weui-btn_primary submit-btn" id="scanQRCode" type="button">扫一扫</a>
-<img src="imageCode.do" />
 <script>
-var formData = new FormData($("#fileToUpload"));
-$("#upload").click(function() {
-	$.ajax({ 
-		url : "upload.do", 
-		type : 'POST', 
-		data : formData, 
-        async: false,  
-        cache: false,  
-        contentType: false,  
-        processData: false,  
-        success: function (returndata) {  
-            alert(returndata.msg);  
-        },  
-        error: function (returndata) {  
-            alert(returndata);  
-        }  
-		});
+var formData = new FormData();
+$("#ajax").on('click',function() {
+	formData.append('file',$("#fileToUpload")[0].files[0]);
+		 
+		    $.ajax({
+	            type:"post",
+	            url:"tencentUpload.do",
+	            async:false,
+	            contentType: false,    //这个一定要写
+	            processData: false, //这个也一定要写，不然会报错
+	            data:formData,
+	            success:function(data){
+	                alert(data);
+	            },
+	            error:function(XMLHttpRequest, textStatus, errorThrown, data){
+	                alert(errorThrown);
+	            }            
+	        });
 });
 
 </script>

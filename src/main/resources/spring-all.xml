@@ -16,22 +16,23 @@
       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xs
       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 	<import resource="spring-mybatis.xml" />
-	<mvc:annotation-driven>  
-    <!-- 处理responseBody 里面日期类型 -->  
-        <mvc:message-converters>  
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
-                <property name="objectMapper">  
-                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">  
-                        <property name="dateFormat">  
-                            <bean class="java.text.SimpleDateFormat">  
-                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />  
-                            </bean>  
-                        </property>  
-                    </bean>  
-                </property>  
-            </bean>  
-        </mvc:message-converters>  
-    </mvc:annotation-driven>  
+	<mvc:annotation-driven>
+		<!-- 处理responseBody 里面日期类型 -->
+		<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+							</bean>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 	<mvc:default-servlet-handler />
 	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
 	<context:component-scan base-package="com.fuanna.h5.buy" />
@@ -70,7 +71,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/shop/cart.do" />
@@ -79,26 +80,27 @@
 		<!--后台管理登陆拦截器 -->
 		<mvc:interceptor>
 			<mvc:mapping path="/admin/**" />
-			<mvc:exclude-mapping path="/imageCode.do"/>
-			<mvc:exclude-mapping path="/admin/login.do"/>
-			<mvc:exclude-mapping path="/admin/logout.do"/>
-			<mvc:exclude-mapping path="/admin/adminLogin.do"/>
+			<mvc:exclude-mapping path="/imageCode.do" />
+			<mvc:exclude-mapping path="/admin/login.do" />
+			<mvc:exclude-mapping path="/admin/logout.do" />
+			<mvc:exclude-mapping path="/admin/adminLogin.do" />
 			<bean class="com.fuanna.h5.buy.interceptor.AdminLoginInterceptor" />
 		</mvc:interceptor>
-	</mvc:interceptors>  
-	
+	</mvc:interceptors>
+
 	<bean id="fuannaHandler" class="com.fuanna.h5.buy.base.FuannaHandler"></bean>
 	<aop:config>
 		<!--<aop:pointcut expression="execution(public * com.fuanna.h5.buy.controller..*.*(..))" 
 			id="pointcut" /> -->
-			<!-- execution(public * com.fuanna.h5.buy.controller.admin.*.*(..)) and 
-			     !execution(public * com.fuanna.h5.buy.controller.admin.AdminController.*(..))-->
+		<!-- execution(public * com.fuanna.h5.buy.controller.admin.*.*(..)) and 
+			!execution(public * com.fuanna.h5.buy.controller.admin.AdminController.*(..)) -->
 		<aop:pointcut
 			expression="execution(public * com.fuanna.h5.buy.controller.admin.AdminController.*(..))"
 			id="pointcut" />
 		<aop:aspect id="fuannaErrorAspect" ref="fuannaHandler">
 			<aop:around method="round" pointcut-ref="pointcut" />
-			<aop:after-returning method="afterReturn" pointcut-ref="pointcut" />
+			<aop:after-returning method="afterReturn"
+				pointcut-ref="pointcut" />
 		</aop:aspect>
 	</aop:config>
 </beans>
