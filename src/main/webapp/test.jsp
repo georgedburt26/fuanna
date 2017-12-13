@@ -18,7 +18,7 @@
 var formData = new FormData();
 $("#ajax").on('click',function() {
 	formData.append('file',$("#fileToUpload")[0].files[0]);
-		 
+	formData.append('filepath',"/img/admin/20171213/");	 
 		    $.ajax({
 	            type:"post",
 	            url:"tencentUpload.do",

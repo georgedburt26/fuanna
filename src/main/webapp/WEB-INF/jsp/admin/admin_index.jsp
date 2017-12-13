@@ -55,16 +55,8 @@
 					</div>
 
 					<div class="am-form-group">
-						<label class="am-u-sm-3 am-form-label">头像</label>
-						<div class="am-u-sm-9">
-							<input type="tel" id="headImg" placeholder="输入你的电话号码 ">
-						</div>
-					</div>
-
-					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
-							<input type="text" id="role" minLength="1" required />
 							<div class="am-selected am-dropdown am-dropdown-up"
 								id="am-selected-c8n6r" data-am-dropdown>
 								<button type="button"
@@ -98,8 +90,16 @@
 					</div>
 
 					<div class="am-form-group">
+						<label class="am-u-sm-3 am-form-label">头像</label>
+						<div class="am-u-sm-9">
+							<img src="<%=basePath%>img/admin/headImg.jpg" id="headImg"
+								style="width: 160.83px;" />
+							<div id="fileContainer"></div>
+						</div>
+					</div>
+					<div class="am-form-group">
 						<div class="am-u-sm-9 am-u-sm-push-3">
-							<button type="button" id="save" class="am-btn am-btn-primary">提交</button>
+							<button type="button" id="save" class="am-btn am-btn-primary">保存</button>
 						</div>
 					</div>
 				</form>
@@ -107,10 +107,14 @@
 		</div>
 	</div>
 </div>
+<script src="<%=basePath%>js/renderFile.js"></script>
 <script>
+	renderFile($("#fileContainer"), "/img/admin/headImg/", function(url) {
+		$("#headImg").attr("src", url);
+	});
 	$('#doc-vld-msg').validator(
 			{
-				ignore: '',
+				ignore : '',
 				onValid : function(validity) {
 					$(validity.field).closest('.am-u-sm-9').find('.am-alert')
 							.hide();
@@ -131,17 +135,21 @@
 				}
 			});
 	$('[data-am-dropdown]').dropdown();
-	$('body').on('click', ".am-selected-list li", function() {
-		$(this).toggleClass("am-checked");
-		var values = new Array();
-		var role = new Array();
-		$(".am-checked").each(function() {
-			values.push($(this).find(".am-selected-text").text());
-			role.push($(this).attr("data-value"));
-		});
-		$("#select-value").text(values.length == 0 ? "点击选择..." : values.join(","));
-		$("#role").val(role.join(","));
-	});
+	$('body').on(
+			'click',
+			".am-selected-list li",
+			function() {
+				$(this).toggleClass("am-checked");
+				var values = new Array();
+				var role = new Array();
+				$(".am-checked").each(function() {
+					values.push($(this).find(".am-selected-text").text());
+					role.push($(this).attr("data-value"));
+				});
+				$("#select-value").text(
+						values.length == 0 ? "点击选择..." : values.join(","));
+				$("#role").val(role.join(","));
+			});
 	$("#save").on('click', function() {
 		$('#doc-vld-msg').validator('isFormValid');
 	});

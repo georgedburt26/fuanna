@@ -50,8 +50,8 @@ public class UploadController {
 	private static final long tencent_appId = Long.parseLong(BaseConfig.getUploadConfig("tencent_appId"));
 	private static final String tencent_secretId = BaseConfig.getUploadConfig("tencent_secretId");
 	private static final String tencent_secretKey = BaseConfig.getUploadConfig("tencent_secretKey");
-	private static final String tencent_region = "bj";
-	private static final String tencent_bucketName = "fgxfuanna";
+	private static final String tencent_region = BaseConfig.getUploadConfig("tencent_region");
+	private static final String tencent_bucketName = BaseConfig.getUploadConfig("tencent_bucketName");
 	private static final Credentials cred = new Credentials(tencent_appId, tencent_secretId, tencent_secretKey);
 	private static final ClientConfig clientConfig = new ClientConfig();
 
@@ -94,20 +94,19 @@ public class UploadController {
 
 	@RequestMapping("/tencentUpload.do")
 	public @ResponseBody RstResult uploadFileToTencentCloud(@RequestParam("file") CommonsMultipartFile file,
-			HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+			@RequestParam("filepath") String filepath) {
 		clientConfig.setRegion(tencent_region);
 		COSClient cosClient = new COSClient(clientConfig, cred);
 		StringBuffer sb = new StringBuffer();
 		String fileName = file.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-		String pre = "/img/";
 		String folder = datesdf.format(new Date()) + "/";
 		// 指定要上传到 COS 上的路径
-		String key = sb.append(pre).append(folder).append(sdf.format(new Date())).append(RandomUtil.getRandomCode(6)).append(".")
+		String key = sb.append(filepath).append(sdf.format(new Date())).append(RandomUtil.getRandomCode(6)).append(".")
 				.append(suffix).toString();
 		String url = "";
 		try{
-			CreateFolderRequest createFolderRequest = new CreateFolderRequest(tencent_bucketName, pre + folder);
+			CreateFolderRequest createFolderRequest = new CreateFolderRequest(tencent_bucketName, filepath);
 			if (!JSONObject.fromObject(cosClient.createFolder(createFolderRequest)).getString("code").equals("0")) {
 				throw new Exception("上传失败");
 			}

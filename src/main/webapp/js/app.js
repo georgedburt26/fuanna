@@ -47,7 +47,7 @@ $('.tpl-left-nav-sub-menu li a').on('click', function() {
 	$(this).parent().parent().parent().find("a").addClass("active");
 	$(this).addClass("active");
 	$(this).siblings().removeClass("active");
-})
+});
 // ==========================
 // 头部导航隐藏菜单
 // ==========================
@@ -55,7 +55,7 @@ $('.tpl-left-nav-sub-menu li a').on('click', function() {
 $('.tpl-header-nav-hover-ico').on('click', function() {
 	$('.tpl-left-nav').toggle();
 	$('.tpl-content-wrapper').toggleClass('tpl-content-wrapper-hover');
-})
+});
 
 $('body').on('click', ".tpl-table-fz-check", function() {
 	$('.tpl-table-fz-data-check').prop("checked", $(this).is(':checked'));
@@ -63,21 +63,23 @@ $('body').on('click', ".tpl-table-fz-check", function() {
 
 function pageContent(url) {
 	if (url != null && url != "") {
-//		$(".tpl-content-wrapper").html("");
-//		var progress = $.AMUI.progress
-//				.configure({
-//					barSelector : '[role="nprogress-bar"]',
-//					parent : '.tpl-content-wrapper',
-//					template : "<div class='am-progress am-progress-striped am-progress-sm am-active '>"
-//							+ "<div class='am-progress-bar am-progress-bar-secondary' role='nprogress-bar'  style='width:30%'></div>"
-//							+ "</div>"
-//				});
-//		progress.start();
-		 $(".tpl-content-wrapper").html(
-		 "<i class='am-icon-spinner am-icon-spin'></i>加载中...");
+//		 $(".tpl-content-wrapper").html("");
+//		 var progress = $.AMUI.progress
+//		 .configure({
+//		 barSelector : '[role="nprogress-bar"]',
+//		 parent : '.tpl-content-wrapper',
+//		 template : "<div class='am-progress am-progress-striped
+//		 am-progress-sm am-active '>"
+//		 + "<div class='am-progress-bar am-progress-bar-secondary'
+//		 role='nprogress-bar' style='width:30%'></div>"
+//		 + "</div>"
+//		 });
+//		 progress.start();
+		$(".tpl-content-wrapper").html(
+				"<i class='am-icon-spinner am-icon-spin'></i>加载中...");
 		$(".tpl-content-wrapper").load(url,
 				function(responseTxt, statusTxt, xhr) {
-//					progress.done();
+					// progress.done();
 					if (responseTxt.indexOf("adminLogin.do") >= 0) {
 						window.location.href = "admin/login.do";
 					}
