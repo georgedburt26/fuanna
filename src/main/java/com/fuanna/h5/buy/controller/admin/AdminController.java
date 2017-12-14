@@ -124,4 +124,10 @@ public class AdminController extends BaseController {
 		}
 		return "/admin/admin_index";
 	}
+	
+	@RequestMapping("/listRoles.do")
+	public @ResponseBody RstResult listRoles() {
+		List<Map<String, Object>> roles = adminService.listRoles();
+		return new RstResult(ErrorCode.CG, "查询成功", roles);
+	}
 }

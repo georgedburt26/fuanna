@@ -57,6 +57,7 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
+							<input type="hidden" id="role" value="" />
 							<div class="am-selected am-dropdown am-dropdown-up"
 								id="am-selected-c8n6r" data-am-dropdown>
 								<button type="button"
@@ -67,22 +68,6 @@
 								<div class="am-selected-content am-dropdown-content"
 									style="min-width: 200px;">
 									<ul class="am-selected-list">
-										<li class="" data-index="0" data-group="0" data-value="a">
-											<span class="am-selected-text">Apple</span> <i
-											class="am-icon-check"></i>
-										</li>
-										<li class="" data-index="1" data-group="0" data-value="b">
-											<span class="am-selected-text">Banana</span> <i
-											class="am-icon-check"></i>
-										</li>
-										<li class="" data-index="2" data-group="0" data-value="o">
-											<span class="am-selected-text">Orange</span> <i
-											class="am-icon-check"></i>
-										</li>
-										<li class="" data-index="3" data-group="0" data-value="m">
-											<span class="am-selected-text">Mango</span> <i
-											class="am-icon-check"></i>
-										</li>
 									</ul>
 								</div>
 							</div>
@@ -108,8 +93,21 @@
 	</div>
 </div>
 <script>
+$("#save").on("click", function() {
+	
+});
+$.post("admin/listRoles.do", {}, function(data) {
+	if (data.errorCode != "0000") {
+		showmsg(data.errorCode, data.errorMsg);
+		return;
+	}
+	$.each(data.data,function(index,value){
+		$(".am-selected-list").append("<li class='' data-index='" + index + "' data-group='0' data-value='" + value.id + "'>" +
+				                      "<span class='am-selected-text'>" + value.name + "</span> <i class='am-icon-check'></i></li>");
+	});
+});
 	renderFile($("#fileContainer"), {
-		source:<%=source%>,
+		source:"<%=source%>",
 		filepath:"/img/admin/headImg/",
 		filetype:"jpg,png,jpeg,gif,bmp",
 		callback:function(url) {

@@ -1,6 +1,7 @@
 package com.fuanna.h5.buy.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.service.AdminService;
 import com.fuanna.h5.buy.util.MD5;
-
 
 @Component
 public class AdminServiceImpl implements AdminService{
@@ -65,6 +65,11 @@ public class AdminServiceImpl implements AdminService{
 	@Transactional
 	public int deleteAdmin(List<Long> ids) {
 		return adminMapper.deleteAdmin(ids);
+	}
+
+	@Override
+	public List<Map<String, Object>> listRoles() {
+		return adminMapper.listRoles();
 	}
 
 }

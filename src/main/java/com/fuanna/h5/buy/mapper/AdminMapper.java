@@ -1,12 +1,16 @@
 package com.fuanna.h5.buy.mapper;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
 import com.fuanna.h5.buy.model.Admin;
+
 
 public interface AdminMapper {
 
@@ -56,4 +60,9 @@ public interface AdminMapper {
             "</foreach> " +
 	        "</script>")
 	public int deleteAdmin(@Param("ids")List<Long> ids);
+	
+	
+	@Select({ "select * from f_role" })
+	@ResultType(LinkedHashMap.class)
+	public List<Map<String, Object>> listRoles();
 }
