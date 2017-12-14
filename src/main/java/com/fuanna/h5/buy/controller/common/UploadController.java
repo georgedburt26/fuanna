@@ -1,5 +1,6 @@
 package com.fuanna.h5.buy.controller.common;
 
+import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +23,6 @@ import com.google.gson.Gson;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.request.CreateFolderRequest;
-import com.qcloud.cos.request.StatFolderRequest;
 import com.qcloud.cos.request.UploadFileRequest;
 import com.qcloud.cos.sign.Credentials;
 import com.qiniu.common.QiniuException;
@@ -115,14 +115,36 @@ public class UploadController {
 			if (!uploadFileRet.getString("code").equals("0")) {
 				throw new Exception("上传失败");
 			}
-			url = uploadFileRet.getJSONObject("data").getString("access_url");
-			logger.info("文件上传成功路径:" + url);
+			logger.info("文件上传成功路径:" + key);
 		} catch (Exception e) {
 			logger.error("上传文件到腾讯云失败" + e.getMessage(), e);
 			return new RstResult(ErrorCode.SB, "上传文件失败");
 		}finally {
 			cosClient.shutdown();
 		}
-		return new RstResult(ErrorCode.CG, "上传文件成功", url);
+		return new RstResult(ErrorCode.CG, "上传文件成功", key);
+	}
+	
+	@RequestMapping("/localUpload.do")
+	public @ResponseBody RstResult uploadFileToLocal(@RequestParam("file") CommonsMultipartFile file,
+			@RequestParam("filepath") String filepath, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+		String local = httpRequest.getSession().getServletContext().getRealPath("/");
+		StringBuffer sb = new StringBuffer();
+		String fileName = file.getOriginalFilename();
+		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+		String key = sb.append(filepath).append(sdf.format(new Date())).append(RandomUtil.getRandomCode(6)).append(".")
+				.append(suffix).toString();
+		try {
+			File targetFile = new File(local + key);
+	        if(!targetFile.exists()){  
+	            targetFile.mkdirs();  
+	        }  
+			file.transferTo(targetFile);
+			logger.error("文件上传到本地成功" + key);
+		} catch (Exception e) {
+			logger.error("上传文件到本地失败" + e.getMessage(), e);
+			return new RstResult(ErrorCode.SB, "上传文件失败");
+		}
+		return new RstResult(ErrorCode.CG, "上传文件成功", key);
 	}
 }

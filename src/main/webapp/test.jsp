@@ -18,21 +18,22 @@
 var formData = new FormData();
 $("#ajax").on('click',function() {
 	formData.append('file',$("#fileToUpload")[0].files[0]);
-	formData.append('filepath',"/img/admin/20171213/");	 
-		    $.ajax({
-	            type:"post",
-	            url:"tencentUpload.do",
-	            async:false,
-	            contentType: false,    //这个一定要写
-	            processData: false, //这个也一定要写，不然会报错
-	            data:formData,
-	            success:function(data){
-	                alert(data);
-	            },
-	            error:function(XMLHttpRequest, textStatus, errorThrown, data){
-	                alert(errorThrown);
-	            }            
-	        });
+	formData.append('filepath',"/img/admin/20171213/");
+	alert($("#fileToUpload")[0].files[0].name);
+//		    $.ajax({
+//	            type:"post",
+//	            url:"tencentUpload.do",
+//	            async:false,
+//	            contentType: false,    //这个一定要写
+//	            processData: false, //这个也一定要写，不然会报错
+//	            data:formData,
+//	            success:function(data){
+//	                alert(data);
+//	            },
+//	            error:function(XMLHttpRequest, textStatus, errorThrown, data){
+//	                alert(errorThrown);
+//	            }            
+//	        });
 });
 
 </script>

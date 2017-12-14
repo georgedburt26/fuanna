@@ -92,7 +92,7 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">头像</label>
 						<div class="am-u-sm-9">
-							<img src="<%=basePath%>img/admin/headImg.jpg" id="headImg"
+							<img src="<%=sourcePath%>img/admin/headImg.jpg" id="headImg"
 								style="width: 160.83px;" />
 							<div id="fileContainer"></div>
 						</div>
@@ -107,10 +107,14 @@
 		</div>
 	</div>
 </div>
-<script src="<%=basePath%>js/renderFile.js"></script>
 <script>
-	renderFile($("#fileContainer"), "/img/admin/headImg/", function(url) {
-		$("#headImg").attr("src", url);
+	renderFile($("#fileContainer"), {
+		source:<%=source%>,
+		filepath:"/img/admin/headImg/",
+		filetype:"jpg,png,jpeg,gif,bmp",
+		callback:function(url) {
+			$("#headImg").attr("src", "<%=sourcePath%>" + url);
+		}
 	});
 	$('#doc-vld-msg').validator(
 			{

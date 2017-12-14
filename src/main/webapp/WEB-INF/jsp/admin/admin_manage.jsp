@@ -95,7 +95,7 @@
 		<div class="am-g">
 			<div class="am-u-sm-12">
 				<form class="am-form">
-					<table class="am-table  am-table-hover table-main" id="datatable">
+					<table class="am-table am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
 								<th class="table-check"
@@ -205,29 +205,31 @@
 								{
 									"sName" : "email",
 									"mDataProp" : "email",
-								},								
+								},
 								{
 									"sName" : "roleName",
 									"mDataProp" : "roleName",
 								},
 								{
+									"sName" : "createTime",
 									"mDataProp" : "createTime",
-									"sName" : "createTime"
 								},
 								{
-									"render" : function() {
+									"render" : function(data, type, row) {
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
-												+ "<button " +
+												+ "<button type='button' " +
 											"class='am-btn am-btn-default am-btn-xs am-hide-sm-only'>"
 												+ "<span class='am-icon-file-text-o'></span>查看"
 												+ "</button>"
-												+ "<button " +
+												+ "<button type='button' " +
 											"class='am-btn am-btn-default am-btn-xs am-text-secondary'>"
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
-												+ "<button " +
-											"class='am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only'>"
+												+ "<button type='button' "
+												+ "class='am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only' onclick='deleteAdmin("
+												+ row.id
+												+ ",this)'>"
 												+ "<span class='am-icon-trash-o'></span> 删除"
 												+ "</button>"
 												+ "</div>"
@@ -270,12 +272,24 @@
 		});
 		deleteAdmin(ids.join(","));
 	});
-	function deleteAdmin(ids) {
-		$.post("admin/deleteAdmin.do", {
-			"ids" : ids
-		}, function(data) {
-			showmsg(data.errorCode, data.errorMsg);
-			dataTable.fnDraw();
+	function deleteAdmin(ids, btn) {
+		var d = dialog({
+			title : '消息',
+			content : '是否确定，删除选中项？',
+			okValue : '确 定',
+			ok : function() {
+				$.post("admin/deleteAdmin.do", {
+					"ids" : ids
+				}, function(data) {
+					showmsg(data.errorCode, data.errorMsg);
+					dataTable.fnDraw();
+				});
+			},
+			cancelValue : '取消',
+			cancel : function() {
+				$(".table-main button").css("background", "#fff");
+			}
 		});
+		d.show();
 	}
 </script>

@@ -13,13 +13,15 @@
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link rel="icon" type="image/png" href="assets/i/favicon.png">
 <link rel="apple-touch-icon-precomposed"
-	href="<%=basePath%>admin/app-icon72x72@2x.png">
+	href="<%=sourcePath%>img/admin/app-icon72x72@2x.png">
 <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-<link rel="stylesheet" href="<%=basePath%>css/amazeui.min.css" />
-<link rel="stylesheet" href="<%=basePath%>css/amazeui.datatables.min.css" />
-<link rel="stylesheet" href="<%=basePath%>css/admin.css">
-<link rel="stylesheet" href="<%=basePath%>css/app.css">
-<script src="<%=basePath%>js/echarts.min.js"></script>
+<link rel="stylesheet" href="<%=sourcePath%>css/amazeui.min.css" />
+<link rel="stylesheet" href="<%=sourcePath%>css/amazeui.datatables.min.css" />
+<link rel="stylesheet" href="<%=sourcePath%>css/admin.css">
+<link rel="stylesheet" href="<%=sourcePath%>css/app.css">
+<link rel="stylesheet" href="<%=sourcePath%>css/ui-dialog.css">
+<script src="<%=sourcePath%>js/renderFile.js"></script>
+<script src="<%=sourcePath%>js/echarts.min.js"></script>
 </head>
 <style>
 .am-icon-list:before {
@@ -37,11 +39,12 @@
 		<div class="tpl-content-wrapper">
 		</div>
 	</div>
-	<script src="<%=basePath%>js/jquery.min.js"></script>
-	<script src="<%=basePath%>js/amazeui.datatables.min.js"></script>
-	<script src="<%=basePath%>js/amazeui.min.js"></script>
-	<script src="<%=basePath%>js/app.js"></script>
-	<script src="<%=basePath%>js/msg.js"></script>
+	<script src="<%=sourcePath%>js/jquery.min.js"></script>
+	<script src="<%=sourcePath%>js/amazeui.datatables.min.js"></script>
+	<script src="<%=sourcePath%>js/amazeui.min.js"></script>
+	<script src="<%=sourcePath%>js/app.js"></script>
+	<script src="<%=sourcePath%>js/msg.js"></script>
+	<script src="<%=sourcePath%>js/dialog-min.js"></script>
 </body>
 
 </html>

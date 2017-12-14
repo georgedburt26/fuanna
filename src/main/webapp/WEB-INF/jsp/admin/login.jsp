@@ -15,16 +15,16 @@
 <link rel="apple-touch-icon-precomposed"
 	href="assets/i/app-icon72x72@2x.png">
 <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-<link rel="stylesheet" href="<%=basePath%>css/amazeui.min.css" />
-<link rel="stylesheet" href="<%=basePath%>css/admin.css">
-<link rel="stylesheet" href="<%=basePath%>css/app.css">
+<link rel="stylesheet" href="<%=sourcePath%>css/amazeui.min.css" />
+<link rel="stylesheet" href="<%=sourcePath%>css/admin.css">
+<link rel="stylesheet" href="<%=sourcePath%>css/app.css">
 </head>
 
 <body data-type="login">
 	<div class="am-g myapp-login">
 		<div class="myapp-login-logo-block  tpl-login-max">
 			<div class="myapp-login-logo-text">
-				<img src="img/admin/loginLogo.jpg">
+				<img src="<%=sourcePath%>img/admin/loginLogo.jpg">
 				<div class="myapp-login-logo-text" style="margin: 0px;">
 					<span>富安娜库存管理系统</span>
 				</div>
@@ -60,9 +60,9 @@
 			</div>
 		</div>
 	</div>
-	<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
-	<script src="<%=basePath%>js/amazeui.min.js"></script>
-	<script src="<%=basePath%>js/msg.js"></script>
+	<script src="<%=sourcePath%>js/jquery.min.js"></script>
+	<script src="<%=sourcePath%>js/amazeui.min.js"></script>
+	<script src="<%=sourcePath%>js/msg.js"></script>
 	<script>
 		showmsg('${errorCode}', '${errorMsg}');
 		$('#doc-vld-msg')
