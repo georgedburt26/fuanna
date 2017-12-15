@@ -5,17 +5,28 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
 import com.fuanna.h5.buy.model.Admin;
+import com.fuanna.h5.buy.model.AdminLoginLog;
 
 
 public interface AdminMapper {
 
 	@Select({ "select * from f_admin where username = #{0} and password = #{1}"})
 	public Admin adminLogin(String username, String password);
+	
+	@Insert({ "insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime})" })
+	@Options(useGeneratedKeys = true, keyProperty = "id")
+	public long addLoginLog(AdminLoginLog adminLoginLog);
+	
+	@Insert({ "insert into f_admin(username, password, name, mobilePhone, email, headImg, createTime, role) values(#{username},#{password},#{name},#{mobilePhone},#{email},#{headImg},#{createTime},#{role})" })
+	@Options(useGeneratedKeys = true, keyProperty = "id")
+	public long addAdmin(Admin admin);
 	
 	@Select({ "select * from f_admin where id = #{0}"})
 	public Admin queryAdminById(long id);

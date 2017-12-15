@@ -133,7 +133,7 @@
 				<a class="am-dropdown-toggle tpl-header-list-link"
 				href="javascript:;"> <span class="tpl-header-list-user-nick">${admin.name}</span><span
 					class="tpl-header-list-user-ico"> <img
-						src="<%=sourcePath%>img/admin/headImg.jpg"></span>
+						src="<%=sourcePath%>${admin.headImg}"></span>
 			</a>
 				<ul class="am-dropdown-content">
 					<li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>

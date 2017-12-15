@@ -1,6 +1,7 @@
 package com.fuanna.h5.buy.controller.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.DataTable;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
+import com.fuanna.h5.buy.util.MD5;
 
 import net.sf.json.JSONArray;
 
@@ -94,7 +96,6 @@ public class AdminController extends BaseController {
 	
 	@RequestMapping("/deleteAdmin.do")
 	public @ResponseBody RstResult deleteAdmin() throws Exception {
-		RstResult rstResult = null;
 		List<Long> idlist = new ArrayList<Long>();
 		String ids = request().getParameter("ids");
 		if (StringUtils.isBlank(ids)) {
@@ -103,17 +104,10 @@ public class AdminController extends BaseController {
 		for (String id : ids.split(",")) {
 			idlist.add(Long.parseLong(id));
 		}
-		int rtn = adminService.deleteAdmin(idlist);
-		if (rtn > 0) {
-			rstResult = new RstResult(ErrorCode.CG, "删除成功");
-		}
-		else {
-			rstResult = new RstResult(ErrorCode.SB, "删除失败");
-		}
-		return rstResult;
+		return adminService.deleteAdmin(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功") : new RstResult(ErrorCode.SB, "删除失败");
 	}
 	
-	@RequestMapping("/adminIndex.do")
+	@RequestMapping("/addAdminIndex.do")
 	public String addAdminIndex() {
 		String type = request().getParameter("type");
 		if ("2".equals(type)) {//查看
@@ -123,6 +117,52 @@ public class AdminController extends BaseController {
 			
 		}
 		return "/admin/admin_index";
+	}
+	
+	@RequestMapping("/addAdmin.do")
+	public @ResponseBody RstResult addAdmin(@RequestParam Map<String, String> params) throws Exception {
+		String username = params.get("username");
+		if (StringUtils.isBlank(username)) {
+			error("用户名不能为空");
+		}
+		String password = params.get("password");
+		if (StringUtils.isBlank(password) || !Pattern.matches("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$", password)) {
+			error("请输入8到16位的数字字母组合密码");
+		}
+		String confirmpassword = params.get("confirmpassword");
+		if (StringUtils.isBlank(confirmpassword)) {
+			error("确认密码不能为空");
+		}
+		if (!password.equals(confirmpassword)) {
+			error("密码输入不一致");
+		}
+		String name = params.get("name");
+		if (StringUtils.isBlank(name)) {
+			error("姓名不能为空");
+		}
+		String mobilePhone = params.get("mobilePhone");
+		if (StringUtils.isBlank(mobilePhone) || !Pattern.matches("^[1][3,4,5,7,8][0-9]{9}$", mobilePhone)) {
+			error("请输入正确的手机格式");
+		}
+		String email = params.get("email");
+		if (StringUtils.isBlank(email)) {
+			error("手机号不能为空");
+		}
+		String role = params.get("role");
+		if (StringUtils.isBlank(role)) {
+			error("角色不能为空");
+		}
+		String headImg = params.get("headImg");
+		Admin admin = new Admin();
+		admin.setUsername(username);
+		admin.setPassword(MD5.encrypt(password));
+		admin.setName(name);
+		admin.setMobilePhone(mobilePhone);
+		admin.setEmail(email);
+		admin.setHeadImg(headImg);
+		admin.setRole(role);
+		admin.setCreateTime(new Date());
+		return adminService.addAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功") : new RstResult(ErrorCode.SB, "保存失败");
 	}
 	
 	@RequestMapping("/listRoles.do")

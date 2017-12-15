@@ -3,7 +3,7 @@ function renderFile(container, options) {
 	var html = "<div class='am-form-group am-form-file'> "
 			+ "<button type='button' class='am-btn am-btn-sm' id='uploadButton'> "
 			+ "<i class='am-icon-cloud-upload'></i> 选择要上传的文件 " + "</button> "
-			+ "<input id='doc-form-file' type='file'><input id='fileurl' type='hidden' value='img/admin/headImg.jpg'> " + "</div> ";
+			+ "<input id='doc-form-file' type='file'><input id='" + options.id + "' type='hidden' value='img/admin/headImg.jpg'> " + "</div> ";
 	container.html(html);
 	$(".am-form-file").width("160.83px");
 	var progress = $.AMUI.progress
@@ -43,18 +43,18 @@ function renderFile(container, options) {
 			data : formData,
 			success : function(data) {
 				if(data.errorCode == "0000") {
-					$("#fileurl").val(data.data);
+					$("#" + options.id).val(data.data);
 					if (options.callback != null) {
 						options.callback(data.data);	
 					}
 				}
 				progress.done();
-				$(this).removeAttr("disabled");
+				$("#doc-form-file").removeAttr("disabled");
 				showmsg(data.errorCode, data.errorMsg);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown, data) {
 				progress.done();
-				$(this).removeAttr("disabled");
+				$("#doc-form-file").removeAttr("disabled");
 				showmsg("9999", "上传失败");
 			}
 		});

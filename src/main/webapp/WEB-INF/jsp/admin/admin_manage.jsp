@@ -4,7 +4,8 @@
 <div class="tpl-portlet-components">
 	<div class="tpl-block">
 		<div class="am-g">
-			<div class="am-u-sm-12 am-u-md-6">
+			<div class="am-u-sm-12 am-u-md-6"
+				style="display: inline-block; width: auto; margin: 0px;">
 				<div class="am-btn-toolbar">
 					<div class="am-btn-group am-btn-group-xs">
 						<button type="button" id="addAdmin"
@@ -25,71 +26,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="am-u-sm-12 am-u-md-3">
-				<div class="am-form-group">
-					<select data-am-selected="{btnSize: 'sm'}" style="display: none;">
-						<option value="option1">所有类别</option>
-						<option value="option2">IT业界</option>
-						<option value="option3">数码产品</option>
-						<option value="option3">笔记本电脑</option>
-						<option value="option3">平板电脑</option>
-						<option value="option3">只能手机</option>
-						<option value="option3">超极本</option>
-					</select>
-					<div class="am-selected am-dropdown " id="am-selected-2agoa"
-						data-am-dropdown="">
-						<button type="button"
-							class="am-selected-btn am-btn am-dropdown-toggle am-btn-sm am-btn-default">
-							<span class="am-selected-status am-fl">所有类别</span> <i
-								class="am-selected-icon am-icon-caret-down"></i>
-						</button>
-						<div class="am-selected-content am-dropdown-content">
-							<h2 class="am-selected-header">
-								<span class="am-icon-chevron-left">返回</span>
-							</h2>
-							<ul class="am-selected-list">
-								<li class="am-checked" data-index="0" data-group="0"
-									data-value="option1"><span class="am-selected-text">所有类别</span>
-									<i class="am-icon-check"></i></li>
-								<li class="" data-index="1" data-group="0" data-value="option2">
-									<span class="am-selected-text">IT业界</span> <i
-									class="am-icon-check"></i>
-								</li>
-								<li class="" data-index="2" data-group="0" data-value="option3">
-									<span class="am-selected-text">数码产品</span> <i
-									class="am-icon-check"></i>
-								</li>
-								<li class="" data-index="3" data-group="0" data-value="option3">
-									<span class="am-selected-text">笔记本电脑</span> <i
-									class="am-icon-check"></i>
-								</li>
-								<li class="" data-index="4" data-group="0" data-value="option3">
-									<span class="am-selected-text">平板电脑</span> <i
-									class="am-icon-check"></i>
-								</li>
-								<li class="" data-index="5" data-group="0" data-value="option3">
-									<span class="am-selected-text">只能手机</span> <i
-									class="am-icon-check"></i>
-								</li>
-								<li class="" data-index="6" data-group="0" data-value="option3">
-									<span class="am-selected-text">超极本</span> <i
-									class="am-icon-check"></i>
-								</li>
-							</ul>
-							<div class="am-selected-hint"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="am-u-sm-12 am-u-md-3">
-				<div class="am-input-group am-input-group-sm">
-					<input type="text" class="am-form-field"> <span
-						class="am-input-group-btn">
-						<button
-							class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search"
-							type="button"></button>
-					</span>
-				</div>
+			<div class="am-u-sm-12 am-u-md-3 datatable-search">
+				<label>用户名: <input type="text"
+					id="datatable-search-username"></label> <label>姓名: <input
+					type="text" id="datatable-search-name"></label> <label>手机号:
+					<input type="text" id="datatable-search-mobilePhone">
+				</label>
+				<button
+					class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search"
+					type="button" id="datatable-search-btn"></button>
 			</div>
 		</div>
 		<div class="am-g">
@@ -143,6 +88,24 @@
 
 .dataTables_paginate {
 	float: right;
+}
+
+.datatable-search {
+	display: inline-block;
+	width: auto;
+}
+
+.datatable-search label {
+	color: #444;
+	font-weight: 400;
+	font-size: 1.6rem;
+	font-weight: 400;
+}
+
+.datatable-search input {
+	border: 1px solid #e6e6e6;
+	border-radius: 3px;
+	padding: 2px;
 }
 </style>
 <script>
@@ -219,7 +182,7 @@
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs am-hide-sm-only'>"
+											"class='am-btn am-btn-default am-btn-xs' style='display:block'>"
 												+ "<span class='am-icon-file-text-o'></span>查看"
 												+ "</button>"
 												+ "<button type='button' " +
@@ -227,7 +190,7 @@
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
 												+ "<button type='button' "
-												+ "class='am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only' onclick='deleteAdmin("
+												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteAdmin("
 												+ row.id
 												+ ",this)'>"
 												+ "<span class='am-icon-trash-o'></span> 删除"
@@ -240,7 +203,10 @@
 							$.ajax({
 								url : source,//这个就是请求地址对应sAjaxSource
 								data : {
-									"rows" : JSON.stringify(rows)
+									"rows" : JSON.stringify(rows),
+									"username" : $("#datatable-search-username").val(),
+									"name" : $("#datatable-search-name").val(),
+									"mobilePhone" : $("#datatable-search-mobilePhone").val()
 								},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
 								type : 'post',
 								dataType : 'json',
@@ -259,7 +225,15 @@
 						}
 					});
 	$("#addAdmin").click(function() {
-		pageContent("admin/adminIndex.do?type=1");
+		pageContent("admin/addAdminIndex.do?type=1");
+	});
+	$("#datatable-search-btn").click(function() {
+		var username = $("#datatable-search-username").val();
+		var name = $("#datatable-search-name").val();
+		var mobilePhone = $("#datatable-search-mobilePhone").val();
+		if (username != '' || name != '' || mobilePhone != '') {
+			dataTable.fnDraw();	
+		}
 	});
 	$("#deleteAdmin").click(function() {
 		if ($(".tpl-table-fz-data-check:checked").length == 0) {

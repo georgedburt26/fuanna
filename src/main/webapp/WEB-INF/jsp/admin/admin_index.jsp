@@ -43,7 +43,7 @@
 						<div class="am-u-sm-9">
 							<input type="text" id="mobilePhone" placeholder="手机号"
 								data-validation-message="请输入正确的手机号"
-								pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$"
+								pattern="^[1][3,4,5,7,8][0-9]{9}$"
 								required />
 						</div>
 					</div>
@@ -93,9 +93,7 @@
 	</div>
 </div>
 <script>
-$("#save").on("click", function() {
-	
-});
+$('[data-am-dropdown]').dropdown();
 $.post("admin/listRoles.do", {}, function(data) {
 	if (data.errorCode != "0000") {
 		showmsg(data.errorCode, data.errorMsg);
@@ -110,6 +108,7 @@ $.post("admin/listRoles.do", {}, function(data) {
 		source:"<%=source%>",
 		filepath:"/img/admin/headImg/",
 		filetype:"jpg,png,jpeg,gif,bmp",
+		id:"headImg",
 		callback:function(url) {
 			$("#headImg").attr("src", "<%=sourcePath%>" + url);
 		}
@@ -136,7 +135,6 @@ $.post("admin/listRoles.do", {}, function(data) {
 					$alert.html(msg).show();
 				}
 			});
-	$('[data-am-dropdown]').dropdown();
 	$('body').on(
 			'click',
 			".am-selected-list li",
@@ -153,6 +151,32 @@ $.post("admin/listRoles.do", {}, function(data) {
 				$("#role").val(role.join(","));
 			});
 	$("#save").on('click', function() {
-		$('#doc-vld-msg').validator('isFormValid');
+		if ($('#doc-vld-msg').validator('isFormValid')) {
+			var params = {};
+			params.username = $("#username").val();
+			params.password = $("#password").val();
+			params.confirmpassword = $("#confirmpassword").val();
+			params.name = $("#name").val();
+			params.mobilePhone = $("#mobilePhone").val();
+			params.email = $("#email").val();
+			params.role = $("#role").val();
+			params.headImg = $("#headImg").val();
+			$.ajax({
+				cache : true,
+				type : "POST",
+				url : "admin/addAdmin.do",
+				data : params,
+				error : function(data) {
+					showmsg("9999", "保存失败")
+				},
+				success : function(data) {
+					showmsg(data.errorCode, data.errorMsg);
+					if (data.errorCode == "0000") {
+						pageContent('admin/adminManage.do');
+					}
+				}
+			});
+		}
+		;
 	});
 </script>

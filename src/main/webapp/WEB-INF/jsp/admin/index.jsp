@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="<%=sourcePath%>css/admin.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/app.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/ui-dialog.css">
+<link rel="stylesheet" href="<%=sourcePath%>css/jquery.mloading.css">
 <script src="<%=sourcePath%>js/renderFile.js"></script>
 <script src="<%=sourcePath%>js/echarts.min.js"></script>
 </head>
@@ -45,6 +46,7 @@
 	<script src="<%=sourcePath%>js/app.js"></script>
 	<script src="<%=sourcePath%>js/msg.js"></script>
 	<script src="<%=sourcePath%>js/dialog-min.js"></script>
+		<script src="<%=sourcePath%>js/jquery.mloading.js"></script>
 </body>
 
 </html>

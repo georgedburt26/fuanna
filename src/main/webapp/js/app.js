@@ -74,8 +74,8 @@ function pageContent(url) {
 //		 + "</div>"
 //		 });
 //		 progress.start();
-		$(".tpl-content-wrapper").html(
-				"<i class='am-icon-spinner am-icon-spin'></i>加载中...");
+		$(".tpl-content-wrapper").html("");
+		$(".tpl-content-wrapper").mLoading({mask:false});
 		$(".tpl-content-wrapper").load(url,
 				function(responseTxt, statusTxt, xhr) {
 					// progress.done();
@@ -88,6 +88,7 @@ function pageContent(url) {
 					if (xhr.status == 500) {
 						$(this).load("500.html");
 					}
+					$(".tpl-content-wrapper").mLoading("hide");
 				});
 	}
 }
