@@ -72,6 +72,9 @@ public class AdminController extends BaseController {
 	public @ResponseBody RstResult adminManageList() throws Exception {
 		RstResult rstResult = null;
 		String data = request().getParameter("rows");
+		String username = StringUtils.isBlank(request().getParameter("username")) ? null : request().getParameter("username") ;
+		String name = StringUtils.isBlank(request().getParameter("name")) ? null : request().getParameter("name") ;
+		String mobilePhone = StringUtils.isBlank(request().getParameter("mobilePhone")) ? null : request().getParameter("mobilePhone") ;
 		if (StringUtils.isNotBlank(data)) {
 			Integer sEcho = null, iDisplayStart = null, iDisplayLength = null;
 			JSONArray json = JSONArray.fromObject(data);
@@ -86,8 +89,8 @@ public class AdminController extends BaseController {
 					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
 				}
 			}
-			List<Admin> rows = adminService.listAdmin(null, null, null, iDisplayStart, iDisplayLength);
-			int count = adminService.countAdmin(null, null, null);
+			List<Admin> rows = adminService.listAdmin(name, mobilePhone, username, iDisplayStart, iDisplayLength);
+			int count = adminService.countAdmin(name, mobilePhone, username);
 			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
 		}

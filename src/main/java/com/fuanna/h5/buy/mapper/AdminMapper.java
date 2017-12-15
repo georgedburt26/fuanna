@@ -34,13 +34,13 @@ public interface AdminMapper {
 	@Select({"<script>" +  
 		     "select admin.*, GROUP_CONCAT(role.`name`) as roleName from f_admin as admin left join f_role as role on instr(admin.role, role.id) where 1 = 1 " + 
 			  "<if test='name != null'>" +
-			  " and name = '%'#{name}'%' " +
+			  " and admin.name like CONCAT('%',#{name},'%') " +
 		      "</if>" +
 			  "<if test='mobilePhone != null'>" +
 			  " and mobilePhone = #{mobilePhone} " +
 		      "</if>" +
-			  "<if test='email != null'>" +
-			  " and email = #{email} " +
+			  "<if test='username != null'>" +
+			  " and username like CONCAT('%',#{username},'%') " +
 		      "</if>" +
 		      " group by admin.id " +
 			  " order by id desc " +
@@ -48,21 +48,21 @@ public interface AdminMapper {
 			  " limit #{offset}, #{limit} " +
 		      "</if>" +
 		     "</script>"})
-	public List<Admin> listAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("email")String email, @Param("offset")Integer offset, @Param("limit")Integer limit);
+	public List<Admin> listAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("username")String username, @Param("offset")Integer offset, @Param("limit")Integer limit);
 	
 	@Select({ "<script>" + 
 		      "select count(id) from f_admin where 1 = 1 " +
 			  "<if test='name != null'>" +
-			  " and name = '%'#{name}'%' " +
+			  " and name like CONCAT('%',#{name},'%') " +
 		      "</if>" +
 			  "<if test='mobilePhone != null'>" +
 			  " and mobilePhone = #{mobilePhone} " +
 		      "</if>" +
-			  "<if test='email != null'>" +
-			  " and email = #{email} " +
+			  "<if test='username != null'>" +
+			  " and username like CONCAT('%',#{username},'%') " +
 		      "</if>" +
 		      "</script>"})
-	public int countAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("email")String email);
+	public int countAdmin(@Param("name")String name, @Param("mobilePhone")String mobilePhone, @Param("username")String username);
 	
 	@Delete("<script>" +
 	        " delete from f_admin where id in " +

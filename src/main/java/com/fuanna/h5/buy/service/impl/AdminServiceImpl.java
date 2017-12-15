@@ -77,13 +77,13 @@ public class AdminServiceImpl implements AdminService{
 //	}
 
 	@Override
-	public int countAdmin(String name, String mobilePhone, String email) {
-		return adminMapper.countAdmin(name, mobilePhone, email);
+	public int countAdmin(String name, String mobilePhone, String username) {
+		return adminMapper.countAdmin(name, mobilePhone, username);
 	}
 
 	@Override
-	public List<Admin> listAdmin(String name, String mobilePhone, String email, Integer offset, Integer limit) {
-		return adminMapper.listAdmin(name, mobilePhone, email, offset, limit);
+	public List<Admin> listAdmin(String name, String mobilePhone, String username, Integer offset, Integer limit) {
+		return adminMapper.listAdmin(name, mobilePhone, username, offset, limit);
 	}
 
 	@Override
