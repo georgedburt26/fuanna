@@ -45,7 +45,7 @@
 							<tr>
 								<th class="table-check"
 									style="text-align: center; padding: 0px; vertical-align: middle;"><input
-									type="checkbox" class="tpl-table-fz-check" value="2"></th>
+									type="checkbox" class="tpl-table-fz-check"></th>
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
@@ -196,7 +196,7 @@
 												+ "<span class='am-icon-trash-o'></span> 删除"
 												+ "</button>"
 												+ "</div>"
-												+ "</div>"
+												+ "</div>";
 									}
 								} ],
 						"fnServerData" : function(source, rows, fnCallback) {

@@ -21,5 +21,9 @@ public interface AdminService {
 	
 	public int deleteAdmin(List<Long> ids);
 	
-	public List<Map<String, Object>> listRoles();
+	public List<Map<String, Object>> listRoles(Integer offset, Integer limit);
+	
+	public int countRoles();
+	
+	public int deleteRole(List<Long> ids);
 }

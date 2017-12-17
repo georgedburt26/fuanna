@@ -72,8 +72,23 @@ public interface AdminMapper {
 	        "</script>")
 	public int deleteAdmin(@Param("ids")List<Long> ids);
 	
-	
-	@Select({ "select * from f_role" })
+	@Select({"<script>" +  
+		     "select * from f_role where 1 = 1 " + 
+			  "<if test='offset != null and limit != null'>" +
+			  " limit #{offset}, #{limit} " +
+		      "</if>" +
+		     "</script>"})
 	@ResultType(LinkedHashMap.class)
-	public List<Map<String, Object>> listRoles();
+	public List<Map<String, Object>> listRoles(@Param("offset")Integer offset, @Param("limit")Integer limit);
+	
+	@Select({ "select count(id) from f_role"})
+	public int countRoles();
+	
+	@Delete("<script>" +
+	        " delete from f_role where id in " +
+			"<foreach collection='ids' index='index' item='item' open='(' separator=',' close=')'>" +  
+            "#{item} " + 
+            "</foreach> " +
+	        "</script>")
+	public int deleteRole(@Param("ids")List<Long> ids); 
 }

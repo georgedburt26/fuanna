@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="<%=sourcePath%>css/app.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/ui-dialog.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/jquery.mloading.css">
+<link rel="stylesheet" href="<%=sourcePath%>css/amazeui.tree.min.css">
 <script src="<%=sourcePath%>js/renderFile.js"></script>
 <script src="<%=sourcePath%>js/echarts.min.js"></script>
 </head>
@@ -37,8 +38,7 @@
 	<jsp:include page="top.jsp" />
 	<div class="tpl-page-container tpl-page-header-fixed">
 		<jsp:include page="left.jsp" />
-		<div class="tpl-content-wrapper">
-		</div>
+		<div class="tpl-content-wrapper"></div>
 	</div>
 	<script src="<%=sourcePath%>js/jquery.min.js"></script>
 	<script src="<%=sourcePath%>js/amazeui.datatables.min.js"></script>
@@ -46,7 +46,8 @@
 	<script src="<%=sourcePath%>js/app.js"></script>
 	<script src="<%=sourcePath%>js/msg.js"></script>
 	<script src="<%=sourcePath%>js/dialog-min.js"></script>
-		<script src="<%=sourcePath%>js/jquery.mloading.js"></script>
+	<script src="<%=sourcePath%>js/jquery.mloading.js"></script>
+	<script src="<%=sourcePath%>js/amazeui.tree.min.js"></script>
 </body>
 
 </html>

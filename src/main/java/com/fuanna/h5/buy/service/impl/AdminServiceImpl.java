@@ -93,8 +93,21 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<Map<String, Object>> listRoles() {
-		return adminMapper.listRoles();
+	public List<Map<String, Object>> listRoles(Integer offset, Integer limit) {
+		return adminMapper.listRoles(offset, limit);
+	}
+
+
+	@Override
+	public int countRoles() {
+		return adminMapper.countRoles();
+	}
+
+
+	@Override
+	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
+	public int deleteRole(List<Long> ids) {
+		return adminMapper.deleteRole(ids);
 	}
 
 }

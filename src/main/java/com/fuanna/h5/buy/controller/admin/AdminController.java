@@ -170,7 +170,67 @@ public class AdminController extends BaseController {
 	
 	@RequestMapping("/listRoles.do")
 	public @ResponseBody RstResult listRoles() {
-		List<Map<String, Object>> roles = adminService.listRoles();
+		List<Map<String, Object>> roles = adminService.listRoles(null, null);
 		return new RstResult(ErrorCode.CG, "查询成功", roles);
+	}
+	
+	@RequestMapping("/roleManage.do")
+	public String roleManage() {
+		return "/admin/role_manage";
+	}
+
+	@RequestMapping("/roleManageList.do")
+	public @ResponseBody RstResult roleManageList() throws Exception {
+		RstResult rstResult = null;
+		String data = request().getParameter("rows");
+		if (StringUtils.isNotBlank(data)) {
+			Integer sEcho = null, iDisplayStart = null, iDisplayLength = null;
+			JSONArray json = JSONArray.fromObject(data);
+			for (int i = 0; i < json.size(); i++) {
+				if (json.getJSONObject(i).getString("name").equals("sEcho")) {
+					sEcho = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayStart")) {
+					iDisplayStart = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayLength")) {
+					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+			}
+			List<Map<String, Object>> rows = adminService.listRoles(iDisplayStart, iDisplayLength);
+			int count = adminService.countRoles();
+			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
+			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
+		}
+		return rstResult;
+	}
+	
+	@RequestMapping("/addRoleIndex.do")
+	public String addRoleIndex() {
+		String type = request().getParameter("type");
+		if ("2".equals(type)) {//查看
+			
+		}
+		if ("3".equals(type)) {//修改
+			
+		}
+		return "/admin/role_index";
+	}
+	
+	@RequestMapping("/deleteRole.do")
+	public @ResponseBody RstResult deleteRole() throws Exception {
+		List<Long> idlist = new ArrayList<Long>();
+		String ids = request().getParameter("ids");
+		if (StringUtils.isBlank(ids)) {
+			error("参数不能为空");
+		}
+		for (String id : ids.split(",")) {
+			idlist.add(Long.parseLong(id));
+		}
+		return adminService.deleteRole(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功") : new RstResult(ErrorCode.SB, "删除失败");
+	}
+	
+	public @ResponseBody RstResult listResources() {
+		List<E>
 	}
 }
