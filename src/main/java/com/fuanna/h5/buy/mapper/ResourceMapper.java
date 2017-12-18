@@ -28,15 +28,20 @@ public interface ResourceMapper {
 	         "</if>" +
 			 "<if test='type != null'>" +
 			 " and type = #{type} " +
-	         "</if>" +
+	         "</if>" + 
+			 " order by r.index " + 
 			 "</script>"})
 	public List<Resource> queryResourceByAdminId(@Param("adminId")long adminId, @Param("isTop")boolean isTop, @Param("type")Integer type);
 
 	@Select({ "<script>" +
-			  "select * from f_resource where 1 = 1 " + 
+			  "select * from f_resource as r where 1 = 1 " + 
 			  "<if test='#{0} != null'>" +
 			  " and parentId = #{0} " +
 		      "</if>" +
+			  " order by r.index " + 
 			  "</script>"})
 	public List<Resource> queryResourceByParentId(Long parentId);
+	
+	@Select({ "select * from f_resource where parentId is null" })
+	public List<Resource> queryResourceParent();
 }

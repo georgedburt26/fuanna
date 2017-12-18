@@ -16,6 +16,8 @@ import com.fuanna.h5.buy.mapper.ResourceMapper;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.AdminLoginLog;
 import com.fuanna.h5.buy.model.Resource;
+import com.fuanna.h5.buy.model.Role;
+import com.fuanna.h5.buy.model.RoleResource;
 import com.fuanna.h5.buy.service.AdminService;
 import com.fuanna.h5.buy.util.MD5;
 
@@ -66,6 +68,16 @@ public class AdminServiceImpl implements AdminService{
 		return topResources;
 	}
 	
+	@Override
+	public List<Resource> queryResources() {
+		List<Resource> topResources = resourceMapper.queryResourceParent();
+		for (Resource topResource : topResources) {
+			List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
+			topResource.setResources(resources);
+		}
+		return topResources;
+	}
+	
 //	private void findResources(Resource topResource) {
 //		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
 //		if (resources != null && !resources.isEmpty()) {
@@ -107,7 +119,21 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
 	public int deleteRole(List<Long> ids) {
-		return adminMapper.deleteRole(ids);
+		int rtn = adminMapper.deleteRole(ids);
+		rtn = adminMapper.deleteRoleResource(ids);
+		return rtn;
+	}
+
+
+	@Override
+	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
+	public long addRole(String name, String description, String[] resources) {
+		Role role = new Role(name, description, new Date());
+		int rtn = adminMapper.addRole(role);
+		for (String resourceId : resources) {
+			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
+		}
+		return rtn;
 	}
 
 }

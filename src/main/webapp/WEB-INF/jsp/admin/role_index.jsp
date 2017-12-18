@@ -15,32 +15,33 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">描述</label>
 						<div class="am-u-sm-9">
-							<input type="text" id="name" placeholder="请输入描述" required />
+							<input type="text" id="description" placeholder="请输入描述" required />
 						</div>
 					</div>
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">权限模块</label>
 						<div class="am-u-sm-9">
+						<span class="am-icon-spin am-icon-spinner" id="treeloading"></span>
 							<ul class="am-tree am-tree-folder-select" role="tree"
 								id="resourceTree">
 								<li class="am-tree-branch am-hide" data-template="treebranch"
 									role="treeitem" aria-expanded="false">
 									<div class="am-tree-branch-header">
 										<button
-											class="am-tree-icon am-tree-icon-caret am-icon-caret-right" id="folderBtn">
+											class="am-tree-icon am-tree-icon-caret am-icon-caret-right" type="button">
 											<span class="am-sr-only">Open</span>
 										</button>
-										<button class="am-tree-branch-name">
+										<button class="am-tree-branch-name" type="button">
 											<span class="am-tree-icon am-tree-icon-folder"></span> <span
 												class="am-tree-label"></span>
 										</button>
 									</div>
 									<ul class="am-tree-branch-children" role="group"></ul>
-									<div class="am-tree-loader" role="alert">Loading...</div>
+									<div class="am-tree-loader" role="alert"><span class="am-icon-spin am-icon-spinner"></span></div>
 								</li>
 								<li class="am-tree-item am-hide" data-template="treeitem"
 									role="treeitem">
-									<button class="am-tree-item-name">
+									<button class="am-tree-item-name" type="button">
 										<span class="am-tree-icon am-tree-icon-item"></span> <span
 											class="am-tree-label"></span>
 									</button>
@@ -59,43 +60,42 @@
 	</div>
 </div>
 <script>
-	$('[data-am-dropdown]').dropdown();
-	var data = [ {
-		title : '苹果公司',
-		type : 'folder',
-		attr : {
-			folderIcon : 'am-icon-spinner',
-			classNames : 'nimeide',
-			id : "nimeide"
-		},
-		products : [ {
-			title : 'iPhone',
-			type : 'item'
-		}, {
-			title : 'iMac',
-			type : 'item'
-		}, {
-			title : 'MacBook Pro',
-			type : 'item'
-		} ]
-	}, {
-		title : '微软公司',
-		type : 'item'
-	}, {
-		title : 'GitHub',
-		type : 'item',
-		attr : {
-			icon : 'am-icon-spinner'
-		}
-	} ];
-
 	var resourceTree = $('#resourceTree').tree({
 		multiSelect : true,
 		cacheItems : true,
 		folderSelect : true,
 		dataSource : function(options, callback) {
-			callback({
-				data : options.products || data
+			var data = new Array();
+			$.post("admin/listResources.do", {}, function(result) {
+				if (result.errorCode != '0000') {
+					showmsg(result.errorCode, result.errorMsg);
+					return ;
+				}
+				$.each(result.data,function(index,value){
+					var item = {};
+					item.title = value.name;
+					item.type= value.resources.length > 0 ? "folder" : "item";
+					item.attr = {};
+					item.attr.id = value.id;
+					item.attr.icon = value.icon;
+					if (value.resources.length > 0) {
+						item.products = new Array();
+						$.each(value.resources,function(index,value){
+							item.products.push({
+								title:value.name,
+								type:"item",
+								attr:{
+									id:value.id
+								}
+							});
+						});
+					}
+					data.push(item);
+				});
+				callback({
+					data : options.products || data
+				});
+				$("#treeloading").remove();
 			});
 		}
 	});
@@ -123,19 +123,18 @@
 			});
 	$("#save").on('click', function() {
 		if ($('#doc-vld-msg').validator('isFormValid')) {
+			var resources = new Array();
+			$.each(resourceTree.tree('selectedItems'),function(index,value){
+				resources.push(value.attr.id);
+			});
 			var params = {};
-			params.username = $("#username").val();
-			params.password = $("#password").val();
-			params.confirmpassword = $("#confirmpassword").val();
 			params.name = $("#name").val();
-			params.mobilePhone = $("#mobilePhone").val();
-			params.email = $("#email").val();
-			params.role = $("#role").val();
-			params.headImg = $("#headImg").val();
+			params.description = $("#description").val();
+			params.resources = resources.join(",");
 			$.ajax({
 				cache : true,
 				type : "POST",
-				url : "admin/addAdmin.do",
+				url : "admin/addRole.do",
 				data : params,
 				error : function(data) {
 					showmsg("9999", "保存失败")
@@ -143,7 +142,7 @@
 				success : function(data) {
 					showmsg(data.errorCode, data.errorMsg);
 					if (data.errorCode == "0000") {
-						pageContent('admin/adminManage.do');
+						pageContent('admin/roleManage.do');
 					}
 				}
 			});

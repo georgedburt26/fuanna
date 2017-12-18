@@ -13,6 +13,8 @@ import org.apache.ibatis.annotations.Select;
 
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.AdminLoginLog;
+import com.fuanna.h5.buy.model.Role;
+import com.fuanna.h5.buy.model.RoleResource;
 
 
 public interface AdminMapper {
@@ -22,11 +24,11 @@ public interface AdminMapper {
 	
 	@Insert({ "insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public long addLoginLog(AdminLoginLog adminLoginLog);
+	public int addLoginLog(AdminLoginLog adminLoginLog);
 	
 	@Insert({ "insert into f_admin(username, password, name, mobilePhone, email, headImg, createTime, role) values(#{username},#{password},#{name},#{mobilePhone},#{email},#{headImg},#{createTime},#{role})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public long addAdmin(Admin admin);
+	public int addAdmin(Admin admin);
 	
 	@Select({ "select * from f_admin where id = #{0}"})
 	public Admin queryAdminById(long id);
@@ -90,5 +92,21 @@ public interface AdminMapper {
             "#{item} " + 
             "</foreach> " +
 	        "</script>")
-	public int deleteRole(@Param("ids")List<Long> ids); 
+	public int deleteRole(@Param("ids")List<Long> ids);
+	
+	@Delete("<script>" +
+	        " delete from f_role_resource where roleId in " +
+			"<foreach collection='roleIds' index='index' item='item' open='(' separator=',' close=')'>" +  
+            "#{item} " + 
+            "</foreach> " +
+	        "</script>")
+	public int deleteRoleResource(@Param("roleIds")List<Long> roleIds); 
+	
+	@Insert({ "insert into f_role(name, description, createTime) values(#{name},#{description},#{createTime})" })
+	@Options(useGeneratedKeys = true, keyProperty = "id")
+	public int addRole(Role role);
+	
+	@Insert({ "insert into f_role_resource(roleId, resourceId) values(#{roleId},#{resourceId})" })
+	@Options(useGeneratedKeys = true, keyProperty = "id")
+	public int addRoleResource(RoleResource roleResource);
 }

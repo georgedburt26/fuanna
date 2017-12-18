@@ -19,6 +19,7 @@ import com.fuanna.h5.buy.base.BaseController;
 import com.fuanna.h5.buy.constraints.ErrorCode;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.DataTable;
+import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
 import com.fuanna.h5.buy.util.MD5;
@@ -217,6 +218,24 @@ public class AdminController extends BaseController {
 		return "/admin/role_index";
 	}
 	
+	@RequestMapping("/addRole.do")
+	public @ResponseBody RstResult addRole(@RequestParam Map<String, String> params) throws Exception{
+		String name = params.get("name");
+		if (StringUtils.isBlank(name)) {
+			error("角色名不能为空");
+		}
+		String description = params.get("description");
+		if (StringUtils.isBlank(description)) {
+			error("描述不能为空");
+		}
+		String resources = params.get("resources");
+		if (StringUtils.isBlank(resources)) {
+			error("权限模块不能为空");
+		}
+		long rtn = adminService.addRole(name, description, resources.split(","));
+		return rtn > 0 ? new RstResult(ErrorCode.CG, "添加角色成功") : new RstResult(ErrorCode.SB, "添加角色失败");
+	}
+	
 	@RequestMapping("/deleteRole.do")
 	public @ResponseBody RstResult deleteRole() throws Exception {
 		List<Long> idlist = new ArrayList<Long>();
@@ -230,7 +249,9 @@ public class AdminController extends BaseController {
 		return adminService.deleteRole(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功") : new RstResult(ErrorCode.SB, "删除失败");
 	}
 	
+	@RequestMapping("/listResources.do")
 	public @ResponseBody RstResult listResources() {
-		List<E>
+		List<Resource> resources = adminService.queryResources();
+		return new RstResult(ErrorCode.CG, "查询成功", resources);
 	}
 }

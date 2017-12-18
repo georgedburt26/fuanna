@@ -15,7 +15,6 @@
 						</c:if> <!--<i class="tpl-left-nav-content tpl-badge-danger"> 12 </i>-->
 				</a> <c:if test="${not empty resource.resources}">
 						<ul class="tpl-left-nav-sub-menu">
-
 							<li><c:forEach var="resource" items="${resource.resources}"
 									varStatus="status">
 									<a href="javascript:void(0);" onclick="pageContent('${resource.url}')"> <i class="am-icon-angle-right"></i>

@@ -77,7 +77,7 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">头像</label>
 						<div class="am-u-sm-9">
-							<img src="<%=sourcePath%>img/admin/headImg.jpg" id="headImg"
+							<img src="<%=sourcePath%>img/admin/headImg.jpg"
 								style="width: 160.83px;" />
 							<div id="fileContainer"></div>
 						</div>
