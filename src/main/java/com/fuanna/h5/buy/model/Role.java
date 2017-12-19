@@ -14,6 +14,7 @@ public class Role implements Serializable{
 	private String name;
 	private String description;
 	private Date createTime;
+	private String resources;
 	
 	public Role() {
 		
@@ -25,6 +26,13 @@ public class Role implements Serializable{
 		this.createTime = createTime;
 	}
 	
+	
+	public String getResources() {
+		return resources;
+	}
+	public void setResources(String resources) {
+		this.resources = resources;
+	}
 	public long getId() {
 		return id;
 	}

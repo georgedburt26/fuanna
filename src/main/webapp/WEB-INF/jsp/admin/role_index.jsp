@@ -9,26 +9,43 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色名</label>
 						<div class="am-u-sm-9">
-							<input type="text" id="name" placeholder="输入角色名" required />
+							<input type="text" id="name" placeholder="输入角色名"
+								<c:if test="${type==2}">readonly="readonly"</c:if>
+								<c:if test="${type!=1}">value=${role.name}</c:if> required />
 						</div>
 					</div>
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">描述</label>
 						<div class="am-u-sm-9">
-							<input type="text" id="description" placeholder="请输入描述" required />
+							<input type="text" id="description" placeholder="请输入描述"
+								<c:if test="${type==2}">readonly="readonly"</c:if>
+								<c:if test="${type!=1}">value=${role.description}</c:if>
+								required />
 						</div>
 					</div>
+					<c:if test="${type==2}">
+						<div class="am-form-group">
+							<label class="am-u-sm-3 am-form-label">创建时间</label>
+							<div class="am-u-sm-9">
+								<input type="text" id="description" placeholder="请输入描述"
+									readonly="readonly"
+									value="<fmt:formatDate value="${role.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />"
+									required />
+							</div>
+						</div>
+					</c:if>
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">权限模块</label>
 						<div class="am-u-sm-9">
-						<span class="am-icon-spin am-icon-spinner" id="treeloading"></span>
+							<span class="am-icon-spin am-icon-spinner" id="treeloading"></span>
 							<ul class="am-tree am-tree-folder-select" role="tree"
 								id="resourceTree">
 								<li class="am-tree-branch am-hide" data-template="treebranch"
 									role="treeitem" aria-expanded="false">
 									<div class="am-tree-branch-header">
 										<button
-											class="am-tree-icon am-tree-icon-caret am-icon-caret-right" type="button">
+											class="am-tree-icon am-tree-icon-caret am-icon-caret-right"
+											type="button">
 											<span class="am-sr-only">Open</span>
 										</button>
 										<button class="am-tree-branch-name" type="button">
@@ -37,7 +54,9 @@
 										</button>
 									</div>
 									<ul class="am-tree-branch-children" role="group"></ul>
-									<div class="am-tree-loader" role="alert"><span class="am-icon-spin am-icon-spinner"></span></div>
+									<div class="am-tree-loader" role="alert">
+										<span class="am-icon-spin am-icon-spinner"></span>
+									</div>
 								</li>
 								<li class="am-tree-item am-hide" data-template="treeitem"
 									role="treeitem">
@@ -49,11 +68,13 @@
 							</ul>
 						</div>
 					</div>
-					<div class="am-form-group">
-						<div class="am-u-sm-9 am-u-sm-push-3">
-							<button type="button" id="save" class="am-btn am-btn-primary">保存</button>
+					<c:if test="${type!=2}">
+						<div class="am-form-group">
+							<div class="am-u-sm-9 am-u-sm-push-3">
+								<button type="button" id="save" class="am-btn am-btn-primary">保存</button>
+							</div>
 						</div>
-					</div>
+					</c:if>
 				</form>
 			</div>
 		</div>
@@ -69,23 +90,23 @@
 			$.post("admin/listResources.do", {}, function(result) {
 				if (result.errorCode != '0000') {
 					showmsg(result.errorCode, result.errorMsg);
-					return ;
+					return;
 				}
-				$.each(result.data,function(index,value){
+				$.each(result.data, function(index, value) {
 					var item = {};
 					item.title = value.name;
-					item.type= value.resources.length > 0 ? "folder" : "item";
+					item.type = value.resources.length > 0 ? "folder" : "item";
 					item.attr = {};
 					item.attr.id = value.id;
 					item.attr.icon = value.icon;
 					if (value.resources.length > 0) {
 						item.products = new Array();
-						$.each(value.resources,function(index,value){
+						$.each(value.resources, function(index, value) {
 							item.products.push({
-								title:value.name,
-								type:"item",
-								attr:{
-									id:value.id
+								title : value.name,
+								type : "item",
+								attr : {
+									id : value.id
 								}
 							});
 						});
@@ -95,6 +116,14 @@
 				callback({
 					data : options.products || data
 				});
+				$('#resourceTree').on('disclosedAll.tree.amui', function(event, data) {
+					$.each("${role.resources}".split(","), function(index, value) {
+						resourceTree.tree('selectItem', $('#' + value));	
+					});
+				});
+				if ("${type}" == 2 || "${type}" == 3) {
+				resourceTree.tree('discloseAll');
+				}
 				$("#treeloading").remove();
 			});
 		}
@@ -124,13 +153,15 @@
 	$("#save").on('click', function() {
 		if ($('#doc-vld-msg').validator('isFormValid')) {
 			var resources = new Array();
-			$.each(resourceTree.tree('selectedItems'),function(index,value){
+			$.each(resourceTree.tree('selectedItems'), function(index, value) {
 				resources.push(value.attr.id);
 			});
 			var params = {};
 			params.name = $("#name").val();
 			params.description = $("#description").val();
 			params.resources = resources.join(",");
+			params.type="${type}";
+			params.id="${id}";
 			$.ajax({
 				cache : true,
 				type : "POST",
@@ -147,6 +178,5 @@
 				}
 			});
 		}
-		;
 	});
 </script>

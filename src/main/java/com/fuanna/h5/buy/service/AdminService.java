@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.Resource;
+import com.fuanna.h5.buy.model.Role;
 
 public interface AdminService {
 
@@ -30,4 +31,8 @@ public interface AdminService {
 	public int deleteRole(List<Long> ids);
 	
 	public long addRole(String name, String description, String[] resources);
+	
+	public long updateRole(long id, String name, String description, String[] resources);
+	
+	public Role queryRoleById(long roleId);
 }

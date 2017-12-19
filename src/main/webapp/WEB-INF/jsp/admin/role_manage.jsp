@@ -158,12 +158,12 @@
 									"render" : function(data, type, row) {
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
-												+ "<button type='button' " +
+												+ "<button type='button' onclick=checkRole('" + row.id + "') " +
 											"class='am-btn am-btn-default am-btn-xs' style='display:block'>"
 												+ "<span class='am-icon-file-text-o'></span>查看"
 												+ "</button>"
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs am-text-secondary'>"
+											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editRole(" + row.id + ")'>"
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
 												+ "<button type='button' "
@@ -231,5 +231,11 @@
 			}
 		});
 		d.show();
+	}
+	function editRole(id) {
+		pageContent("admin/addRoleIndex.do?id=" + id + "&type=3");
+	}
+	function checkRole(id) {
+		pageContent("admin/addRoleIndex.do?id=" + id + "&type=2");
 	}
 </script>

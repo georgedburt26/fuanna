@@ -73,9 +73,11 @@ public class AdminController extends BaseController {
 	public @ResponseBody RstResult adminManageList() throws Exception {
 		RstResult rstResult = null;
 		String data = request().getParameter("rows");
-		String username = StringUtils.isBlank(request().getParameter("username")) ? null : request().getParameter("username") ;
-		String name = StringUtils.isBlank(request().getParameter("name")) ? null : request().getParameter("name") ;
-		String mobilePhone = StringUtils.isBlank(request().getParameter("mobilePhone")) ? null : request().getParameter("mobilePhone") ;
+		String username = StringUtils.isBlank(request().getParameter("username")) ? null
+				: request().getParameter("username");
+		String name = StringUtils.isBlank(request().getParameter("name")) ? null : request().getParameter("name");
+		String mobilePhone = StringUtils.isBlank(request().getParameter("mobilePhone")) ? null
+				: request().getParameter("mobilePhone");
 		if (StringUtils.isNotBlank(data)) {
 			Integer sEcho = null, iDisplayStart = null, iDisplayLength = null;
 			JSONArray json = JSONArray.fromObject(data);
@@ -97,7 +99,7 @@ public class AdminController extends BaseController {
 		}
 		return rstResult;
 	}
-	
+
 	@RequestMapping("/deleteAdmin.do")
 	public @ResponseBody RstResult deleteAdmin() throws Exception {
 		List<Long> idlist = new ArrayList<Long>();
@@ -108,21 +110,22 @@ public class AdminController extends BaseController {
 		for (String id : ids.split(",")) {
 			idlist.add(Long.parseLong(id));
 		}
-		return adminService.deleteAdmin(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功") : new RstResult(ErrorCode.SB, "删除失败");
+		return adminService.deleteAdmin(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功")
+				: new RstResult(ErrorCode.SB, "删除失败");
 	}
-	
+
 	@RequestMapping("/addAdminIndex.do")
 	public String addAdminIndex() {
 		String type = request().getParameter("type");
-		if ("2".equals(type)) {//查看
-			
+		if ("2".equals(type)) {// 查看
+
 		}
-		if ("3".equals(type)) {//修改
-			
+		if ("3".equals(type)) {// 修改
+
 		}
 		return "/admin/admin_index";
 	}
-	
+
 	@RequestMapping("/addAdmin.do")
 	public @ResponseBody RstResult addAdmin(@RequestParam Map<String, String> params) throws Exception {
 		String username = params.get("username");
@@ -130,7 +133,8 @@ public class AdminController extends BaseController {
 			error("用户名不能为空");
 		}
 		String password = params.get("password");
-		if (StringUtils.isBlank(password) || !Pattern.matches("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$", password)) {
+		if (StringUtils.isBlank(password)
+				|| !Pattern.matches("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$", password)) {
 			error("请输入8到16位的数字字母组合密码");
 		}
 		String confirmpassword = params.get("confirmpassword");
@@ -166,15 +170,16 @@ public class AdminController extends BaseController {
 		admin.setHeadImg(headImg);
 		admin.setRole(role);
 		admin.setCreateTime(new Date());
-		return adminService.addAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功") : new RstResult(ErrorCode.SB, "保存失败");
+		return adminService.addAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功")
+				: new RstResult(ErrorCode.SB, "保存失败");
 	}
-	
+
 	@RequestMapping("/listRoles.do")
 	public @ResponseBody RstResult listRoles() {
 		List<Map<String, Object>> roles = adminService.listRoles(null, null);
 		return new RstResult(ErrorCode.CG, "查询成功", roles);
 	}
-	
+
 	@RequestMapping("/roleManage.do")
 	public String roleManage() {
 		return "/admin/role_manage";
@@ -205,21 +210,21 @@ public class AdminController extends BaseController {
 		}
 		return rstResult;
 	}
-	
+
 	@RequestMapping("/addRoleIndex.do")
 	public String addRoleIndex() {
 		String type = request().getParameter("type");
-		if ("2".equals(type)) {//查看
-			
+		String id = request().getParameter("id");
+		if ("2".equals(type) || "3".equals(type)) {// 查看
+			request().setAttribute("role", adminService.queryRoleById(Long.parseLong(id)));
 		}
-		if ("3".equals(type)) {//修改
-			
-		}
+		request().setAttribute("type", type);
+		request().setAttribute("id", id);
 		return "/admin/role_index";
 	}
-	
+
 	@RequestMapping("/addRole.do")
-	public @ResponseBody RstResult addRole(@RequestParam Map<String, String> params) throws Exception{
+	public @ResponseBody RstResult addRole(@RequestParam Map<String, String> params) throws Exception {
 		String name = params.get("name");
 		if (StringUtils.isBlank(name)) {
 			error("角色名不能为空");
@@ -232,10 +237,18 @@ public class AdminController extends BaseController {
 		if (StringUtils.isBlank(resources)) {
 			error("权限模块不能为空");
 		}
-		long rtn = adminService.addRole(name, description, resources.split(","));
-		return rtn > 0 ? new RstResult(ErrorCode.CG, "添加角色成功") : new RstResult(ErrorCode.SB, "添加角色失败");
+		String type = params.get("type");
+		String id = params.get("id");
+		long rtn = 0;
+		if (type.equals("1")) {
+			rtn = adminService.addRole(name, description, resources.split(","));
+		}
+		if (type.equals("3")) {
+			rtn = adminService.updateRole(Long.parseLong(id), name, description, resources.split(","));
+		}
+		return rtn > 0 ? new RstResult(ErrorCode.CG, type.equals(1) ? "添加角色成功" : "修改角色成功") : new RstResult(ErrorCode.SB, type.equals(1) ? "添加角色失败" : "修改角色失败");
 	}
-	
+
 	@RequestMapping("/deleteRole.do")
 	public @ResponseBody RstResult deleteRole() throws Exception {
 		List<Long> idlist = new ArrayList<Long>();
@@ -246,9 +259,10 @@ public class AdminController extends BaseController {
 		for (String id : ids.split(",")) {
 			idlist.add(Long.parseLong(id));
 		}
-		return adminService.deleteRole(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功") : new RstResult(ErrorCode.SB, "删除失败");
+		return adminService.deleteRole(idlist) > 0 ? new RstResult(ErrorCode.CG, "删除成功")
+				: new RstResult(ErrorCode.SB, "删除失败");
 	}
-	
+
 	@RequestMapping("/listResources.do")
 	public @ResponseBody RstResult listResources() {
 		List<Resource> resources = adminService.queryResources();

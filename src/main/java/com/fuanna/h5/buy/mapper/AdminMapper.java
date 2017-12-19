@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.AdminLoginLog;
@@ -106,7 +107,13 @@ public interface AdminMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public int addRole(Role role);
 	
+	@Update("update f_role set name=#{name},description=#{description} where id=#{id}")
+	public int updateRole(Role role);
+	
 	@Insert({ "insert into f_role_resource(roleId, resourceId) values(#{roleId},#{resourceId})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public int addRoleResource(RoleResource roleResource);
+	
+	@Select({ "select role.name, role.description, role.createTime, GROUP_CONCAT(resource.resourceId) as resources from f_role as role left join f_role_resource as resource on resource.roleId = role.id where role.id = #{0} group by role.id" })
+	public Role queryRoleById(long roleId);
 }

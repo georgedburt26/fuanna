@@ -1,5 +1,6 @@
 package com.fuanna.h5.buy.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -135,5 +136,28 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return rtn;
 	}
+	
+	@Override
+	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
+	public long updateRole(long id, String name, String description, String[] resources) {
+		long rtn = 0;
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(id);
+		Role role = new Role();
+		role.setId(id);
+		role.setName(name);
+		role.setDescription(description);
+		rtn = adminMapper.updateRole(role);
+		rtn = adminMapper.deleteRoleResource(ids);
+		for (String resourceId : resources) {
+			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
+		}
+		return rtn;
+	}
 
+
+	@Override
+	public Role queryRoleById(long roleId) {
+		return adminMapper.queryRoleById(roleId);
+	}
 }
