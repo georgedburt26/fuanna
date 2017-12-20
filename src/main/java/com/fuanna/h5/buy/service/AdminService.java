@@ -14,6 +14,8 @@ public interface AdminService {
 	
 	public long addAdmin(Admin admin);
 	
+	public Admin queryAdminById(long adminId);
+	
 	public List<Resource> queryResourcesByAdminId(long adminId);
 	
 	public List<Resource> queryResources();

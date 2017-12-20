@@ -62,6 +62,15 @@ public class AdminController extends BaseController {
 		url = "redirect:/admin/index.do";// 登陆成功
 		return url;
 	}
+	/******** 库存管理*********/
+	@RequestMapping("/stockinManage.do")
+	public String stockinManage() {
+		return "/admin/stockin_manage";
+	}
+	@RequestMapping("/stockoutManage.do")
+	public String stockoutManage() {
+		return "/admin/stockout_manage";
+	}
 
 	/******** 权限管理 *********/
 	@RequestMapping("/adminManage.do")
@@ -117,12 +126,12 @@ public class AdminController extends BaseController {
 	@RequestMapping("/addAdminIndex.do")
 	public String addAdminIndex() {
 		String type = request().getParameter("type");
-		if ("2".equals(type)) {// 查看
-
+		String id = request().getParameter("id");
+		if ("2".equals(type) || "3".equals(type)) {// 查看
+			request().setAttribute("admin", adminService.queryAdminById(Long.parseLong(id)));
 		}
-		if ("3".equals(type)) {// 修改
-
-		}
+		request().setAttribute("type", type);
+		request().setAttribute("id", id);
 		return "/admin/admin_index";
 	}
 

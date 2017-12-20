@@ -182,11 +182,11 @@
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs' style='display:block'>"
+											"class='am-btn am-btn-default am-btn-xs' style='display:block' onclick='checkAdmin(" + row.id + ")'>"
 												+ "<span class='am-icon-file-text-o'></span>查看"
 												+ "</button>"
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs am-text-secondary'>"
+											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editAdmin(" + row.id + ")'>"
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
 												+ "<button type='button' "
@@ -265,5 +265,11 @@
 			}
 		});
 		d.show();
+	}
+	function editAdmin(id) {
+		pageContent("admin/addAdminIndex.do?id=" + id + "&type=3");
+	}
+	function checkAdmin(id) {
+		pageContent("admin/addAdminIndex.do?id=" + id + "&type=2");
 	}
 </script>

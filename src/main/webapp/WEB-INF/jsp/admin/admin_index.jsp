@@ -10,32 +10,37 @@
 						<label class="am-u-sm-3 am-form-label">用户名</label>
 						<div class="am-u-sm-9">
 							<input type="text" id="username" placeholder="输入用户名"
+								<c:if test="${type==2}">readonly="readonly"</c:if>
+								<c:if test="${type!=1}">value=${admin.username}</c:if>
 								minLength="3" required />
 						</div>
 					</div>
-					<div class="am-form-group">
-						<label class="am-u-sm-3 am-form-label">密码</label>
-						<div class="am-u-sm-9">
-							<input type="password" id="password"
-								data-validation-message="请输入8到16位的数字字母组合"
-								pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$"
-								placeholder="请输入密码" required />
+					<c:if test="${type==1}">
+						<div class="am-form-group">
+							<label class="am-u-sm-3 am-form-label">密码</label>
+							<div class="am-u-sm-9">
+								<input type="password" id="password"
+									data-validation-message="请输入8到16位的数字字母组合"
+									pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$"
+									placeholder="请输入密码" required />
+							</div>
 						</div>
-					</div>
-					<div class="am-form-group">
-						<label class="am-u-sm-3 am-form-label">确认密码</label>
-						<div class="am-u-sm-9">
-							<input type="password" id="confirmpassword"
-								data-equal-to="#password" data-validation-message="请与上面输入的密码一致"
-								pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$"
-								placeholder="请与上面输入的值一致" required />
+						<div class="am-form-group">
+							<label class="am-u-sm-3 am-form-label">确认密码</label>
+							<div class="am-u-sm-9">
+								<input type="password" id="confirmpassword"
+									data-equal-to="#password" data-validation-message="请与上面输入的密码一致"
+									pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$"
+									placeholder="请与上面输入的值一致" required />
+							</div>
 						</div>
-					</div>
+					</c:if>
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">姓名</label>
 						<div class="am-u-sm-9">
 							<input type="text" id="name" placeholder="姓名" minLength="2"
-								required />
+								<c:if test="${type==2}">readonly="readonly"</c:if>
+								<c:if test="${type!=1}">value=${admin.name}</c:if>  required />
 						</div>
 					</div>
 					<div class="am-form-group">
@@ -43,14 +48,17 @@
 						<div class="am-u-sm-9">
 							<input type="text" id="mobilePhone" placeholder="手机号"
 								data-validation-message="请输入正确的手机号"
-								pattern="^[1][3,4,5,7,8][0-9]{9}$"
-								required />
+								pattern="^[1][3,4,5,7,8][0-9]{9}$" 
+								<c:if test="${type==2}">readonly="readonly"</c:if>
+								<c:if test="${type!=1}">value=${admin.mobilePhone}</c:if> required />
 						</div>
 					</div>
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">电子邮件</label>
 						<div class="am-u-sm-9">
-							<input type="email" id="email" placeholder="输入你的电子邮件" required />
+							<input type="email" id="email" placeholder="输入你的电子邮件" 
+							<c:if test="${type==2}">readonly="readonly"</c:if>
+							<c:if test="${type!=1}">value=${admin.email}</c:if> required />
 						</div>
 					</div>
 
@@ -79,14 +87,16 @@
 						<div class="am-u-sm-9">
 							<img src="<%=sourcePath%>img/admin/headImg.jpg"
 								style="width: 160.83px;" />
-							<div id="fileContainer"></div>
+						<c:if test="${type!=2}"><div id="fileContainer"></div></c:if>
 						</div>
 					</div>
-					<div class="am-form-group">
-						<div class="am-u-sm-9 am-u-sm-push-3">
-							<button type="button" id="save" class="am-btn am-btn-primary">保存</button>
+					<c:if test="${type!=2}">
+						<div class="am-form-group">
+							<div class="am-u-sm-9 am-u-sm-push-3">
+								<button type="button" id="save" class="am-btn am-btn-primary">保存</button>
+							</div>
 						</div>
-					</div>
+					</c:if>
 				</form>
 			</div>
 		</div>

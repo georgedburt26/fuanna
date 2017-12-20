@@ -160,4 +160,10 @@ public class AdminServiceImpl implements AdminService{
 	public Role queryRoleById(long roleId) {
 		return adminMapper.queryRoleById(roleId);
 	}
+
+
+	@Override
+	public Admin queryAdminById(long adminId) {
+		return adminMapper.queryAdminById(adminId);
+	}
 }
