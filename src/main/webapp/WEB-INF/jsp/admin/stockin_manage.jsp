@@ -153,4 +153,10 @@
 </div>
 <script>
 $("#barcode").focus();
+$('#barcode').bind('keypress',function(event){ 
+    if(event.keyCode == 13)      
+    {  
+        alert('你输入的内容为1：' + $('#barcode').val());  
+    } 
+});
 </script>
