@@ -757,8 +757,12 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 }
 
 .row {
-	margin-left: -18px;
-	margin-right: -18px;
+	border: 1px solid #e7ecf1;
+	border-radius: 5px;
+	padding: 12px 20px 15px;
+	background-color: #fff;
+	margin-top: 0;
+	margin-bottom: 25px;
 	overflow: hidden;
 }
 
@@ -766,11 +770,13 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 	margin-bottom: 25px;
 }
 
+#row_left {
+	float: left;
+}
+
 @media screen and (max-width:500px) {
-	.row {
-		margin-left: -18px;
-		margin-right: -18px;
-		overflow: hidden;
+	#row_left {
+		float: none;
 	}
 }
 
