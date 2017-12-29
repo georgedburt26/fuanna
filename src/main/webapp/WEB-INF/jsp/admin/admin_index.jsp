@@ -85,7 +85,7 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">头像</label>
 						<div class="am-u-sm-9">
-							<img src="<%=sourcePath%>img/admin/headImg.jpg"
+							<img id="headImg" src="<%=sourcePath%>img/admin/headImg.jpg"
 								style="width: 160.83px;" />
 						<c:if test="${type!=2}"><div id="fileContainer"></div></c:if>
 						</div>

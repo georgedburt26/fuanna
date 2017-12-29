@@ -1109,7 +1109,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 .input-icon>i {
 	color: #ccc;
 	position: absolute;
-	margin-top: 2px;
+	margin-top: 6px;
 	z-index: 3;
 	width: 16px;
 	font-size: 16px;
@@ -2017,6 +2017,51 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 
 .am-icon-list:before {
 	line-height: 75px;
+}
+
+.am-datatable-info {
+	float: left;
+}
+
+#datatable_length {
+	font-size: 1.4rem;
+	color: #555;
+	float: left;
+	margin-left: 1rem;
+}
+
+.am-datatable-length label {
+	display: inline-block;
+	font-weight: normal;
+	vertical-align: middle;
+	margin-top: 3px;
+}
+
+.am-datatable-length select {
+	display: inline-block;
+	width: auto;
+}
+
+.dataTables_paginate {
+	float: right;
+}
+
+.datatable-search {
+	display: inline-block;
+	width: auto;
+}
+
+.datatable-search label {
+	color: #444;
+	font-weight: 400;
+	font-size: 1.6rem;
+	font-weight: 400;
+}
+
+.datatable-search input {
+	border: 1px solid #e6e6e6;
+	border-radius: 3px;
+	padding: 2px;
 }
 
 @media screen and (max-width: 500px) {

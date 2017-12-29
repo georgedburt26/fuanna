@@ -52,51 +52,6 @@
 		</div>
 	</div>
 </div>
-<style>
-.am-datatable-info {
-	float: left;
-}
-
-#datatable_length {
-	font-size: 1.4rem;
-	color: #555;
-	float: left;
-	margin-left: 1rem;
-}
-
-.am-datatable-length label {
-	display: inline-block;
-	font-weight: normal;
-	vertical-align: middle;
-}
-
-.am-datatable-length select {
-	display: inline-block;
-	width: auto;
-}
-
-.dataTables_paginate {
-	float: right;
-}
-
-.datatable-search {
-	display: inline-block;
-	width: auto;
-}
-
-.datatable-search label {
-	color: #444;
-	font-weight: 400;
-	font-size: 1.6rem;
-	font-weight: 400;
-}
-
-.datatable-search input {
-	border: 1px solid #e6e6e6;
-	border-radius: 3px;
-	padding: 2px;
-}
-</style>
 <script>
 	var dataTable = $('#datatable')
 			.dataTable(
