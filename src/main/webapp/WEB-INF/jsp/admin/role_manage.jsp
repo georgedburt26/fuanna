@@ -177,7 +177,7 @@
 					"ids" : ids
 				}, function(data) {
 					showmsg(data.errorCode, data.errorMsg);
-					dataTable.fnDraw();
+					dataTable.fnDraw(false);
 				});
 			},
 			cancelValue : '取消',

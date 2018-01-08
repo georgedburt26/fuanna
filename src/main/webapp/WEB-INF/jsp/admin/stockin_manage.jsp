@@ -58,9 +58,7 @@
 				<table class="am-table am-table-hover table-main" id="datatable">
 					<thead>
 						<tr>
-							<th class="table-check"
-								style="text-align: center; padding: 0px; vertical-align: middle;"><input
-								type="checkbox" class="tpl-table-fz-check"></th>
+							<th class="table-barcode">条形码</th>
 							<th class="table-productname">商品名</th>
 							<th class="table-category">类别</th>
 							<th class="table-price">价格</th>
@@ -108,109 +106,130 @@
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
 						"sZeroRecords" : "没有检索到数据",
 						"retrieve" : true,//保证只有一个table实例  
+						'bStateSave': true,
 						"aoColumns" : [
 								{
 									//自定义列
-									"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
-									"mDataProp" : "id", //获取数据列名
+									"sName" : "barcode", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
+									"mDataProp" : "barcode", //获取数据列名
 									"render" : function(data, type, row) { //列渲染
-										return '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>';
+										return "<span id='" + data + "'>" + data + "</span>";
 									}
 								},
 								{
 									"sName" : "productname",
-									"mDataProp" : "productname",
+									"mDataProp" : "productname"
 								},
 								{
 									"sName" : "category",
-									"mDataProp" : "category",
+									"mDataProp" : "category"
 								},
 								{
 									"sName" : "price",
-									"mDataProp" : "price",
+									"mDataProp" : "price"
 								},
 								{
 									"sName" : "num",
 									"mDataProp" : "num",
+									"render" : function(data, type, row) {
+										return "<span id='" + row.barcode + "_num'>" + data + "</span>";
+									}
 								},
 								{
 									"render" : function(data, type, row) {
-										return "<span class='am-icon-minus-circle'></span>" +
-										       "<span class='am-icon-plus-circle'></span>";
+										return "<div class='am-btn-toolbar' style='display: inline-block'>" +
+										       "<span row='"+row+"' onclick='operateNum(" + row.barcode + ", true)' class='addNum am-icon-plus-circle am-icon-sm' style='margin-right:10px;cursor:pointer;'></span>" +
+										       "<span onclick='operateNum(" + row.barcode + ", false)' class='minusNum am-icon-minus-circle am-icon-sm' style='cursor:pointer;'></span>" + 
+										       "</div>";
 									}
 								} ]
 					});
 	dataTable.fnAddData( [ {
+		"barcode":"1",
         "productname":       "123",
         "category":   "Zystem Architect",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"2",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"3",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"4",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"5",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"6",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"7",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"8",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"9",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"10",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"11",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"12",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"13",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"14",
         "productname": "Garrett Winters",
         "category": "Director",
         "price":"100.00",
         "num":"3"
     }, {
+		"barcode":"15",
         "productname": "Garrett Winters",
         "category": "2irector",
         "price":"100.00",
@@ -230,4 +249,17 @@
 			alert('你输入的内容为1：' + $('#barcode').val(), 0);
 		}
 	});
+	
+	function operateNum(barcode, isAdd) {
+		var num = $("#" + barcode + "_num").text();
+		var rowIndex = dataTable.fnGetPosition(document.getElementById(barcode + "").parentNode.parentNode);
+		var colIndex = $("#" + barcode + "_num").parent().index();
+		var data = isAdd ? parseInt(num) + 1 : parseInt(num) - 1;
+		if (data == 0) {
+			dataTable.fnDeleteRow($("#" + barcode).parent().parent(), null, false);
+			dataTable.fnDraw(false);
+			return ;
+		}
+		dataTable.fnUpdate(data, rowIndex, colIndex, false);
+	}
 </script>
