@@ -31,7 +31,7 @@ public interface AdminMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public int addAdmin(Admin admin);
 	
-	@Select({ "select * from f_admin where id = #{0}"})
+	@Select({ "select admin.*, GROUP_CONCAT(role.`name`) as roleName from f_admin as admin left join f_role as role on instr(admin.role, role.id) where admin.id = #{0}"})
 	public Admin queryAdminById(long id);
 	
 	@Select({"<script>" +  

@@ -65,6 +65,8 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
+						<c:if test="${type==2}"><input type="text" id="role" value="${admin.roleName}" readonly="readonly"></c:if>
+						<c:if test="${type==1 || type == 3}">
 							<input type="hidden" id="role" value="" />
 							<div class="am-selected am-dropdown am-dropdown-up"
 								id="am-selected-c8n6r" data-am-dropdown>
@@ -79,6 +81,7 @@
 									</ul>
 								</div>
 							</div>
+							</c:if>
 						</div>
 					</div>
 
