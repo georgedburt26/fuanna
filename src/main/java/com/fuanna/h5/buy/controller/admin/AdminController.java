@@ -141,7 +141,9 @@ public class AdminController extends BaseController {
 		if (StringUtils.isBlank(username)) {
 			error("用户名不能为空");
 		}
-		String password = params.get("password");
+		String password = null;
+		if ("1".equals(params.get("type"))) {
+		password = params.get("password");
 		if (StringUtils.isBlank(password)
 				|| !Pattern.matches("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$", password)) {
 			error("请输入8到16位的数字字母组合密码");
@@ -152,6 +154,7 @@ public class AdminController extends BaseController {
 		}
 		if (!password.equals(confirmpassword)) {
 			error("密码输入不一致");
+		}
 		}
 		String name = params.get("name");
 		if (StringUtils.isBlank(name)) {
@@ -172,15 +175,23 @@ public class AdminController extends BaseController {
 		String headImg = params.get("headImg");
 		Admin admin = new Admin();
 		admin.setUsername(username);
+		if ("1".equals(params.get("type"))) {
 		admin.setPassword(MD5.encrypt(password));
+		}
 		admin.setName(name);
 		admin.setMobilePhone(mobilePhone);
 		admin.setEmail(email);
 		admin.setHeadImg(headImg);
 		admin.setRole(role);
 		admin.setCreateTime(new Date());
-		return adminService.addAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功")
-				: new RstResult(ErrorCode.SB, "保存失败");
+		if ("1".equals(params.get("type"))) {
+			return adminService.addAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功")
+					: new RstResult(ErrorCode.SB, "保存失败");
+		}
+		else {
+			return adminService.updateAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功")
+					: new RstResult(ErrorCode.SB, "保存失败");
+		}
 	}
 
 	@RequestMapping("/listRoles.do")

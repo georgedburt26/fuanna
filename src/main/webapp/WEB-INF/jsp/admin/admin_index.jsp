@@ -13,6 +13,7 @@
 								<c:if test="${type==2}">readonly="readonly"</c:if>
 								<c:if test="${type!=1}">value=${admin.username}</c:if>
 								minLength="3" required />
+								<c:if test="${type==3}"><input type="hidden" name="id" value=${admin.id} /></c:if>
 						</div>
 					</div>
 					<c:if test="${type==1}">
@@ -65,7 +66,7 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
-						<c:if test="${type==2}"><input type="text" id="role" value="${admin.roleName}" readonly="readonly"></c:if>
+						<c:if test="${type==2}"><input type="text" id="role" value="${admin.role}" readonly="readonly"></c:if>
 						<c:if test="${type==1 || type == 3}">
 							<input type="hidden" id="role" value="" />
 							<div class="am-selected am-dropdown am-dropdown-up"
@@ -174,6 +175,7 @@ $.post("admin/listRoles.do", {}, function(data) {
 			params.email = $("#email").val();
 			params.role = $("#role").val();
 			params.headImg = $("#headImg").val();
+			params.type = "${type}";
 			$.ajax({
 				cache : true,
 				type : "POST",

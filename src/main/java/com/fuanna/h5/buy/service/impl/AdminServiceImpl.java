@@ -130,7 +130,7 @@ public class AdminServiceImpl implements AdminService{
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
 	public long addRole(String name, String description, String[] resources) {
 		Role role = new Role(name, description, new Date());
-		int rtn = adminMapper.addRole(role);
+		long rtn = adminMapper.addRole(role);
 		for (String resourceId : resources) {
 			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
 		}
@@ -165,5 +165,11 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Admin queryAdminById(long adminId) {
 		return adminMapper.queryAdminById(adminId);
+	}
+
+
+	@Override
+	public long updateAdmin(Admin admin) {
+		return adminMapper.updateAdmin(admin);
 	}
 }

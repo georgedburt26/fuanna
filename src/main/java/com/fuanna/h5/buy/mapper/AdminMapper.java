@@ -25,11 +25,14 @@ public interface AdminMapper {
 	
 	@Insert({ "insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public int addLoginLog(AdminLoginLog adminLoginLog);
+	public long addLoginLog(AdminLoginLog adminLoginLog);
 	
 	@Insert({ "insert into f_admin(username, password, name, mobilePhone, email, headImg, createTime, role) values(#{username},#{password},#{name},#{mobilePhone},#{email},#{headImg},#{createTime},#{role})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public int addAdmin(Admin admin);
+	public long addAdmin(Admin admin);
+	
+	@Update("update f_admin set username=#{username},name=#{name},mobilePhone=#{mobilePhone},email=#{email},headImg=#{headImg} where id=#{id}")
+	public int updateAdmin(Admin admin);
 	
 	@Select({ "select admin.*, GROUP_CONCAT(role.`name`) as roleName from f_admin as admin left join f_role as role on instr(admin.role, role.id) where admin.id = #{0}"})
 	public Admin queryAdminById(long id);
@@ -105,14 +108,14 @@ public interface AdminMapper {
 	
 	@Insert({ "insert into f_role(name, description, createTime) values(#{name},#{description},#{createTime})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public int addRole(Role role);
+	public long addRole(Role role);
 	
 	@Update("update f_role set name=#{name},description=#{description} where id=#{id}")
 	public int updateRole(Role role);
 	
 	@Insert({ "insert into f_role_resource(roleId, resourceId) values(#{roleId},#{resourceId})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
-	public int addRoleResource(RoleResource roleResource);
+	public long addRoleResource(RoleResource roleResource);
 	
 	@Select({ "select role.name, role.description, role.createTime, GROUP_CONCAT(resource.resourceId) as resources from f_role as role left join f_role_resource as resource on resource.roleId = role.id where role.id = #{0} group by role.id" })
 	public Role queryRoleById(long roleId);
