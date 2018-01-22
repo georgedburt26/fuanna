@@ -122,7 +122,7 @@ $.post("admin/listRoles.do", {}, function(data) {
 		source:"<%=source%>",
 		filepath:"/img/admin/headImg/",
 		filetype:"jpg,png,jpeg,gif,bmp",
-		id:"headImg",
+		id:"headImgValue",
 		callback:function(url) {
 			$("#headImg").attr("src", "<%=sourcePath%>" + url);
 		}
