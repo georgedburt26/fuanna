@@ -98,7 +98,7 @@ public class AdminController extends BaseController {
 			error("条形码不能为空");
 		}
 		Map<String, String> productMap = productService.findProductByBarCode(barcode);
-		return new RstResult(ErrorCode.CG, "", JSONObject.fromObject(productMap).toString());
+		return new RstResult(ErrorCode.CG, "", productMap);
 	}
 
 	/******** 权限管理 *********/

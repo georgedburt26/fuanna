@@ -2075,6 +2075,10 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 	margin-top:5px;
 }
 
+#productInfo ul li span{
+	padding:5px;
+}
+
 .no-change-line{
 	white-space: nowrap;
 }

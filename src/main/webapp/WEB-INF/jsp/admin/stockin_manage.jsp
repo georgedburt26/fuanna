@@ -114,8 +114,8 @@
 									}
 								},
 								{
-									"sName" : "productname",
-									"mDataProp" : "productname"
+									"sName" : "productName",
+									"mDataProp" : "productName"
 								},
 								{
 									"sName" : "category",
@@ -148,13 +148,6 @@
 									}
 								} ]
 					});
-	dataTable.fnAddData([ {
-		"barcode" : "1",
-		"productname" : "123",
-		"category" : "Zystem Architect",
-		"price" : "100.00",
-		"num" : "3"
-	} ]);
 	$('#table_search').on('click', function() {
 		dataTable.fnFilter($("#table_search_field").val() + '');
 	});
@@ -170,10 +163,23 @@
 				showmsg("9999", "条形码不能为空");
 				return;
 			}
+			var tableDatas = new Array();
+			$(".tpl-content-wrapper").mLoading({mask:false});
 			$.post("admin/findProductByBarCode.do", {
 				"barcode" : $("#barcode").val()
 			}, function(data) {
-
+				var tableData = {};
+				tableData.barcode = data.data.barcode;
+				tableData.productName = data.data.name;
+				tableData.category = data.data.category;
+				tableData.price = data.data.normalPrice;
+				$("#p_barcode").text(tableData.barcode);
+				$("#p_productName").text(tableData.productName);
+				$("#p_category").text(tableData.category);
+				$("#p_price").text(tableData.price);
+				tableDatas.push(tableData);
+				dataTable.fnAddData(tableDatas);
+				$(".tpl-content-wrapper").mLoading("hide");
 			});
 		}
 	});

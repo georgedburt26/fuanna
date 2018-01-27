@@ -38,7 +38,7 @@ public interface ProductMapper {
 	@Select({"select count(a.id) from (select p.id from f_product as p left join f_product_sku as sku on sku.productId = p.id group by p.id) as a"})
 	public int countProductSku();
 	
-	@Select({"select sku.barcode, p.name, sku.skuAttr, sku.normalPrice, c.name from f_product_sku as sku left join f_product as p on sku.productId = p.id left join f_category as c on p.category = c.id where sku.barcode = #{0}"})
+	@Select({"select sku.barcode, p.name, sku.skuAttr, sku.normalPrice, c.name as category from f_product_sku as sku left join f_product as p on sku.productId = p.id left join f_category as c on p.category = c.id where sku.barcode = #{0}"})
 	@ResultType(HashMap.class)
 	public Map<String, String> findProductByBarCode(String barcode);
 	

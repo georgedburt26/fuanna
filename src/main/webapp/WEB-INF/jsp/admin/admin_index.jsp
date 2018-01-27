@@ -124,7 +124,6 @@ $.post("admin/listRoles.do", {}, function(data) {
 	$.each(data.data,function(index,value){
 		$(".am-selected-list").append("<li class='' id='selectItem" + value.id + "' data-index='" + index + "' data-group='0' data-value='" + value.id + "'>" +
 				                      "<span class='am-selected-text'>" + value.name + "</span> <i class='am-icon-check'></i></li>");
-		console.log($("#selectItem" + value.id).html());
 	});
 	if(type == "3") {
 		$.each("${admin.role}".split(","),function(index,value){

@@ -56,6 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Map<String, String> findProductByBarCode(String barcode) {
+
 		Map<String, String> productMap = productMapper.findProductByBarCode(barcode);
 		if (productMap != null && !productMap.isEmpty()) {
 			String productName = productMap.get("name");
@@ -66,6 +67,7 @@ public class ProductServiceImpl implements ProductService {
 				productName += " " + object.getString("value");
 			}
 			productMap.put("name", productName);
+			productMap.put("skuAttr", "");
 		}
 		return productMap;
 	}
