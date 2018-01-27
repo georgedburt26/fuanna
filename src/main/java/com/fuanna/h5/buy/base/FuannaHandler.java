@@ -26,6 +26,7 @@ public class FuannaHandler{
 			args = pjp.getArgs();
 			return pjp.proceed(args);
 		} catch (Throwable e) {
+			logger.error("系统出错", e);
 			Object redirectUrl = null;
 			String errorMsg = "系统内部错误";
 			if (e instanceof FuannaErrorException) {

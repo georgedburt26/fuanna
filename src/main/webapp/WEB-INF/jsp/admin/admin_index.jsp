@@ -6,6 +6,7 @@
 		<div class="am-g tpl-amazeui-form">
 			<div class="am-u-sm-12 am-u-md-9">
 				<form id="doc-vld-msg" class="am-form am-form-horizontal">
+					<input type="hidden" id="adminId" name="adminId" value=${admin.id} />
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">用户名</label>
 						<div class="am-u-sm-9">
@@ -13,7 +14,6 @@
 								<c:if test="${type==2}">readonly="readonly"</c:if>
 								<c:if test="${type!=1}">value=${admin.username}</c:if>
 								minLength="3" required />
-								<c:if test="${type==3}"><input type="hidden" name="id" value=${admin.id} /></c:if>
 						</div>
 					</div>
 					<c:if test="${type==1}">
@@ -66,15 +66,15 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">角色</label>
 						<div class="am-u-sm-9">
-						<c:if test="${type==2}"><input type="text" id="role" value="${admin.role}" readonly="readonly"></c:if>
+						<c:if test="${type==2}"><input type="text" id="role" value="${admin.roleName}" readonly="readonly"></c:if>
 						<c:if test="${type==1 || type == 3}">
 							<input type="hidden" id="role" value="" />
-							<div class="am-selected am-dropdown am-dropdown-up"
+							<div class="am-selected am-dropdown am-dropdown-down"
 								id="am-selected-c8n6r" data-am-dropdown>
 								<button type="button"
 									class="am-selected-btn am-btn am-dropdown-toggle am-btn-default">
 									<span class="am-selected-status am-fl" id="select-value">点击选择...</span>
-									<i class="am-selected-icon am-icon-caret-up"></i>
+									<i class="am-selected-icon am-icon-caret-down"></i>
 								</button>
 								<div class="am-selected-content am-dropdown-content"
 									style="min-width: 200px;">
@@ -89,7 +89,14 @@
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">头像</label>
 						<div class="am-u-sm-9">
-							<img id="headImg" src="<%=sourcePath%>img/admin/headImg.jpg"
+							<img id="headImg" src=<c:choose>
+							<c:when test="${type != 1}">  
+							"<%=sourcePath%>${admin.headImg}"     
+							</c:when>
+							<c:otherwise> 
+							"<%=sourcePath%>img/admin/headImg.jpg"    
+							</c:otherwise>
+							</c:choose>
 								style="width: 160.83px;" />
 						<c:if test="${type!=2}"><div id="fileContainer"></div></c:if>
 						</div>
@@ -107,6 +114,7 @@
 	</div>
 </div>
 <script>
+var type = "${type}";
 $('[data-am-dropdown]').dropdown();
 $.post("admin/listRoles.do", {}, function(data) {
 	if (data.errorCode != "0000") {
@@ -114,9 +122,17 @@ $.post("admin/listRoles.do", {}, function(data) {
 		return;
 	}
 	$.each(data.data,function(index,value){
-		$(".am-selected-list").append("<li class='' data-index='" + index + "' data-group='0' data-value='" + value.id + "'>" +
+		$(".am-selected-list").append("<li class='' id='selectItem" + value.id + "' data-index='" + index + "' data-group='0' data-value='" + value.id + "'>" +
 				                      "<span class='am-selected-text'>" + value.name + "</span> <i class='am-icon-check'></i></li>");
+		console.log($("#selectItem" + value.id).html());
 	});
+	if(type == "3") {
+		$.each("${admin.role}".split(","),function(index,value){
+			$("#selectItem" + value).toggleClass("am-checked");
+		});
+		$("#select-value").text("${admin.roleName}");
+		$("#role").val("${admin.role}");
+	}
 });
 	renderFile($("#fileContainer"), {
 		source:"<%=source%>",
@@ -174,8 +190,9 @@ $.post("admin/listRoles.do", {}, function(data) {
 			params.mobilePhone = $("#mobilePhone").val();
 			params.email = $("#email").val();
 			params.role = $("#role").val();
-			params.headImg = $("#headImg").val();
+			params.headImg = $("#headImgValue").val();
 			params.type = "${type}";
+			params.adminId = $("#adminId").val();
 			$.ajax({
 				cache : true,
 				type : "POST",

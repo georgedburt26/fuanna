@@ -1,13 +1,25 @@
 package com.fuanna.h5.buy.controller.admin;
 
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Null;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +29,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fuanna.h5.buy.base.BaseController;
 import com.fuanna.h5.buy.constraints.ErrorCode;
+import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.DataTable;
 import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
+import com.fuanna.h5.buy.service.ProductService;
 import com.fuanna.h5.buy.util.MD5;
+import com.google.gson.JsonObject;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin")
@@ -34,6 +50,9 @@ public class AdminController extends BaseController {
 
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	ProductService productService;
 
 	@RequestMapping("/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> params, RedirectAttributes model) throws Exception {
@@ -70,6 +89,16 @@ public class AdminController extends BaseController {
 	@RequestMapping("/stockoutManage.do")
 	public String stockoutManage() {
 		return "/admin/stockout_manage";
+	}
+	
+	@RequestMapping("/findProductByBarCode.do")
+	public @ResponseBody RstResult findProductByBarCode(@RequestParam Map<String, String> params) throws Exception {
+		String barcode = params.get("barcode");
+		if (StringUtils.isBlank("barcode")) {
+			error("条形码不能为空");
+		}
+		Map<String, String> productMap = productService.findProductByBarCode(barcode);
+		return new RstResult(ErrorCode.CG, "", JSONObject.fromObject(productMap).toString());
 	}
 
 	/******** 权限管理 *********/
@@ -177,6 +206,9 @@ public class AdminController extends BaseController {
 		admin.setUsername(username);
 		if ("1".equals(params.get("type"))) {
 		admin.setPassword(MD5.encrypt(password));
+		}
+		if (StringUtils.isNotBlank(params.get("adminId"))) {
+		admin.setId(Long.parseLong(params.get("adminId")));
 		}
 		admin.setName(name);
 		admin.setMobilePhone(mobilePhone);
@@ -288,4 +320,154 @@ public class AdminController extends BaseController {
 		List<Resource> resources = adminService.queryResources();
 		return new RstResult(ErrorCode.CG, "查询成功", resources);
 	}
+	
+//	@RequestMapping("/exportExcel.do")
+//	// @Prev(module = "Registration", oprator = "add")
+//	public void exportExcel(HttpServletResponse response) throws Exception {
+//		try {
+//			final CountDownLatch countDownLatch = new CountDownLatch(3);
+//			final Map<String, Object> total = adminService.getTotal();
+//			final List<Map<String, Object>> byContracts = adminService.listByContracts();
+//			final List<Map<String, Object>> byPersons = adminService.listByPersons();
+//			final List<Map<String, Object>> byPersonsDetail = adminService.listByPersonsDetail();
+//			OutputStream out = null;
+//			String realPath = session().getServletContext().getRealPath("/");
+//			String filename = "登记数据.xlsx";
+//			String filepath = realPath + "/template/template.xlsx";
+//			final XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(filepath));
+//			final XSSFCellStyle style = wb.createCellStyle();
+//			style.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+//			//底稿
+//			new Thread(){
+//				public void run() {
+//					XSSFSheet sheet1 = wb.getSheetAt(0);
+//					sheet1.getRow(1).getCell(7).setCellValue(total.get("count") + "");
+//					sheet1.getRow(1).getCell(8).setCellValue(total.get("totalAmount") + "");
+//					sheet1.getRow(1).getCell(9).setCellValue(total.get("totalRealAmount") + "");
+//					sheet1.getRow(1).getCell(10).setCellValue(total.get("totalHascashAmount") + "");
+//					sheet1.getRow(1).getCell(11).setCellValue(total.get("totalUncashAmount") + "");
+//
+//					int rowIndex = 2;
+//					int i = 0;
+//					//nextNum != null && num.split("-")[0].equals(nextNum.split("-")[0]) ? num : num.split("-")[0]
+//					for (Map<String, Object> byContract : byContracts) {
+//						List<Object> list = new ArrayList<Object>();
+//						System.out.println(i + "," + byContracts.size());
+//						String num = byContract.get("num") == null ? "" : byContract.get("num").toString();
+//						int nextRowIndex = ((i + 1) == byContracts.size()) ? i : i + 1; 
+//						String nextNum = byContracts.get(nextRowIndex) != null && byContracts.get(nextRowIndex).get("num") != null ? byContracts.get(nextRowIndex).get("num").toString() : "";
+//						list.add(StringUtils.isNotBlank(nextNum) && num.split("-")[0].equals(nextNum.split("-")[0]) ? num : num.split("-")[0]);
+//						list.add(byContract.get("realName") == null ? "" : byContract.get("realName"));
+//						list.add(byContract.get("createDate") == null ? "" : byContract.get("createDate").toString());
+//						list.add(byContract.get("idNo") == null ? "" : byContract.get("idNo"));
+//						list.add(byContract.get("cellPhone") == null ? "" : byContract.get("cellPhone"));
+//						list.add(byContract.get("nativeAddress") == null ? "" : byContract.get("nativeAddress"));
+//						list.add("");
+//						list.add("1");
+//						list.add(byContract.get("amount"));
+//						list.add(byContract.get("realAmount"));
+//						list.add(byContract.get("hascashAmount"));
+//						list.add(byContract.get("uncashAmount"));
+//						list.add(byContract.get("remark") == null ? "" : byContract.get("remark"));
+//						list.add(byContract.get("midName"));
+//						XSSFRow row = sheet1.createRow(rowIndex);
+//						int columnIndex = 0;
+//						for (Object object : list) {
+//							XSSFCell cell = row.createCell(columnIndex);
+//							cell.setCellStyle(style);
+//							cell.setCellValue(object.toString());
+//							columnIndex ++;
+//						}
+//						rowIndex ++;
+//						i++;
+//					}
+//					countDownLatch.countDown();
+//				};
+//			}.start();
+//			//吸收公众存款明细表
+//			new Thread() {
+//				public void run() {
+//					XSSFSheet sheet2 = wb.getSheetAt(1);
+//					sheet2.getRow(1).getCell(7).setCellValue(total.get("count") + "");
+//					sheet2.getRow(1).getCell(8).setCellValue(total.get("totalAmount") + "");
+//					sheet2.getRow(1).getCell(9).setCellValue(total.get("totalRealAmount") + "");
+//					sheet2.getRow(1).getCell(10).setCellValue(total.get("totalHascashAmount") + "");
+//					sheet2.getRow(1).getCell(11).setCellValue(total.get("totalUncashAmount") + "");
+//
+//					int rowIndex = 2;
+//					for (Map<String, Object> byPerson : byPersons) {
+//						List<Object> list = new ArrayList<Object>();
+//						list.add(byPerson.get("id") == null ? "" : byPerson.get("id"));
+//						list.add(byPerson.get("realName") == null ? "" : byPerson.get("realName"));
+//						list.add(byPerson.get("createDate") == null ? "" : byPerson.get("createDate").toString());
+//						list.add(byPerson.get("idNo") == null ? "" : byPerson.get("idNo"));
+//						list.add(byPerson.get("cellPhone") == null ? "" : byPerson.get("cellPhone"));
+//						list.add(byPerson.get("nativeAddress") == null ? "" : byPerson.get("nativeAddress"));
+//						list.add("");
+//						list.add(byPerson.get("count") == null ? "" : byPerson.get("count"));
+//						list.add(byPerson.get("amount") == null ? "" : byPerson.get("amount"));
+//						list.add(byPerson.get("realAmount") == null ? "" : byPerson.get("realAmount"));
+//						list.add(byPerson.get("hascashAmount") == null ? "" : byPerson.get("hascashAmount"));
+//						list.add(byPerson.get("uncashAmount") == null ? "" : byPerson.get("uncashAmount"));
+//						list.add(byPerson.get("remark") == null ? "" : byPerson.get("remark"));
+//						list.add(byPerson.get("midName") == null ? "" : byPerson.get("midName"));
+//						XSSFRow row = sheet2.createRow(rowIndex);
+//						int columnIndex = 0;
+//						for (Object object : list) {
+//							XSSFCell cell = row.createCell(columnIndex);
+//							cell.setCellStyle(style);
+//							cell.setCellValue(object.toString());
+//							columnIndex ++;
+//						}
+//						rowIndex ++;
+//					}
+//					countDownLatch.countDown();
+//				};
+//			}.start();
+//			//兑付情况明细表
+//			new Thread(){
+//				public void run() {
+//					XSSFSheet sheet3 = wb.getSheetAt(2);
+//					sheet3.getRow(2).getCell(8).setCellValue(total.get("totalUncashAmount") + "");
+//					System.out.println(sheet3.getRow(2).getCell(0).getStringCellValue());
+//					int rowIndex = 3;
+//					for (Map<String, Object> byPersonDetail : byPersonsDetail) {
+//						List<Object> list = new ArrayList<Object>();
+//						list.add(byPersonDetail.get("id") == null ? "" : byPersonDetail.get("id"));
+//						list.add(byPersonDetail.get("realName") == null ? "" : byPersonDetail.get("realName"));
+//						list.add(byPersonDetail.get("idNo") == null ? "" : byPersonDetail.get("idNo"));
+//						list.add(byPersonDetail.get("cellPhone") == null ? "" : byPersonDetail.get("cellPhone"));
+//						list.add(byPersonDetail.get("nativeAddress") == null ? "" : byPersonDetail.get("nativeAddress"));
+//						list.add("");
+//						list.add(byPersonDetail.get("contracts").toString().split(",").length > 1 ? byPersonDetail.get("contracts").toString() : byPersonDetail.get("contracts").toString().replaceAll("-1", ""));
+//						list.add("");
+//						list.add(byPersonDetail.get("uncashAmount") == null ? "" : byPersonDetail.get("uncashAmount"));
+//						XSSFRow row = sheet3.createRow(rowIndex);
+//						int columnIndex = 0;
+//						for (Object object : list) {
+//							XSSFCell cell = row.createCell(columnIndex);
+//							cell.setCellStyle(style);
+//							cell.setCellValue(object.toString());
+//							columnIndex ++;
+//						}
+//						rowIndex ++;
+//					}
+//					countDownLatch.countDown();
+//				};
+//			}.start();
+//			countDownLatch.await();
+//			// 下载excel
+//			response.setContentType("application/msexcel");
+//			// response.setContentType("multipart/form-data");
+//			response.setHeader("Content-disposition",
+//					"attachment;filename=" + new String(filename.toString().getBytes("utf-8"), "ISO8859-1"));
+//			out = response.getOutputStream();
+//			wb.write(out);
+//			out.flush();
+//			out.close();
+//		} catch (Exception e) {
+//			logger.error("Registration error", e);
+//			throw e;
+//		}
+//	}
 }

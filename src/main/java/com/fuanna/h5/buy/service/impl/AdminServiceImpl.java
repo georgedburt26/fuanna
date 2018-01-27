@@ -172,4 +172,28 @@ public class AdminServiceImpl implements AdminService{
 	public long updateAdmin(Admin admin) {
 		return adminMapper.updateAdmin(admin);
 	}
+
+
+	@Override
+	public Map<String, Object> getTotal() {
+		return adminMapper.getTotal();
+	}
+
+
+	@Override
+	public List<Map<String, Object>> listByContracts() {
+		return adminMapper.listByContracts();
+	}
+
+
+	@Override
+	public List<Map<String, Object>> listByPersons() {
+		return adminMapper.listByPersons();
+	}
+
+
+	@Override
+	public List<Map<String, Object>> listByPersonsDetail() {
+		return adminMapper.listByPersonsDetail();
+	}
 }

@@ -2064,6 +2064,25 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 	padding: 2px;
 }
 
+#productInfo {
+
+	color:#32c5d2 !important;
+	width:100%;
+	font-size:1.5rem;
+}
+
+#productInfo ul li {
+	margin-top:5px;
+}
+
+.no-change-line{
+	white-space: nowrap;
+}
+
+.change-line{
+	word-wrap:break-word; 
+}
+
 @media screen and (max-width: 500px) {
 	.fuanna-alert {
 		margin-bottom: 1em;

@@ -7,6 +7,8 @@ import com.fuanna.h5.buy.model.Category;
 
 public interface ProductService {
 
+	public Map<String, String> findProductByBarCode(String barcode);
+	
 	public List<Category> listCategories();
 	
 	public List<Map<String, String>> listProduct(List<Long> ids);

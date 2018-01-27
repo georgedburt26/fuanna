@@ -1,7 +1,7 @@
 function showmsg(errorCode, errorMsg) {
 	$("#fuana-success-alert").remove();
 	$("#fuanna-fail-alert").remove();
-	if (errorCode == '0000') {
+	if (errorCode == '0000' && errorMsg != '') {
 		$("body").append("<div class='am-form-group'><div class='fuanna-alert fuanna-success' id='fuana-success-alert'>" +
 		        "<p>" + errorMsg + "</p>" +
 		        "</div></div>");

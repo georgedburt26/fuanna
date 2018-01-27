@@ -21,24 +21,17 @@
 					<i class="am-icon-table"></i> <span>商品信息</span>
 				</div>
 			</div>
-			<div class="tpl-echarts" id="tpl-echarts-A"
-				_echarts_instance_="ec_1513751109538"
-				style="-webkit-tap-highlight-color: transparent; user-select: none; position: relative; background: transparent;">
-				<div
-					style="position: relative; overflow: hidden; width: 746px; height: 400px; cursor: default;">
-					<canvas width="746" height="400" data-zr-dom-id="zr_0"
-						style="position: absolute; left: 0px; top: 0px; width: 746px; height: 400px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
-				</div>
-				<div
-					style="position: absolute; display: none; border-style: solid; white-space: nowrap; z-index: 9999999; transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1); background-color: rgba(50, 50, 50, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 14px; font-family: &amp; amp; amp; amp; amp; amp; amp; amp; quot; Microsoft YaHei&amp;amp; amp; amp; amp; amp; amp; amp; quot;; line-height: 21px; padding: 5px; left: 595.858px; top: 224px;">
-					周六<br> <span
-						style="display: inline-block; margin-right: 5px; border-radius: 10px; width: 9px; height: 9px; background-color: #59aea2"></span>邮件
-					: 230<br> <span
-						style="display: inline-block; margin-right: 5px; border-radius: 10px; width: 9px; height: 9px; background-color: #e7505a"></span>媒体
-					: 330<br> <span
-						style="display: inline-block; margin-right: 5px; border-radius: 10px; width: 9px; height: 9px; background-color: #32c5d2"></span>资源
-					: 330
-				</div>
+			<div id="productInfo">
+				<ul>
+					<li><span class="no-change-line">条形码:</span><span
+						class="change-line" id="p_barcode"></span></li>
+					<li><span class="no-change-line">商品名:</span><span
+						class="change-line" id="p_productName"></span></li>
+					<li><span class="no-change-line">类别:</span><span
+						class="change-line" id="p_category"></span></li>
+					<li><span class="no-change-line">价格:</span><span
+						class="change-line" id="p_price"></span></li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -50,9 +43,12 @@
 				<div class="tpl-caption font-green ">
 					<i class="am-icon-bar-chart"></i> <span>待入库商品列表</span>
 				</div>
-				<div class="input-icon right" style="display:inline-block;float:right;">
-                                <i class="am-icon-search" id="table_search"></i>
-                                <input type="text" id="table_search_field" class="form-control form-control-solid" placeholder="搜索..."> </div>
+				<div class="input-icon right"
+					style="display: inline-block; float: right;">
+					<i class="am-icon-search" id="table_search"></i> <input type="text"
+						id="table_search_field" class="form-control form-control-solid"
+						placeholder="搜索...">
+				</div>
 			</div>
 			<div class="tpl-scrollable">
 				<table class="am-table am-table-hover table-main" id="datatable">
@@ -106,14 +102,15 @@
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
 						"sZeroRecords" : "没有检索到数据",
 						"retrieve" : true,//保证只有一个table实例  
-						'bStateSave': true,
+						'bStateSave' : true,
 						"aoColumns" : [
 								{
 									//自定义列
 									"sName" : "barcode", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
 									"mDataProp" : "barcode", //获取数据列名
 									"render" : function(data, type, row) { //列渲染
-										return "<span id='" + data + "'>" + data + "</span>";
+										return "<span id='" + data + "'>"
+												+ data + "</span>";
 									}
 								},
 								{
@@ -132,109 +129,32 @@
 									"sName" : "num",
 									"mDataProp" : "num",
 									"render" : function(data, type, row) {
-										return "<span id='" + row.barcode + "_num'>" + data + "</span>";
+										return "<span id='" + row.barcode + "_num'>"
+												+ data + "</span>";
 									}
 								},
 								{
 									"render" : function(data, type, row) {
-										return "<div class='am-btn-toolbar' style='display: inline-block'>" +
-										       "<span row='"+row+"' onclick='operateNum(" + row.barcode + ", true)' class='addNum am-icon-plus-circle am-icon-sm' style='margin-right:10px;cursor:pointer;'></span>" +
-										       "<span onclick='operateNum(" + row.barcode + ", false)' class='minusNum am-icon-minus-circle am-icon-sm' style='cursor:pointer;'></span>" + 
-										       "</div>";
+										return "<div class='am-btn-toolbar' style='display: inline-block'>"
+												+ "<span row='"
+												+ row
+												+ "' onclick='operateNum("
+												+ row.barcode
+												+ ", true)' class='addNum am-icon-plus-circle am-icon-sm' style='margin-right:10px;cursor:pointer;'></span>"
+												+ "<span onclick='operateNum("
+												+ row.barcode
+												+ ", false)' class='minusNum am-icon-minus-circle am-icon-sm' style='cursor:pointer;'></span>"
+												+ "</div>";
 									}
 								} ]
 					});
-	dataTable.fnAddData( [ {
-		"barcode":"1",
-        "productname":       "123",
-        "category":   "Zystem Architect",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"2",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"3",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"4",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"5",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"6",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"7",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"8",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"9",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"10",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"11",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"12",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"13",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"14",
-        "productname": "Garrett Winters",
-        "category": "Director",
-        "price":"100.00",
-        "num":"3"
-    }, {
-		"barcode":"15",
-        "productname": "Garrett Winters",
-        "category": "2irector",
-        "price":"100.00",
-        "num":"3"
-    } ] );
+	dataTable.fnAddData([ {
+		"barcode" : "1",
+		"productname" : "123",
+		"category" : "Zystem Architect",
+		"price" : "100.00",
+		"num" : "3"
+	} ]);
 	$('#table_search').on('click', function() {
 		dataTable.fnFilter($("#table_search_field").val() + '');
 	});
@@ -246,19 +166,29 @@
 	$("#barcode").focus();
 	$('#barcode').bind('keypress', function(event) {
 		if (event.keyCode == 13) {
-			alert('你输入的内容为1：' + $('#barcode').val(), 0);
+			if ($("#barcode").val() == "") {
+				showmsg("9999", "条形码不能为空");
+				return;
+			}
+			$.post("admin/findProductByBarCode.do", {
+				"barcode" : $("#barcode").val()
+			}, function(data) {
+
+			});
 		}
 	});
-	
+
 	function operateNum(barcode, isAdd) {
 		var num = $("#" + barcode + "_num").text();
-		var rowIndex = dataTable.fnGetPosition(document.getElementById(barcode + "").parentNode.parentNode);
+		var rowIndex = dataTable.fnGetPosition(document.getElementById(barcode
+				+ "").parentNode.parentNode);
 		var colIndex = $("#" + barcode + "_num").parent().index();
 		var data = isAdd ? parseInt(num) + 1 : parseInt(num) - 1;
 		if (data == 0) {
-			dataTable.fnDeleteRow($("#" + barcode).parent().parent(), null, false);
+			dataTable.fnDeleteRow($("#" + barcode).parent().parent(), null,
+					false);
 			dataTable.fnDraw(false);
-			return ;
+			return;
 		}
 		dataTable.fnUpdate(data, rowIndex, colIndex, false);
 	}

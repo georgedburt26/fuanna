@@ -1,7 +1,9 @@
 package com.fuanna.h5.buy.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.transaction.Transactional;
 
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Component;
 import com.fuanna.h5.buy.mapper.ProductMapper;
 import com.fuanna.h5.buy.model.Category;
 import com.fuanna.h5.buy.service.ProductService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Component
 @Transactional
@@ -47,5 +52,21 @@ public class ProductServiceImpl implements ProductService {
 			}
 		}
 		return map;
+	}
+
+	@Override
+	public Map<String, String> findProductByBarCode(String barcode) {
+		Map<String, String> productMap = productMapper.findProductByBarCode(barcode);
+		if (productMap != null && !productMap.isEmpty()) {
+			String productName = productMap.get("name");
+			JSONArray array = JSONArray.fromObject(productMap.get("skuAttr"));
+			Iterator itr = array.iterator();
+			while (itr.hasNext()) {
+				JSONObject object = (JSONObject) itr.next();
+				productName += " " + object.getString("value");
+			}
+			productMap.put("name", productName);
+		}
+		return productMap;
 	}
 }

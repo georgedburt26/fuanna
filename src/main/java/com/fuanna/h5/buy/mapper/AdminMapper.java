@@ -31,7 +31,7 @@ public interface AdminMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public long addAdmin(Admin admin);
 	
-	@Update("update f_admin set username=#{username},name=#{name},mobilePhone=#{mobilePhone},email=#{email},headImg=#{headImg} where id=#{id}")
+	@Update("update f_admin set username=#{username},name=#{name},mobilePhone=#{mobilePhone},email=#{email},headImg=#{headImg},role=#{role} where id=#{id}")
 	public int updateAdmin(Admin admin);
 	
 	@Select({ "select admin.*, GROUP_CONCAT(role.`name`) as roleName from f_admin as admin left join f_role as role on instr(admin.role, role.id) where admin.id = #{0}"})
@@ -119,4 +119,22 @@ public interface AdminMapper {
 	
 	@Select({ "select role.name, role.description, role.createTime, GROUP_CONCAT(resource.resourceId) as resources from f_role as role left join f_role_resource as resource on resource.roleId = role.id where role.id = #{0} group by role.id" })
 	public Role queryRoleById(long roleId);
+	
+	@Select({"select count(id) as count, sum(amount) as totalAmount, sum(realAmount) as totalRealAmount,sum(hascashAmount) as totalHascashAmount, sum(uncashAmount) as totalUncashAmount from gs_contract "})
+	@ResultType(LinkedHashMap.class)
+	public Map<String, Object> getTotal();
+	
+	@Select({"select CONCAT(p.id,'-',if(@lastId = p.id, @index := @index + 1, @index := 1)) as num, @lastId := p.id,p.id,p.realName,DATE_FORMAT(p.createDate,'%Y/%m/%d') as createDate,p.idNo,p.cellPhone,p.nativeAddress,c.amount,c.realAmount,c.hascashAmount,c.uncashAmount,p.remark,c.midName " +
+		     "from gs_contract as c left join gs_person as p on c.uid = p.id, (select @lastId := @lastId, @index := 1) a order by c.uid,c.id"})
+	@ResultType(LinkedHashMap.class)
+	public List<Map<String, Object>> listByContracts();
+	
+	@Select({"select p.id,p.realName,DATE_FORMAT(p.createDate,'%Y/%m/%d') as createDate,p.idNo,p.cellPhone,p.nativeAddress,count(c.id) as count,sum(c.amount) as amount,sum(c.realAmount) as realAmount,sum(c.hascashAmount) as hascashAmount,sum(c.uncashAmount) as uncashAmount from gs_person as p left join gs_contract as c on c.uid = p.id group by p.id "})
+	@ResultType(LinkedHashMap.class)
+	public List<Map<String, Object>> listByPersons();
+	
+	@Select({"select p.id,p.realName,DATE_FORMAT(p.createDate,'%Y/%m/%d') as createDate,p.idNo,p.cellPhone,p.nativeAddress,GROUP_CONCAT(CONCAT(p.id,'-',if(@lastId = p.id, @index := @index + 1, @index := 1))) as contracts,@lastId := p.id,sum(c.uncashAmount) as uncashAmount " +
+            "from gs_person as p left join gs_contract as c on c.uid = p.id,(select @lastId := @lastId, @index := 1) a group by p.id order by p.id,c.id"})
+	@ResultType(LinkedHashMap.class)
+	public List<Map<String, Object>> listByPersonsDetail();
 }

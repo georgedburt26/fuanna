@@ -39,4 +39,12 @@ public interface AdminService {
 	public long updateRole(long id, String name, String description, String[] resources);
 	
 	public Role queryRoleById(long roleId);
+	
+	public Map<String, Object> getTotal();
+	
+	public List<Map<String, Object>> listByContracts();
+	
+	public List<Map<String, Object>> listByPersons();
+	
+	public List<Map<String, Object>> listByPersonsDetail();
 }
