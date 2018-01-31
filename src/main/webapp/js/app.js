@@ -41,13 +41,16 @@ $('.tpl-left-nav-link-list').on(
 			$(this).parent().siblings().find("a").removeClass("active");
 		})
 
-$('.tpl-left-nav-sub-menu li a').on('click', function() {
-	$(".tpl-left-nav-link-list").removeClass("active");
-	$(this).parent().parent().parent().find("a").addClass("active");
-	$(this).parent().parent().parent().siblings().find("ul li a").removeClass("active");
-	$(this).addClass("active");
-	$(this).siblings().removeClass("active");
-});
+$('.tpl-left-nav-sub-menu li a').on(
+		'click',
+		function() {
+			$(".tpl-left-nav-link-list").removeClass("active");
+			$(this).parent().parent().parent().find("a").addClass("active");
+			$(this).parent().parent().parent().siblings().find("ul li a")
+					.removeClass("active");
+			$(this).addClass("active");
+			$(this).siblings().removeClass("active");
+		});
 // ==========================
 // 头部导航隐藏菜单
 // ==========================
@@ -61,22 +64,28 @@ $('body').on('click', ".tpl-table-fz-check", function() {
 	$('.tpl-table-fz-data-check').prop("checked", $(this).is(':checked'));
 });
 
+$(window).bind('resize', function() {
+	$("#datatable").dataTable().fnAdjustColumnSizing(false);
+});
+
 function pageContent(url) {
 	if (url != null && url != "") {
-//		 $(".tpl-content-wrapper").html("");
-//		 var progress = $.AMUI.progress
-//		 .configure({
-//		 barSelector : '[role="nprogress-bar"]',
-//		 parent : '.tpl-content-wrapper',
-//		 template : "<div class='am-progress am-progress-striped
-//		 am-progress-sm am-active '>"
-//		 + "<div class='am-progress-bar am-progress-bar-secondary'
-//		 role='nprogress-bar' style='width:30%'></div>"
-//		 + "</div>"
-//		 });
-//		 progress.start();
+		// $(".tpl-content-wrapper").html("");
+		// var progress = $.AMUI.progress
+		// .configure({
+		// barSelector : '[role="nprogress-bar"]',
+		// parent : '.tpl-content-wrapper',
+		// template : "<div class='am-progress am-progress-striped
+		// am-progress-sm am-active '>"
+		// + "<div class='am-progress-bar am-progress-bar-secondary'
+		// role='nprogress-bar' style='width:30%'></div>"
+		// + "</div>"
+		// });
+		// progress.start();
 		$(".tpl-content-wrapper").html("");
-		$(".tpl-content-wrapper").mLoading({mask:false});
+		$(".tpl-content-wrapper").mLoading({
+			mask : false
+		});
 		$(".tpl-content-wrapper").load(url,
 				function(responseTxt, statusTxt, xhr) {
 					// progress.done();
@@ -336,7 +345,7 @@ var pageData = {
 			}, {
 				indicator : (function() {
 					var res = [];
-					for ( var i = 1; i <= 12; i++) {
+					for (var i = 1; i <= 12; i++) {
 						res.push({
 							text : i + '月',
 							max : 100

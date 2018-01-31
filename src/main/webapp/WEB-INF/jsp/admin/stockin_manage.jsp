@@ -103,6 +103,9 @@
 						"sZeroRecords" : "没有检索到数据",
 						"retrieve" : true,//保证只有一个table实例  
 						'bStateSave' : true,
+		                "fnInitComplete": function() {
+		                    this.fnAdjustColumnSizing(true);
+		                    },
 						"aoColumns" : [
 								{
 									//自定义列
@@ -115,7 +118,10 @@
 								},
 								{
 									"sName" : "productName",
-									"mDataProp" : "productName"
+									"mDataProp" : "productName",
+									"render" : function(data, type, row) {
+											return "<span class='change-line' style='width:150px;'>" + data + "</span>"
+										}
 								},
 								{
 									"sName" : "category",
@@ -123,13 +129,16 @@
 								},
 								{
 									"sName" : "price",
-									"mDataProp" : "price"
+									"mDataProp" : "price",
+									"render" : function(data, type, row) {
+										return data + "元";
+									}
 								},
 								{
 									"sName" : "num",
 									"mDataProp" : "num",
 									"render" : function(data, type, row) {
-										return "<span id='" + row.barcode + "_num'>"
+										return "<span id='" + row.barcode + "_num' onclick='updateNum(\"" + row.barcode + "_num\",this," + data + ")'>"
 												+ data + "</span>";
 									}
 								},
@@ -146,7 +155,21 @@
 												+ ", false)' class='minusNum am-icon-minus-circle am-icon-sm' style='cursor:pointer;'></span>"
 												+ "</div>";
 									}
-								} ]
+								},								
+								{
+									"render" : function(data, type, row) {
+										return "<div class='am-btn-toolbar' style='display: inline-block'>"
+												+ "<div class='am-btn-group am-btn-group-xs'> "
+												+ "<button type='button' "
+												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteRow("
+												+ row.barcode
+												+ ",this)'>"
+												+ "<span class='am-icon-trash-o'></span> 删除"
+												+ "</button>"
+												+ "</div>"
+												+ "</div>";
+									} 
+								}]
 					});
 	$('#table_search').on('click', function() {
 		dataTable.fnFilter($("#table_search_field").val() + '');
@@ -173,19 +196,26 @@
 				tableData.productName = data.data.name;
 				tableData.category = data.data.category;
 				tableData.price = data.data.normalPrice;
+				tableData.num = 1;
 				$("#p_barcode").text(tableData.barcode);
 				$("#p_productName").text(tableData.productName);
 				$("#p_category").text(tableData.category);
-				$("#p_price").text(tableData.price);
+				$("#p_price").text(tableData.price + "元");
 				tableDatas.push(tableData);
+				if (!operateNum(tableData.barcode, true)) {
 				dataTable.fnAddData(tableDatas);
+				}
+				$("#datatable").dataTable().fnAdjustColumnSizing();
 				$(".tpl-content-wrapper").mLoading("hide");
 			});
 		}
 	});
 
 	function operateNum(barcode, isAdd) {
-		var num = $("#" + barcode + "_num").text();
+		if (document.getElementById(barcode) == null) {
+			return false;
+		}
+		var num = ($("#" + barcode + "_num").text() == null || $("#" + barcode + "_num").text() == "") ? $("#" + barcode + "_num").val() : $("#" + barcode + "_num").text();
 		var rowIndex = dataTable.fnGetPosition(document.getElementById(barcode
 				+ "").parentNode.parentNode);
 		var colIndex = $("#" + barcode + "_num").parent().index();
@@ -197,5 +227,47 @@
 			return;
 		}
 		dataTable.fnUpdate(data, rowIndex, colIndex, false);
+		return true;
+	}
+	function updateNum(id, obj, value) {
+		obj.parentNode.innerHTML= "<input type='text' id=" + id + " onblur='updateInputNum(\"" + id + "\",this)' onkeypress='updateInputNum(\"" + id + "\",this," +  obj.value + ")' value='" +  value + "'></input>";
+		$("#" + id).val("").focus().val(value);
+	}
+	
+	function updateInputNum(id, obj) {
+		var value = obj.value;
+		var event = window.event;
+		if (typeof(event.keyCode) != "undefined" && event.keyCode != 13) {
+			console.log(typeof(event.keyCode));
+			return ;
+		}
+		if (value == null || value == "") {
+			showmsg("9999", "修改数量不能为空");
+			obj.value = 1;
+			return ;
+		}
+		if (parseInt(value) <= 0) {
+			showmsg("9999", "修改数量不能小于等于0");
+			obj.value = 1;
+			return;
+		}
+		obj.parentNode.innerHTML = "<span id=" + id + " onclick='updateNum(\"" + id + "\",this," + value + ")'>"+ value + "</span>";
+	}
+	function deleteRow(barcode) {
+		var d = dialog({
+			title : '消息',
+			content : '是否确定，删除选中项？',
+			okValue : '确 定',
+			ok : function() {
+				dataTable.fnDeleteRow($("#" + barcode).parent().parent(), null,
+						false);
+				dataTable.fnDraw(false);
+			},
+			cancelValue : '取消',
+			cancel : function() {
+				$(".table-main button").css("background", "#fff");
+			}
+		});
+		d.show();
 	}
 </script>
