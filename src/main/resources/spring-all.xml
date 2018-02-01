@@ -84,6 +84,7 @@
 			<mvc:exclude-mapping path="/admin/login.do" />
 			<mvc:exclude-mapping path="/admin/logout.do" />
 			<mvc:exclude-mapping path="/admin/adminLogin.do" />
+			<mvc:exclude-mapping path="/admin/listCompany.do" />
 			<bean class="com.fuanna.h5.buy.interceptor.AdminLoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -39,6 +39,11 @@ public class AdminController extends BaseController {
 	@Autowired
 	ProductService productService;
 
+	@RequestMapping("/listCompany.do")
+	public @ResponseBody RstResult listCompany() throws Exception {
+		return new RstResult(ErrorCode.CG, "", adminService.listCompany());
+	}
+	
 	@RequestMapping("/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> params, RedirectAttributes model) throws Exception {
 		String url = "redirect:/admin/login.do";// redirectUrl
@@ -61,6 +66,9 @@ public class AdminController extends BaseController {
 		Admin admin = adminService.adminLogin(username, password);
 		if (admin == null) {
 			error("用户名或密码错误", url);
+		}
+		if (admin.getEnable() != 1) {
+			error("用户被禁用", url);
 		}
 		session().setAttribute("admin", admin);
 		url = "redirect:/admin/index.do";// 登陆成功

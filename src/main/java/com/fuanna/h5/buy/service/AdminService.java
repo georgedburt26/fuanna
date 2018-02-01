@@ -9,6 +9,7 @@ import com.fuanna.h5.buy.model.Role;
 
 public interface AdminService {
 
+	public List<Map<String, Object>> listCompany();
 	
 	public Admin adminLogin(String username, String password);
 	

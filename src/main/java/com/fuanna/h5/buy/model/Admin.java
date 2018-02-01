@@ -19,6 +19,8 @@ public class Admin implements Serializable{
 	private String role;
 	private String roleName;
 	private Date createTime;
+	private long companyId;
+	private int enable;
 	public long getId() {
 		return id;
 	}
@@ -79,5 +81,16 @@ public class Admin implements Serializable{
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	
+	public long getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
+	}
+	public int getEnable() {
+		return enable;
+	}
+	public void setEnable(int enable) {
+		this.enable = enable;
+	}
 }

@@ -33,6 +33,12 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	ResourceMapper resourceMapper;
 
+
+	@Override
+	public List<Map<String, Object>> listCompany() {
+		return adminMapper.listCompany();
+	}
+	
 	@Override
 	@Transactional
 	public Admin adminLogin(String username, String password) {

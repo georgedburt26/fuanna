@@ -191,6 +191,9 @@
 			$.post("admin/findProductByBarCode.do", {
 				"barcode" : $("#barcode").val()
 			}, function(data) {
+				if (data.data == null) {
+					return ;
+				}
 				var tableData = {};
 				tableData.barcode = data.data.barcode;
 				tableData.productName = data.data.name;
@@ -205,7 +208,6 @@
 				if (!operateNum(tableData.barcode, true)) {
 				dataTable.fnAddData(tableDatas);
 				}
-				$("#datatable").dataTable().fnAdjustColumnSizing();
 				$(".tpl-content-wrapper").mLoading("hide");
 			});
 		}

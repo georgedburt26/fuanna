@@ -19,7 +19,15 @@
 <link rel="stylesheet" href="<%=sourcePath%>css/admin.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/app.css">
 </head>
+<style>
+html, body {
+	background: #fff;
+}
 
+.am-selected-list li {
+	padding-left: 18px;
+}
+</style>
 <body data-type="login">
 	<div class="am-g myapp-login">
 		<div class="myapp-login-logo-block  tpl-login-max">
@@ -30,20 +38,89 @@
 				</div>
 			</div>
 			<div class="am-u-sm-10 login-am-center">
-				<form class="am-form" action="admin/adminLogin.do" id="doc-vld-msg">
+				<form class="am-form" action="admin/adminLogin.do" id="doc-vld-msg"
+					data-am-validator>
 					<fieldset>
+							<div class="am-selected am-dropdown am-dropdown-down"
+								id="am-selected-c8n6r"
+								style="width: 100%; border-radius: 6px 6px 0px 0px; border: 1px solid #e9ecf3; border-bottom: 0px;"
+								data-am-dropdown>
+								<button type="button"
+									class="am-selected-btn am-btn am-dropdown-toggle am-btn-default"
+									style="padding-left: 18px; font-size: 15px; background: none; color: #999999;">
+									<span class="am-selected-status am-fl" id="select-value">地区代理</span>
+									<i class="am-selected-icon am-icon-caret-down"
+										style="margin-top: 6px;"></i>
+								</button>
+								<div class="am-selected-content am-dropdown-content"
+									style="min-width: 200px; width: 100%;">
+									<div class="am-selected-search"><input class="am-form-field am-input-sm search" style="border-radius:0px;" oninput="searchCompany(this)" search /></div>
+									<ul class="am-selected-list" id="companyList" 
+										style="color: #696969;height:auto;width:auto;">
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+										<li class="" data-index="0" data-group="0" data-value="a">
+											<span class='am-selected-text'>扶沟富安娜</span> <i
+											class='am-icon-check'></i>
+										</li>
+									</ul>
+								</div>
+							</div>
 						<div class="am-form-group">
-							<input type="text" class="am-form-field" name="username"
+							<input type="text" class="am-form-field am-validate" name="username"
 								id="doc-ipt-email-1" placeholder="请输入用户名" required />
 						</div>
 						<div class="am-form-group">
-							<input type="password" class="" name="password"
+							<input type="password" class="am-form-field am-validate" name="password"
 								id="doc-ipt-pwd-1" placeholder="请输入密码"
-								style="border-radius: 0px;" required />
+								style="border-radius: 0px; border-bottom: 1px solid #e9ecf3;"
+								required />
 						</div>
 						<div class="am-form-group"
 							style="width: 100%; white-space: nowrap; overflow: hidden;">
-							<input type="text" class="" name="imageCode" id="doc-ipt-pwd-1"
+							<input type="text" class="am-form-field am-validate" name="imageCode" id="doc-ipt-pwd-1"
 								placeholder="验证码"
 								style="display: inline-block; border-radius: 0px 0px 6px 6px; width: 59%;"
 								pattern="^(\w){4}$" data-validation-message="请输入四位字符" required />
@@ -65,9 +142,20 @@
 	<script src="<%=sourcePath%>js/msg.js"></script>
 	<script>
 		showmsg('${errorCode}', '${errorMsg}');
+		$.post("admin/listCompany.do", {}, function(data) {
+			$.each(data.data,function(index,value){
+				$(".am-selected-list").append("<li class='' id='selectItem" + value.id + "' data-index='" + index + "' data-group='0' data-value='" + value.id + "'>" +
+						                      "<span class='am-selected-text'>" + value.name + "</span> <i class='am-icon-check'></i></li>");
+				console.log($("#companyList").get(0).offsetHeight);
+				if($(".am-selected-list").height() > 200) {
+					console.log($(".am-selected-list").css("overflow"));
+				};
+			});
+		});
 		$('#doc-vld-msg')
 				.validator(
 						{
+							keyboardFields: ':input:not(:button, :disabled,.search)',
 							onValid : function(validity) {
 								$(validity.field).closest('.am-form-group')
 										.find('.am-alert').hide();
@@ -87,6 +175,9 @@
 								$alert.html(msg).show();
 							}
 						});
+		function searchCompany(obj) {
+			alert(obj.value);
+		}
 	</script>
 </body>
 </html>
