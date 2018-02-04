@@ -42,7 +42,7 @@ html, body {
 					data-am-validator>
 					<fieldset>
 					<div class="am-form-group" id="companyGroup">
-					<input type="hidden" value="" id="company">
+					<input type="hidden" name="company" value="" id="company">
 							<div class="am-selected am-dropdown am-dropdown-down"
 								id="am-selected-c8n6r"
 								style="width: 100%;border-radius: 6px 6px 0px 0px; border: 1px solid #e9ecf3;"

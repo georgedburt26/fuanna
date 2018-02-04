@@ -47,6 +47,10 @@ public class AdminController extends BaseController {
 	@RequestMapping("/adminLogin.do")
 	public String adminLogin(@RequestParam Map<String, String> params, RedirectAttributes model) throws Exception {
 		String url = "redirect:/admin/login.do";// redirectUrl
+		String company = params.get("company");
+		if (StringUtils.isBlank(company)) {
+			error("地区代理不能为空", url);
+		}
 		String username = params.get("username");
 		if (StringUtils.isBlank(username)) {
 			error("用户名不能为空", url);
@@ -63,7 +67,7 @@ public class AdminController extends BaseController {
 		if (!imageCode.equals(session().getAttribute("admin_imageCode"))) {
 			error("请输入正确验证码", url);
 		}
-		Admin admin = adminService.adminLogin(username, password);
+		Admin admin = adminService.adminLogin(username, password, company);
 		if (admin == null) {
 			error("用户名或密码错误", url);
 		}
@@ -102,6 +106,7 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/adminManageList.do")
 	public @ResponseBody RstResult adminManageList() throws Exception {
+		Long companyId = admin().getCompanyId();
 		RstResult rstResult = null;
 		String data = request().getParameter("rows");
 		String username = StringUtils.isBlank(request().getParameter("username")) ? null
@@ -123,8 +128,8 @@ public class AdminController extends BaseController {
 					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
 				}
 			}
-			List<Admin> rows = adminService.listAdmin(name, mobilePhone, username, iDisplayStart, iDisplayLength);
-			int count = adminService.countAdmin(name, mobilePhone, username);
+			List<Admin> rows = adminService.listAdmin(name, mobilePhone, username, companyId, iDisplayStart, iDisplayLength);
+			int count = adminService.countAdmin(name, mobilePhone, username, companyId);
 			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
 		}
@@ -159,6 +164,7 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/addAdmin.do")
 	public @ResponseBody RstResult addAdmin(@RequestParam Map<String, String> params) throws Exception {
+		Long companyId = admin().getCompanyId();
 		String username = params.get("username");
 		if (StringUtils.isBlank(username)) {
 			error("用户名不能为空");
@@ -209,6 +215,7 @@ public class AdminController extends BaseController {
 		admin.setHeadImg(headImg);
 		admin.setRole(role);
 		admin.setCreateTime(new Date());
+		admin.setCompanyId(companyId);
 		if ("1".equals(params.get("type"))) {
 			return adminService.addAdmin(admin) > 0 ? new RstResult(ErrorCode.CG, "保存成功")
 					: new RstResult(ErrorCode.SB, "保存失败");
@@ -221,7 +228,8 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/listRoles.do")
 	public @ResponseBody RstResult listRoles() {
-		List<Map<String, Object>> roles = adminService.listRoles(null, null);
+		Long companyId = admin().getCompanyId();
+		List<Map<String, Object>> roles = adminService.listRoles(companyId, null, null);
 		return new RstResult(ErrorCode.CG, "查询成功", roles);
 	}
 
@@ -232,6 +240,7 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/roleManageList.do")
 	public @ResponseBody RstResult roleManageList() throws Exception {
+		Long companyId = admin().getCompanyId();
 		RstResult rstResult = null;
 		String data = request().getParameter("rows");
 		if (StringUtils.isNotBlank(data)) {
@@ -248,8 +257,8 @@ public class AdminController extends BaseController {
 					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
 				}
 			}
-			List<Map<String, Object>> rows = adminService.listRoles(iDisplayStart, iDisplayLength);
-			int count = adminService.countRoles();
+			List<Map<String, Object>> rows = adminService.listRoles(companyId, iDisplayStart, iDisplayLength);
+			int count = adminService.countRoles(companyId);
 			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
 		}
@@ -270,6 +279,7 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/addRole.do")
 	public @ResponseBody RstResult addRole(@RequestParam Map<String, String> params) throws Exception {
+		Long companyId = admin().getCompanyId();
 		String name = params.get("name");
 		if (StringUtils.isBlank(name)) {
 			error("角色名不能为空");
@@ -286,12 +296,12 @@ public class AdminController extends BaseController {
 		String id = params.get("id");
 		long rtn = 0;
 		if (type.equals("1")) {
-			rtn = adminService.addRole(name, description, resources.split(","));
+			rtn = adminService.addRole(name, description, companyId, resources.split(","));
 		}
 		if (type.equals("3")) {
-			rtn = adminService.updateRole(Long.parseLong(id), name, description, resources.split(","));
+			rtn = adminService.updateRole(Long.parseLong(id), name, description, companyId, resources.split(","));
 		}
-		return rtn > 0 ? new RstResult(ErrorCode.CG, type.equals(1) ? "添加角色成功" : "修改角色成功") : new RstResult(ErrorCode.SB, type.equals(1) ? "添加角色失败" : "修改角色失败");
+		return rtn > 0 ? new RstResult(ErrorCode.CG, type.equals("1") ? "添加角色成功" : "修改角色成功") : new RstResult(ErrorCode.SB, type.equals("1") ? "添加角色失败" : "修改角色失败");
 	}
 
 	@RequestMapping("/deleteRole.do")

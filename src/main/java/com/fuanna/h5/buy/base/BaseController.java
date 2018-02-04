@@ -33,7 +33,7 @@ public class BaseController {
 		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 	}
 
-	protected Admin getAdmin() {
+	protected Admin admin() {
 		return (Admin) session().getAttribute("admin");
 	}
 

@@ -11,7 +11,7 @@ public interface AdminService {
 
 	public List<Map<String, Object>> listCompany();
 	
-	public Admin adminLogin(String username, String password);
+	public Admin adminLogin(String username, String password, String company);
 	
 	public long addAdmin(Admin admin);
 	
@@ -23,21 +23,21 @@ public interface AdminService {
 	
 	public List<Resource> queryResources();
 	
-	public int countAdmin(String name, String mobilePhone, String username);
+	public int countAdmin(String name, String mobilePhone, String username, Long companyId);
 	
-	public List<Admin> listAdmin(String name, String mobilePhone, String username, Integer offset, Integer limit);
+	public List<Admin> listAdmin(String name, String mobilePhone, String username, Long companyId, Integer offset, Integer limit);
 	
 	public int deleteAdmin(List<Long> ids);
 	
-	public List<Map<String, Object>> listRoles(Integer offset, Integer limit);
+	public List<Map<String, Object>> listRoles(Long companyId, Integer offset, Integer limit);
 	
-	public int countRoles();
+	public int countRoles(Long companyId);
 	
 	public int deleteRole(List<Long> ids);
 	
-	public long addRole(String name, String description, String[] resources);
+	public long addRole(String name, String description, Long companyId, String[] resources);
 	
-	public long updateRole(long id, String name, String description, String[] resources);
+	public long updateRole(long id, String name, String description, Long companyId, String[] resources);
 	
 	public Role queryRoleById(long roleId);
 	

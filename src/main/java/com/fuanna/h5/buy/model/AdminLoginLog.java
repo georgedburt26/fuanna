@@ -12,6 +12,8 @@ public class AdminLoginLog {
 	private String email;
 	private String ip;
 	private Date loginTime;
+	private long companyId;
+	private String companyName;
 	public long getId() {
 		return id;
 	}
@@ -60,6 +62,16 @@ public class AdminLoginLog {
 	public void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
 	}
-	
-	
+	public long getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
+	}
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 }

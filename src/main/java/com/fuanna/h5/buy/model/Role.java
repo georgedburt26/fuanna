@@ -15,15 +15,17 @@ public class Role implements Serializable{
 	private String description;
 	private Date createTime;
 	private String resources;
+	private Long companyId;
 	
 	public Role() {
 		
 	}
 	
-	public Role(String name, String description, Date createTime) {
+	public Role(String name, String description, Date createTime, Long companyId) {
 		this.name = name;
 		this.description = description;
 		this.createTime = createTime;
+		this.companyId = companyId;
 	}
 	
 	
@@ -58,5 +60,11 @@ public class Role implements Serializable{
 		this.createTime = createTime;
 	}
 
-	
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
 }

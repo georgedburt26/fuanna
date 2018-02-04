@@ -41,8 +41,10 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	@Transactional
-	public Admin adminLogin(String username, String password) {
-		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password));
+	public Admin adminLogin(String username, String password, String company) {
+		long companyId = Long.parseLong(company);
+		Map<String, Object> map = adminMapper.queryCompanyById(companyId);
+		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password), companyId);
 		if (admin != null) {
 			String ip = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getRemoteAddr();
 			AdminLoginLog adminLoginLog = new AdminLoginLog();
@@ -53,6 +55,8 @@ public class AdminServiceImpl implements AdminService{
 			adminLoginLog.setEmail(admin.getEmail());
 			adminLoginLog.setIp(ip);
 			adminLoginLog.setLoginTime(new Date());
+			adminLoginLog.setCompanyId(companyId);
+			adminLoginLog.setCompanyName(map != null && !map.isEmpty() ? map.get("name") + "" : "");
 			adminMapper.addLoginLog(adminLoginLog);
 		}
 		return admin;
@@ -96,13 +100,13 @@ public class AdminServiceImpl implements AdminService{
 //	}
 
 	@Override
-	public int countAdmin(String name, String mobilePhone, String username) {
-		return adminMapper.countAdmin(name, mobilePhone, username);
+	public int countAdmin(String name, String mobilePhone, String username, Long companyId) {
+		return adminMapper.countAdmin(name, mobilePhone, username, companyId);
 	}
 
 	@Override
-	public List<Admin> listAdmin(String name, String mobilePhone, String username, Integer offset, Integer limit) {
-		return adminMapper.listAdmin(name, mobilePhone, username, offset, limit);
+	public List<Admin> listAdmin(String name, String mobilePhone, String username, Long companyId, Integer offset, Integer limit) {
+		return adminMapper.listAdmin(name, mobilePhone, username, companyId, offset, limit);
 	}
 
 	@Override
@@ -112,14 +116,14 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<Map<String, Object>> listRoles(Integer offset, Integer limit) {
-		return adminMapper.listRoles(offset, limit);
+	public List<Map<String, Object>> listRoles(Long companyId, Integer offset, Integer limit) {
+		return adminMapper.listRoles(companyId, offset, limit);
 	}
 
 
 	@Override
-	public int countRoles() {
-		return adminMapper.countRoles();
+	public int countRoles(Long companyId) {
+		return adminMapper.countRoles(companyId);
 	}
 
 
@@ -134,8 +138,8 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
-	public long addRole(String name, String description, String[] resources) {
-		Role role = new Role(name, description, new Date());
+	public long addRole(String name, String description, Long companyId, String[] resources) {
+		Role role = new Role(name, description, new Date(), companyId);
 		long rtn = adminMapper.addRole(role);
 		for (String resourceId : resources) {
 			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
@@ -145,7 +149,7 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
-	public long updateRole(long id, String name, String description, String[] resources) {
+	public long updateRole(long id, String name, String description, Long companyId, String[] resources) {
 		long rtn = 0;
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(id);

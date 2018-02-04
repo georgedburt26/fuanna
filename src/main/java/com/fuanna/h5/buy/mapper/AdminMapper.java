@@ -22,17 +22,21 @@ public interface AdminMapper {
 	@Select({"select * from f_company"})
 	@ResultType(LinkedHashMap.class)
 	public List<Map<String, Object>> listCompany();
+	
+	@Select({"select * from f_company where id = #{0}"})
+	@ResultType(LinkedHashMap.class)
+	public Map<String, Object> queryCompanyById(long id);
 
-	@Select({ "select * from f_admin where username = #{0} and password = #{1}" })
-	public Admin adminLogin(String username, String password);
+	@Select({ "select * from f_admin where username = #{0} and password = #{1} and companyId = #{2}" })
+	public Admin adminLogin(String username, String password, long company);
 
 	@Insert({
-			"insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime})" })
+			"insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime, companyId, companyName) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime},#{companyId},#{companyName})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public long addLoginLog(AdminLoginLog adminLoginLog);
 
 	@Insert({
-			"insert into f_admin(username, password, name, mobilePhone, email, headImg, createTime, role) values(#{username},#{password},#{name},#{mobilePhone},#{email},#{headImg},#{createTime},#{role})" })
+			"insert into f_admin(username, password, name, mobilePhone, email, headImg, createTime, role, companyId) values(#{username},#{password},#{name},#{mobilePhone},#{email},#{headImg},#{createTime},#{role},#{companyId})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public long addAdmin(Admin admin);
 
@@ -48,17 +52,19 @@ public interface AdminMapper {
 			+ "<if test='name != null'>" + " and admin.name like CONCAT('%',#{name},'%') " + "</if>"
 			+ "<if test='mobilePhone != null'>" + " and mobilePhone = #{mobilePhone} " + "</if>"
 			+ "<if test='username != null'>" + " and username like CONCAT('%',#{username},'%') " + "</if>"
+			+ "<if test='companyId != null'>" + " and admin.companyId = #{companyId} " + "</if>"
 			+ " group by admin.id " + " order by id desc " + "<if test='offset != null and limit != null'>"
 			+ " limit #{offset}, #{limit} " + "</if>" + "</script>" })
 	public List<Admin> listAdmin(@Param("name") String name, @Param("mobilePhone") String mobilePhone,
-			@Param("username") String username, @Param("offset") Integer offset, @Param("limit") Integer limit);
+			@Param("username") String username, @Param("companyId") Long companyId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
 	@Select({ "<script>" + "select count(id) from f_admin where 1 = 1 " + "<if test='name != null'>"
 			+ " and name like CONCAT('%',#{name},'%') " + "</if>" + "<if test='mobilePhone != null'>"
-			+ " and mobilePhone = #{mobilePhone} " + "</if>" + "<if test='username != null'>"
+			+ " and mobilePhone = #{mobilePhone} " + "</if>" + "<if test='username != null'>" 
+			+ "<if test='companyId != null'>" + " and admin.companyId = #{companyId} " + "</if>"
 			+ " and username like CONCAT('%',#{username},'%') " + "</if>" + "</script>" })
 	public int countAdmin(@Param("name") String name, @Param("mobilePhone") String mobilePhone,
-			@Param("username") String username);
+			@Param("username") String username, @Param("companyId") Long companyId);
 
 	@Delete("<script>" + " delete from f_admin where id in "
 			+ "<foreach collection='ids' index='index' item='item' open='(' separator=',' close=')'>" + "#{item} "
@@ -66,12 +72,16 @@ public interface AdminMapper {
 	public int deleteAdmin(@Param("ids") List<Long> ids);
 
 	@Select({ "<script>" + "select * from f_role where 1 = 1 " + "<if test='offset != null and limit != null'>"
+			+ "<if test='companyId != null'>" + " and companyId = #{companyId} " + "</if>"
 			+ " limit #{offset}, #{limit} " + "</if>" + "</script>" })
 	@ResultType(LinkedHashMap.class)
-	public List<Map<String, Object>> listRoles(@Param("offset") Integer offset, @Param("limit") Integer limit);
+	public List<Map<String, Object>> listRoles(@Param("companyId") Long companyId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-	@Select({ "select count(id) from f_role" })
-	public int countRoles();
+	@Select({ "<script>" +
+		      "select count(id) from f_role where 1 = 1 " +
+			  "<if test='companyId != null'>" + " and companyId = #{companyId} " + "</if>" +
+			  "</script>"})
+	public int countRoles(@Param("companyId") Long companyId);
 
 	@Delete("<script>" + " delete from f_role where id in "
 			+ "<foreach collection='ids' index='index' item='item' open='(' separator=',' close=')'>" + "#{item} "
@@ -83,7 +93,7 @@ public interface AdminMapper {
 			+ "</foreach> " + "</script>")
 	public int deleteRoleResource(@Param("roleIds") List<Long> roleIds);
 
-	@Insert({ "insert into f_role(name, description, createTime) values(#{name},#{description},#{createTime})" })
+	@Insert({ "insert into f_role(name, description, createTime, companyId) values(#{name},#{description},#{createTime},#{companyId})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public long addRole(Role role);
 
