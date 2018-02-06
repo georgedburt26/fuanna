@@ -1,13 +1,15 @@
 package com.fuanna.h5.buy.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Product implements Serializable{
 
 	/**
 	 * 
-	 */
+	 */	
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
@@ -17,6 +19,7 @@ public class Product implements Serializable{
 	private int status;//1上架 2下架
 	private String material;
 	private Date createTime;
+	private List<ProductSku> productSkus = new ArrayList<ProductSku>();
 	public long getId() {
 		return id;
 	}
@@ -59,4 +62,11 @@ public class Product implements Serializable{
 	public void setMaterial(String material) {
 		this.material = material;
 	}
+	public List<ProductSku> getProductSkus() {
+		return productSkus;
+	}
+	public void setProductSkus(List<ProductSku> productSkus) {
+		this.productSkus = productSkus;
+	}
+	
 }

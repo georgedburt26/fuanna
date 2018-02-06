@@ -2,6 +2,7 @@ package com.fuanna.h5.buy.controller.admin;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -17,8 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fuanna.h5.buy.base.BaseController;
 import com.fuanna.h5.buy.constraints.ErrorCode;
+import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.DataTable;
+import com.fuanna.h5.buy.model.ProductSku;
 import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
@@ -26,6 +29,7 @@ import com.fuanna.h5.buy.service.ProductService;
 import com.fuanna.h5.buy.util.MD5;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin")
@@ -78,10 +82,52 @@ public class AdminController extends BaseController {
 		url = "redirect:/admin/index.do";// 登陆成功
 		return url;
 	}
+	/******** 条形码管理*********/
+	@RequestMapping("/barCode.do")
+	public String barcodeManage() {
+		return "/admin/barcode_manage";
+	}
+	
 	/******** 库存管理*********/
 	@RequestMapping("/stockinManage.do")
 	public String stockinManage() {
 		return "/admin/stockin_manage";
+	}
+	@RequestMapping("/stockIn.do")
+	public @ResponseBody RstResult stockIn(@RequestParam Map<String, String> params) throws Exception {
+		if (StringUtils.isBlank(params.get("data"))) {
+			error("入库数据不能为空");
+		}
+		RstResult rstResult = null;
+		Long companyId = admin().getCompanyId();
+		JSONArray array = JSONArray.fromObject(params.get("data"));
+		Iterator<JSONObject> itr = array.iterator();
+		List<ProductSku> productSkus = new ArrayList<ProductSku>();
+		while (itr.hasNext()) {
+			JSONObject object = itr.next();
+			String barcode = object.getString("barcode");
+			Integer num = Integer.parseInt(object.getString("num"));
+			String productName = object.getString("productName");
+			String category = object.getString("category");
+			if (num > 0) {
+				ProductSku productSku = new ProductSku();
+				productSku.setBarcode(barcode);
+				productSku.setInventory(num);
+				productSku.setCompanyId(companyId);
+				productSku.setProductName(productName);
+				productSku.setCategory(category);
+				productSkus.add(productSku);
+			}
+		}
+		List<ProductSku> fails = productService.stockIn(productSkus);
+		if (fails.isEmpty()) {
+			rstResult = new RstResult(ErrorCode.CG, "入库成功", "");
+		}
+		else {
+			String msg = productSkus.size() == fails.size() ? "入库失败" : "部分入库失败，失败为列表中数据";
+			rstResult = new RstResult(ErrorCode.CG, msg, fails);
+		}
+		return rstResult;
 	}
 	@RequestMapping("/stockoutManage.do")
 	public String stockoutManage() {
@@ -94,7 +140,8 @@ public class AdminController extends BaseController {
 		if (StringUtils.isBlank("barcode")) {
 			error("条形码不能为空");
 		}
-		Map<String, String> productMap = productService.findProductByBarCode(barcode);
+		Long companyId = admin().getCompanyId();
+		Map<String, String> productMap = productService.findProductByBarCode(barcode, companyId);
 		return new RstResult(ErrorCode.CG, "", productMap);
 	}
 
