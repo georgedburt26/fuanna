@@ -2,9 +2,14 @@ package com.fuanna.h5.buy.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -205,17 +210,6 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Map<String, Object>> listByPersonsDetail() {
 		return adminMapper.listByPersonsDetail();
-	}
-
-	@Override
-	public List<Map<String, Object>> listProductSkuByBarcode(String barcode, String name, String category, Long companyId,
-			Integer offset, Integer limit) {
-		return adminMapper.listProductSkuByBarcode(barcode, name, category, companyId, offset, limit);
-	}
-
-	@Override
-	public int countProductSkuByBarcode(String barcode, String name, String category, Long companyId) {
-		return adminMapper.countProductSkuByBarcode(barcode, name, category, companyId);
 	}
 
 	@Override

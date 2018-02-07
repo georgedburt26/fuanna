@@ -82,27 +82,6 @@ public interface AdminMapper {
 			  "<if test='companyId != null'>" + " and companyId = #{companyId} " + "</if>" +
 			  "</script>"})
 	public int countRoles(@Param("companyId") Long companyId);
-	
-	@Select({ "<script>"
-			+ "select ifnull(p.name,'') as name, sku.barcode, ifnull(c.`name`,'') as category, ifnull(sku.skuAttr,'') as attribute, ifnull(skup.normalPrice,'') as price  from f_product_sku as sku LEFT JOIN f_product as p on p.id = sku.productId left join f_category as c on p.category = c.id left join f_sku_price_inventory as skup on sku.barcode = skup.barcode where 1 = 1 "
-			+ "<if test='barcode != null'>" + " and sku.barcode = #{barcode} " + "</if>"
-			+ "<if test='name != null'>" + " and p.name like CONCAT('%',#{name},'%') " + "</if>"
-			+ "<if test='category != null'>" + " and c.id = #{category} " + "</if>"
-			+ "<if test='companyId != null'>" + " and skup.companyId = #{companyId} " + "</if>"
-			+ " order by sku.id desc " + "<if test='offset != null and limit != null'>"
-			+ " limit #{offset}, #{limit} " + "</if>" + "</script>" })
-	public List<Map<String, Object>> listProductSkuByBarcode(@Param("barcode")String barcode, @Param("name")String name, @Param("category")String category, @Param("companyId")Long companyId,
-			@Param("offset")Integer offset, @Param("limit")Integer limit);
-	
-	@Select({ "<script>"
-			+ "select count(sku.id) from f_product_sku as sku LEFT JOIN f_product as p on p.id = sku.productId left join f_category as c on p.category = c.id left join f_sku_price_inventory as skup on sku.barcode = skup.barcode where 1 = 1 "
-			+ "<if test='barcode != null'>" + " and sku.barcode = #{barcode} " + "</if>"
-			+ "<if test='name != null'>" + " and p.name like CONCAT('%',#{name},'%') " + "</if>"
-			+ "<if test='category != null'>" + " and c.name like CONCAT('%',#{category},'%') " + "</if>"
-			+ "<if test='companyId != null'>" + " and skup.companyId = #{companyId} " + "</if>"
-			+ " order by sku.id desc "
-			+ "</script>" })
-	public int countProductSkuByBarcode(@Param("barcode")String barcode, @Param("name")String name, @Param("category")String category, @Param("companyId")Long companyId);
 
 	@Delete("<script>" + " delete from f_role where id in "
 			+ "<foreach collection='ids' index='index' item='item' open='(' separator=',' close=')'>" + "#{item} "

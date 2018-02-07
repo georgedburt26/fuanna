@@ -23,7 +23,8 @@ import net.sf.json.JSONObject;
 @Component
 public class ProductServiceImpl implements ProductService {
 
-	private static final Logger logger = Logger.getLogger(ProductServiceImpl.class);
+	private static final Logger logger = Logger
+			.getLogger(ProductServiceImpl.class);
 
 	@Autowired
 	ProductMapper productMapper;
@@ -59,10 +60,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public Map<String, String> findProductByBarCode(String barcode, Long companyId) {
+	public Map<String, String> findProductByBarCode(String barcode,
+			Long companyId) {
 		productMapper.addProductSkuBarCode(barcode, new Date());
-		Map<String, String> productMap = productMapper.findProductByBarCode(barcode, companyId);
-		if (StringUtils.isNotBlank(productMap.get("name")) && StringUtils.isNotBlank(productMap.get("skuAttr"))) {
+		Map<String, String> productMap = productMapper.findProductByBarCode(
+				barcode, companyId);
+		if (StringUtils.isNotBlank(productMap.get("name"))
+				&& StringUtils.isNotBlank(productMap.get("skuAttr"))) {
 			String productName = productMap.get("name");
 			JSONArray array = JSONArray.fromObject(productMap.get("skuAttr"));
 			Iterator itr = array.iterator();
@@ -79,10 +83,43 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductSku> stockIn(List<ProductSku> productSkus) {
 		List<ProductSku> fails = new ArrayList<ProductSku>();
 		for (ProductSku productSku : productSkus) {
-			if(productMapper.stockIn(productSku.getBarcode(), productSku.getInventory(), productSku.getCompanyId()) <= 0) {
+			if (productMapper.stockIn(productSku.getBarcode(),
+					productSku.getInventory(), productSku.getCompanyId()) <= 0) {
 				fails.add(productSku);
 			}
 		}
 		return fails;
+	}
+
+	@Override
+	public List<Map<String, Object>> listProductSkuByBarcode(String barcode,
+			String name, String category, Long companyId, Integer offset,
+			Integer limit) {
+		List<Map<String, Object>> rows = productMapper.listProductSkuByBarcode(
+				barcode, name, category, companyId, offset, limit);
+		for (Map<String, Object> row : rows) {
+			String attribute = row.get("attribute") + "";
+			StringBuffer attributeValues = new StringBuffer();
+			if (StringUtils.isNotBlank(attribute)) {
+				JSONArray array = JSONArray.fromObject(attribute);
+				Iterator<JSONObject> itr = array.iterator();
+				while (itr.hasNext()) {
+					JSONObject object = itr.next();
+					String typeName = productMapper.querySkuTypeName(
+							object.getInt("type")).get("name");
+					String seperate = StringUtils.isBlank(attributeValues.toString()) ? "" : "|";
+					attributeValues.append(seperate).append(typeName).append(":").append(object.getString("value"));
+				}
+			}
+			row.put("attribute", attributeValues.toString());
+		}
+		return rows;
+	}
+
+	@Override
+	public int countProductSkuByBarcode(String barcode, String name,
+			String category, Long companyId) {
+		return productMapper.countProductSkuByBarcode(barcode, name, category,
+				companyId);
 	}
 }

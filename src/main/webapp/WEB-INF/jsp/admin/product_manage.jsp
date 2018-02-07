@@ -33,6 +33,7 @@
 							<th class="table-category">类别</th>
 							<th class="table-attr">参数</th>
 							<th class="table-price">价格（元）</th>
+							<th class="table-inventory">库存</th>
 							<th class="table-option">操作</th>
 							</tr>
 						</thead>
@@ -104,17 +105,31 @@
 								{
 									"sName" : "attribute",
 									"mDataProp" : "attribute",
+									"render" : function(data, type, row) {
+										var attribute = "";
+										for(var i=0; i<data.length; i++){
+											 attribute += data.charAt(i);
+											 if (i != 0 && i % 20 == 0) {
+												 attribute += "<br>"; 
+											 }
+											 }
+										return attribute;
+									}
 								},
 								{
 									"sName" : "price",
 									"mDataProp" : "price",
 								},
 								{
+									"sName" : "inventory",
+									"mDataProp" : "inventory",
+								},
+								{
 									"render" : function(data, type, row) {
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editAdmin(" + row.id + ")'>"
+											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editProduct(" + row.barcode + ")'>"
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
 												+ "</div>"
@@ -157,41 +172,7 @@
 			dataTable.fnDraw();	
 		}
 	});
-	$("#deleteAdmin").click(function() {
-		if ($(".tpl-table-fz-data-check:checked").length == 0) {
-			showmsg("9999", "请选择要删除的选项");
-			return;
-		}
-		var ids = new Array();
-		$(".tpl-table-fz-data-check:checked").each(function() {
-			ids.push($(this).val());
-		});
-		deleteAdmin(ids.join(","));
-	});
-	function deleteAdmin(ids, btn) {
-		var d = dialog({
-			title : '消息',
-			content : '是否确定，删除选中项？',
-			okValue : '确 定',
-			ok : function() {
-				$.post("admin/deleteAdmin.do", {
-					"ids" : ids
-				}, function(data) {
-					showmsg(data.errorCode, data.errorMsg);
-					dataTable.fnDraw(false);
-				});
-			},
-			cancelValue : '取消',
-			cancel : function() {
-				$(".table-main button").css("background", "#fff");
-			}
-		});
-		d.show();
-	}
-	function editAdmin(id) {
-		pageContent("admin/addAdminIndex.do?id=" + id + "&type=3");
-	}
-	function checkAdmin(id) {
-		pageContent("admin/addAdminIndex.do?id=" + id + "&type=2");
+	function editProduct(barcode) {
+		pageContent("admin/updateProductIndex.do?barcode=" + barcode);
 	}
 </script>

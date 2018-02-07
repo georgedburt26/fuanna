@@ -19,4 +19,8 @@ public interface ProductService {
 	public int countProductSku();
 	
 	public List<ProductSku> stockIn(List<ProductSku> productSkus);
+	
+	public List<Map<String, Object>> listProductSkuByBarcode(String barcode, String name, String category, Long companyId, Integer offset, Integer limit);
+	
+	public int countProductSkuByBarcode(String barcode, String name, String category, Long companyId);
 	}

@@ -31,6 +31,7 @@ import com.fuanna.h5.buy.model.RstResult;
 import com.fuanna.h5.buy.service.AdminService;
 import com.fuanna.h5.buy.service.ProductService;
 import com.fuanna.h5.buy.util.MD5;
+import com.google.gson.JsonArray;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -116,12 +117,17 @@ public class AdminController extends BaseController {
 					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
 				}
 			}
-			List<Map<String, Object>> rows = adminService.listProductSkuByBarcode(barcode, name, category, companyId, iDisplayStart, iDisplayLength);
-			int count = adminService.countProductSkuByBarcode(barcode, name, category, companyId);
+			List<Map<String, Object>> rows = productService.listProductSkuByBarcode(barcode, name, category, companyId, iDisplayStart, iDisplayLength);
+			int count = productService.countProductSkuByBarcode(barcode, name, category, companyId);
 			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
 		}
 		return rstResult;
+	}
+	
+	@RequestMapping("/updateProductIndex.do")
+	public String productIndex() {
+		return "/admin/product_index";
 	}
 	
 	/********公告管理*********/
