@@ -9,10 +9,10 @@
 
 			</div>
 			<div class="am-u-sm-12 am-u-md-3 datatable-search">
-				<label>用户名: <input type="text"
-					id="datatable-search-username"></label> <label>姓名: <input
-					type="text" id="datatable-search-name"></label> <label>手机号:
-					<input type="text" id="datatable-search-mobilePhone">
+				<label>条形码: <input type="text"
+					id="datatable-search-barcode"></label> <label>商品名: <input
+					type="text" id="datatable-search-name"></label> <label>类别:
+					<input type="text" id="datatable-search-category">
 				</label>
 				<button
 					class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search"
@@ -72,7 +72,7 @@
 						"bDestroy" : true,
 						"bServerSide" : true,
 						"bSortCellsTop" : true,
-						"sAjaxSource" : "admin/adminManageList.do",
+						"sAjaxSource" : "admin/barcodeManageList.do",
 						"bPaginate" : true, //显示分页器
 						"sPaginationType" : "full_numbers",
 						"iDisplayLength " : 10, //一页显示条数
@@ -90,28 +90,24 @@
 									}
 								},
 								{
-									"sName" : "username",
-									"mDataProp" : "username",
+									"sName" : "barcode",
+									"mDataProp" : "barcode",
 								},
 								{
 									"sName" : "name",
 									"mDataProp" : "name",
 								},
 								{
-									"sName" : "mobilePhone",
-									"mDataProp" : "mobilePhone",
+									"sName" : "category",
+									"mDataProp" : "category",
 								},
 								{
-									"sName" : "email",
-									"mDataProp" : "email",
+									"sName" : "attribute",
+									"mDataProp" : "attribute",
 								},
 								{
-									"sName" : "roleName",
-									"mDataProp" : "roleName",
-								},
-								{
-									"sName" : "createTime",
-									"mDataProp" : "createTime",
+									"sName" : "price",
+									"mDataProp" : "price",
 								},
 								{
 									"render" : function(data, type, row) {
@@ -130,9 +126,9 @@
 								url : source,//这个就是请求地址对应sAjaxSource
 								data : {
 									"rows" : JSON.stringify(rows),
-									"username" : $("#datatable-search-username").val(),
+									"barcode" : $("#datatable-search-barcode").val(),
 									"name" : $("#datatable-search-name").val(),
-									"mobilePhone" : $("#datatable-search-mobilePhone").val()
+									"category" : $("#datatable-search-category").val()
 								},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
 								type : 'post',
 								dataType : 'json',

@@ -44,4 +44,7 @@ public interface ResourceMapper {
 	
 	@Select({ "select * from f_resource where parentId is null" })
 	public List<Resource> queryResourceParent();
+	
+	@Select({ "select * from f_resource" })
+	public List<Resource> queryAllResources();
 }

@@ -206,4 +206,15 @@ public class AdminServiceImpl implements AdminService{
 	public List<Map<String, Object>> listByPersonsDetail() {
 		return adminMapper.listByPersonsDetail();
 	}
+
+	@Override
+	public List<Map<String, Object>> listProductSkuByBarcode(String barcode, String name, String category, Long companyId,
+			Integer offset, Integer limit) {
+		return adminMapper.listProductSkuByBarcode(barcode, name, category, companyId, offset, limit);
+	}
+
+	@Override
+	public int countProductSkuByBarcode(String barcode, String name, String category, Long companyId) {
+		return adminMapper.countProductSkuByBarcode(barcode, name, category, companyId);
+	}
 }

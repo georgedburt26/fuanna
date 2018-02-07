@@ -305,7 +305,7 @@
 			return true;
 		}
 		function updateNum(id, obj, value) {
-			obj.parentNode.innerHTML = "<input type='text' id=" + id
+			obj.parentNode.innerHTML = "<input type='text' style='width:50px;' id=" + id
 					+ " onblur='updateInputNum(\"" + id
 					+ "\",this)' onkeypress='updateInputNum(\"" + id
 					+ "\",this," + obj.value + ")' value='" + value
@@ -317,7 +317,6 @@
 			var value = obj.value;
 			var event = window.event;
 			if (typeof (event.keyCode) != "undefined" && event.keyCode != 13) {
-				console.log(typeof (event.keyCode));
 				return;
 			}
 			if (value == null || value == "") {

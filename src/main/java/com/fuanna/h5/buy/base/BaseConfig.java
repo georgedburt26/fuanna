@@ -2,12 +2,16 @@ package com.fuanna.h5.buy.base;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import org.apache.log4j.Logger;
+
+import com.fuanna.h5.buy.model.Resource;
 
 public class BaseConfig {
 
@@ -25,7 +29,9 @@ public class BaseConfig {
 	
 	private static final String CONFIG_PATH = "//config.properties";
 	
-    private static final Map<String, ReadWriteLock> rwls = new HashMap<String, ReadWriteLock>();
+	private static final List<Resource> resources = new ArrayList<Resource>();
+
+	private static final Map<String, ReadWriteLock> rwls = new HashMap<String, ReadWriteLock>();
 	
     static {
         try(InputStream in = BaseConfig.class.getResourceAsStream(JDBC_PATH)){
@@ -58,4 +64,12 @@ public class BaseConfig {
     public static String getBaseConfig(String name) {
     	return BASE_CONFIG.getProperty(name);
     }
+    
+    public static void addResource(Resource resource) {
+    	resources.add(resource);
+    }
+	
+    public static List<Resource> getResources() {
+		return resources;
+	}
 }

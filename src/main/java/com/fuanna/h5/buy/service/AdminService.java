@@ -33,6 +33,10 @@ public interface AdminService {
 	
 	public int countRoles(Long companyId);
 	
+	public List<Map<String, Object>> listProductSkuByBarcode(String barcode, String name, String category, Long companyId, Integer offset, Integer limit);
+	
+	public int countProductSkuByBarcode(String barcode, String name, String category, Long companyId);
+	
 	public int deleteRole(List<Long> ids);
 	
 	public long addRole(String name, String description, Long companyId, String[] resources);

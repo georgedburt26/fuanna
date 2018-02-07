@@ -23,7 +23,10 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 import com.fuanna.h5.buy.mapper.JdbcTestMapper;
+import com.fuanna.h5.buy.mapper.ResourceMapper;
+import com.fuanna.h5.buy.model.Resource;
 
 @SuppressWarnings("deprecation")
 public class SystemInit {
@@ -31,11 +34,21 @@ public class SystemInit {
 	private static final Logger logger = Logger.getLogger(HttpsClient.class);
 	
 	@Autowired
+	ResourceMapper resourceMapper;
+	
+	@Autowired
 	JdbcTestMapper jdbcTestMapper;
 	
 	public void init() throws Exception {
 		testJdbc();
+//		addResource();
 		initHttpsClient();
+	}
+	
+	public void addResource() {
+		for (Resource resource : resourceMapper.queryAllResources()) {
+			BaseConfig.addResource(resource);
+		}
 	}
 	
 	private void testJdbc() throws Exception{

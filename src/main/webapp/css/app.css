@@ -2085,6 +2085,11 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 .change-line{
 	word-wrap:break-word; 
 }
+#notice{
+	color:#485a6a;
+	font-size:15px;
+	padding: 12px 15px
+}
 
 @media screen and (max-width: 500px) {
 	.fuanna-alert {

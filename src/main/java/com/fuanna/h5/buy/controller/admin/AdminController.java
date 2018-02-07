@@ -82,10 +82,42 @@ public class AdminController extends BaseController {
 		url = "redirect:/admin/index.do";// 登陆成功
 		return url;
 	}
-	/******** 条形码管理*********/
-	@RequestMapping("/barCode.do")
+	/******** 商品管理*********/
+	@RequestMapping("/productManage.do")
 	public String barcodeManage() {
-		return "/admin/barcode_manage";
+		return "/admin/product_manage";
+	}
+	
+	@RequestMapping("/barcodeManageList.do")
+	public @ResponseBody RstResult barcodeManageList() throws Exception {
+		Long companyId = admin().getCompanyId();
+		RstResult rstResult = null;
+		String data = request().getParameter("rows");
+		String barcode = StringUtils.isBlank(request().getParameter("barcode")) ? null
+				: request().getParameter("barcode");
+		String name = StringUtils.isBlank(request().getParameter("name")) ? null : request().getParameter("name");
+		String category = StringUtils.isBlank(request().getParameter("category")) ? null
+				: request().getParameter("category");
+		if (StringUtils.isNotBlank(data)) {
+			Integer sEcho = null, iDisplayStart = null, iDisplayLength = null;
+			JSONArray json = JSONArray.fromObject(data);
+			for (int i = 0; i < json.size(); i++) {
+				if (json.getJSONObject(i).getString("name").equals("sEcho")) {
+					sEcho = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayStart")) {
+					iDisplayStart = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayLength")) {
+					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+			}
+			List<Map<String, Object>> rows = adminService.listProductSkuByBarcode(barcode, name, category, companyId, iDisplayStart, iDisplayLength);
+			int count = adminService.countProductSkuByBarcode(barcode, name, category, companyId);
+			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
+			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
+		}
+		return rstResult;
 	}
 	
 	/******** 库存管理*********/
