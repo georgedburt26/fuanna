@@ -128,6 +128,12 @@ public interface AdminMapper {
 	@Select({
 			"select role.name, role.description, role.createTime, GROUP_CONCAT(resource.resourceId) as resources from f_role as role left join f_role_resource as resource on resource.roleId = role.id where role.id = #{0} group by role.id" })
 	public Role queryRoleById(long roleId);
+	
+	@Select({"select content, DATE_FORMAT(publishTime,'%Y年%m月%d日') as publishTime from f_notice where companyId=#{0}" })
+	public Map<String, Object> queryNoticeByCompanyId(Long companyId);
+	
+	@Update({"INSERT INTO f_notice (content, publishTime, companyId) VALUES (#{0}, now(), #{1}) ON DUPLICATE KEY UPDATE content = #{0}, publishTime=now()"})
+	public long publishNotice(String content, Long companyId);
 
 	@Select({
 			"select count(id) as count, sum(amount) as totalAmount, sum(realAmount) as totalRealAmount,sum(hascashAmount) as totalHascashAmount, sum(uncashAmount) as totalUncashAmount from gs_contract " })

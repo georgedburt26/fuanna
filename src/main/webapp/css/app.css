@@ -2090,6 +2090,12 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 	font-size:15px;
 	padding: 12px 15px
 }
+#notice_content{
+	color:#485a6a;
+	font-size:15px;
+	padding-left:12px;
+	padding-right:12px;
+}
 
 @media screen and (max-width: 500px) {
 	.fuanna-alert {

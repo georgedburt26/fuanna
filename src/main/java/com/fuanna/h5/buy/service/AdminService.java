@@ -45,6 +45,10 @@ public interface AdminService {
 	
 	public Role queryRoleById(long roleId);
 	
+	public long publicNotice(String content, Long companyId);
+	
+	public Map<String, Object> queryNoticeByCompanyId(Long companyId);
+	
 	public Map<String, Object> getTotal();
 	
 	public List<Map<String, Object>> listByContracts();

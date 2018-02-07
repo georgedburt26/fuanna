@@ -217,4 +217,14 @@ public class AdminServiceImpl implements AdminService{
 	public int countProductSkuByBarcode(String barcode, String name, String category, Long companyId) {
 		return adminMapper.countProductSkuByBarcode(barcode, name, category, companyId);
 	}
+
+	@Override
+	public Map<String, Object> queryNoticeByCompanyId(Long companyId) {
+		return adminMapper.queryNoticeByCompanyId(companyId);
+	}
+
+	@Override
+	public long publicNotice(String content, Long companyId) {
+		return adminMapper.publishNotice(content, companyId);
+	}
 }

@@ -34,5 +34,13 @@
 		<span class="am-icon-bookmark"
 			style="font-size: 20px; position: relative; text-shadow: none; font-weight: 300; top: 2px; margin-left: 1px; margin-right: 6px; color: #a7bdcd;"></span><span>公告</span>
 	</div>
-	<div></div>
+	<div id="notice_content"><c:choose>
+   <c:when test="${notice == null}">  
+            暂无      
+   </c:when>
+   <c:otherwise> 
+   <p id="notice_content_value">${notice.content}</p>
+   <p align="right" id="notice_publishTime_value">${notice.publishTime}</p>
+   </c:otherwise>
+</c:choose></div>
 </div>

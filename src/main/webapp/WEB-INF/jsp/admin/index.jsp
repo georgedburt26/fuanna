@@ -48,6 +48,7 @@
 	<script src="<%=sourcePath%>js/dialog-min.js"></script>
 	<script src="<%=sourcePath%>js/jquery.mloading.js"></script>
 	<script src="<%=sourcePath%>js/amazeui.tree.min.js"></script>
+	<script>pageContent("admin/productManage.do");</script>
 </body>
 
 </html>

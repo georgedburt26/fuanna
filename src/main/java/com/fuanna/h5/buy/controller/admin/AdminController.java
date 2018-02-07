@@ -1,11 +1,15 @@
 package com.fuanna.h5.buy.controller.admin;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.enterprise.inject.New;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -84,12 +88,12 @@ public class AdminController extends BaseController {
 	}
 	/******** 商品管理*********/
 	@RequestMapping("/productManage.do")
-	public String barcodeManage() {
+	public String productManage() {
 		return "/admin/product_manage";
 	}
 	
-	@RequestMapping("/barcodeManageList.do")
-	public @ResponseBody RstResult barcodeManageList() throws Exception {
+	@RequestMapping("/productManageList.do")
+	public @ResponseBody RstResult productManageList() throws Exception {
 		Long companyId = admin().getCompanyId();
 		RstResult rstResult = null;
 		String data = request().getParameter("rows");
@@ -116,6 +120,34 @@ public class AdminController extends BaseController {
 			int count = adminService.countProductSkuByBarcode(barcode, name, category, companyId);
 			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
+		}
+		return rstResult;
+	}
+	
+	/********公告管理*********/
+	@RequestMapping("/noticeManage.do")
+	public String noticeManage() {
+		return "/admin/notice_manage";
+	}
+	
+	@RequestMapping("/publicNotice.do")
+	public @ResponseBody RstResult publicNotice(@RequestParam Map<String, String> params) throws Exception {
+		String content = params.get("content");
+		RstResult rstResult = null;
+		if (StringUtils.isBlank(content)) {
+			error("发布内容不能为空");
+		}
+		Long companyId = admin().getCompanyId();
+		long rtn = adminService.publicNotice(content, companyId);
+		if (rtn > 0) {
+			Map<String, String> map = new HashMap<String, String>();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+			map.put("content", content);
+			map.put("publishTime", sdf.format(new Date()));
+			rstResult = new RstResult(ErrorCode.CG, "发布成功", map);
+		}
+		else {
+			rstResult = new RstResult(ErrorCode.SB, "发布失败", "");
 		}
 		return rstResult;
 	}

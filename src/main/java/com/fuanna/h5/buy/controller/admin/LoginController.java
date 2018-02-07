@@ -1,6 +1,8 @@
 package com.fuanna.h5.buy.controller.admin;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,11 @@ public class LoginController extends BaseController {
 	public String index() {
 		Admin admin = (Admin) session().getAttribute("admin");
 		List<Resource> resources = adminService.queryResourcesByAdminId(admin.getId());
+		Long companyId = admin().getCompanyId();
+		Map<String, Object> noticeMap = adminService.queryNoticeByCompanyId(companyId);
+		if (noticeMap != null && !noticeMap.isEmpty()) {
+			session().setAttribute("notice", noticeMap);
+		}
 		session().setAttribute("resources", resources);
 		return "/admin/index";
 	}
