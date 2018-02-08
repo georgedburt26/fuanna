@@ -27,6 +27,14 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 			response.sendRedirect("login.do");
 			return false;
 		}
+		else {
+			Resource resource = new Resource();
+			resource.setUrl(url.substring(1, url.length()));
+			if (BaseConfig.getResources().contains(resource) && !((List<Resource>)session.getAttribute("resources")).contains(resource)) {
+				response.sendRedirect("login.do");
+				return false;
+			}
+		}
 		return true;
 	}
 

@@ -76,7 +76,7 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public List<Resource> queryResourcesByAdminId(long adminId) {
-		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, true, 1);
+		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, true, null);
 		for (Resource topResource : topResources) {
 			List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
 			topResource.setResources(resources);

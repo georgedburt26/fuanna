@@ -100,4 +100,19 @@ public class Resource implements Serializable{
 	public void setResources(List<Resource> resources) {
 		this.resources = resources;
 	}
+	
+	@Override
+	public int hashCode() {
+		return url.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		Resource resource = (Resource) obj;
+		if (this.url.equals(resource.getUrl())) {
+			return true;
+		}
+		return false;
+	}
 }

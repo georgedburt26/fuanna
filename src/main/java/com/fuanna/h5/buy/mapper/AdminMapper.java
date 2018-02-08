@@ -19,7 +19,7 @@ import com.fuanna.h5.buy.model.RoleResource;
 
 public interface AdminMapper {
 
-	@Select({"select * from f_company"})
+	@Select({"select * from f_company order by convert(name USING gbk) asc"})
 	@ResultType(LinkedHashMap.class)
 	public List<Map<String, Object>> listCompany();
 	

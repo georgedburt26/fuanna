@@ -2,43 +2,32 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/lib.jsp"%>
 <style>
-.am-form-group {
-width:50%;
-float:left;
-}
-.am-form-group div{
-float:left;
-}
-#doc-vld-msg {
-float:left;
-width:100%;
-}
 </style>
 <div class="tpl-portlet-components">
 	<div class="tpl-block">
 		<div class="am-g tpl-amazeui-form">
-			<div class="am-u-sm-12">
+			<div class="am-u-sm-12 am-u-md-9 am-u-lg-12">
 				<form id="doc-vld-msg" class="am-form am-form-horizontal" data-am-validator>
-				   <div class="am-form-group">
-						<div><label class="am-form-label">条形码</label></div>
+					<div class="am-form-group am-u-lg-6">
+						<label class="am-form-label am-u-sm-3">条形码</label>
 						<div class="am-u-sm-9">
-						<input type="text" id="productName" readonly="readonly" required />
+							<input type="text" id="username" readonly="readonly"/>
+						</div>
+					</div>
+					<div class="am-form-group am-u-lg-6">
+						<label class="am-form-label am-u-sm-3">商品名</label>
+						<div class="am-u-sm-9">
+							<input type="text" id="username" placeholder="请输入商品名" required />
+						</div>
+					</div>
+					<div class="am-form-group am-u-lg-6">
+						<label class="am-form-label am-u-sm-3">商品描述</label>
+						<div class="am-u-sm-9">
+							 <textarea rows="5" id="noticeContent" minlength="6" maxlength="500"></textarea>
 						</div>
 					</div>
 					<div class="am-form-group">
-						<div><label class="am-form-label">商品名</label></div>
-						<div class="am-u-sm-9">
-						<input type="text" id="productName" placeholder="输入商品名" required />
-						</div>
-					</div>
-					<div class="am-form-group">
-						<div><label class="am-form-label">商品描述</label></div>
-						<div class="am-u-sm-9">
-							 <textarea rows="5" id="description" minlength="6" maxlength="500"></textarea>
-						</div>
-					</div>
-					<div class="am-form-group" style="width:100%;">
-						<div class="am-u-sm-9">
+						<div class="am-u-sm-9 am-u-sm-push-3">
 							<button type="button" id="save" class="am-btn am-btn-primary">发布</button>
 						</div>
 					</div>

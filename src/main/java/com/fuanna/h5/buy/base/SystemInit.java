@@ -41,7 +41,7 @@ public class SystemInit {
 	
 	public void init() throws Exception {
 		testJdbc();
-//		addResource();
+		addResource();
 		initHttpsClient();
 	}
 	
