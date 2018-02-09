@@ -92,6 +92,9 @@ function pageContent(url) {
 					if (responseTxt.indexOf("adminLogin.do") >= 0) {
 						window.location.href = "admin/login.do";
 					}
+					if (xhr.status == 200) {
+						permission();
+					}
 					if (xhr.status == 404) {
 						$(this).load("404.html");
 					}
@@ -101,6 +104,10 @@ function pageContent(url) {
 					$(".tpl-content-wrapper").mLoading("hide");
 				});
 	}
+}
+
+function permission() {
+	$("*[resource]").remove();
 }
 
 // 页面数据

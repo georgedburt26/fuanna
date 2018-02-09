@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ include file="/lib.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <div class="tpl-portlet-components">
 	<div class="tpl-block">
@@ -9,7 +10,7 @@
 				<div class="am-btn-toolbar">
 					<div class="am-btn-group am-btn-group-xs">
 						<button type="button" id="addAdmin"
-							class="am-btn am-btn-default am-btn-success">
+							class="am-btn am-btn-default am-btn-success" resource>
 							<span class="am-icon-plus"></span> 新增
 						</button>
 						<!--	<button type="button"
@@ -99,6 +100,9 @@
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
 						"sZeroRecords" : "没有检索到数据",
 						"retrieve" : true,//保证只有一个table实例  
+						"fnInitComplete": function() {
+							permission()
+							},
 						"aoColumns" : [
 								{
 									//自定义列
@@ -180,7 +184,7 @@
 						}
 					});
 	$("#addAdmin").click(function() {
-		pageContent("admin/addAdminIndex.do?type=1");
+		pageContent("admin/addAdminIndex.do");
 	});
 	$("#datatable-search-btn").click(function() {
 		var username = $("#datatable-search-username").val();
@@ -222,9 +226,9 @@
 		d.show();
 	}
 	function editAdmin(id) {
-		pageContent("admin/addAdminIndex.do?id=" + id + "&type=3");
+		pageContent("admin/updateAdminIndex.do?id=" + id);
 	}
 	function checkAdmin(id) {
-		pageContent("admin/addAdminIndex.do?id=" + id + "&type=2");
+		pageContent("admin/readAdminIndex.do?id=" + id);
 	}
 </script>

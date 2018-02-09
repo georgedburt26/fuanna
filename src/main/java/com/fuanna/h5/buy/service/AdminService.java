@@ -21,6 +21,8 @@ public interface AdminService {
 	
 	public List<Resource> queryResourcesByAdminId(long adminId);
 	
+	public List<Resource> queryResourcesByAdminIdType(long adminId, Integer type);
+	
 	public List<Resource> queryResources();
 	
 	public int countAdmin(String name, String mobilePhone, String username, Long companyId);

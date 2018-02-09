@@ -2,14 +2,9 @@ package com.fuanna.h5.buy.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -76,7 +71,7 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public List<Resource> queryResourcesByAdminId(long adminId) {
-		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, true, null);
+		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, true, 1);
 		for (Resource topResource : topResources) {
 			List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
 			topResource.setResources(resources);
@@ -92,6 +87,11 @@ public class AdminServiceImpl implements AdminService{
 			topResource.setResources(resources);
 		}
 		return topResources;
+	}
+
+	@Override
+	public List<Resource> queryResourcesByAdminIdType(long adminId, Integer type) {
+		return resourceMapper.queryResourceByAdminId(adminId, false, type);
 	}
 	
 //	private void findResources(Resource topResource) {
@@ -187,6 +187,11 @@ public class AdminServiceImpl implements AdminService{
 	public long updateAdmin(Admin admin) {
 		return adminMapper.updateAdmin(admin);
 	}
+	
+	@Override
+	public long publicNotice(String content, Long companyId) {
+		return adminMapper.publishNotice(content, companyId);
+	}
 
 
 	@Override
@@ -215,10 +220,5 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Map<String, Object> queryNoticeByCompanyId(Long companyId) {
 		return adminMapper.queryNoticeByCompanyId(companyId);
-	}
-
-	@Override
-	public long publicNotice(String content, Long companyId) {
-		return adminMapper.publishNotice(content, companyId);
 	}
 }

@@ -84,6 +84,7 @@ public class AdminController extends BaseController {
 			error("用户被禁用", url);
 		}
 		session().setAttribute("admin", admin);
+		session().removeAttribute("admin_imageCode");
 		url = "redirect:/admin/index.do";// 登陆成功
 		return url;
 	}
@@ -269,12 +270,24 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/addAdminIndex.do")
 	public String addAdminIndex() {
-		String type = request().getParameter("type");
+		request().setAttribute("type", "1");
+		return "/admin/admin_index";
+	}
+	
+	@RequestMapping("/readAdminIndex.do")
+	public String readAdminIndex() {
 		String id = request().getParameter("id");
-		if ("2".equals(type) || "3".equals(type)) {// 查看
-			request().setAttribute("admin", adminService.queryAdminById(Long.parseLong(id)));
-		}
-		request().setAttribute("type", type);
+		request().setAttribute("admin", adminService.queryAdminById(Long.parseLong(id)));
+		request().setAttribute("type", "2");
+		request().setAttribute("id", id);
+		return "/admin/admin_index";
+	}
+	
+	@RequestMapping("/updateIndex.do")
+	public String updateAdminIndex() {
+		String id = request().getParameter("id");
+		request().setAttribute("admin", adminService.queryAdminById(Long.parseLong(id)));
+		request().setAttribute("type", "3");
 		request().setAttribute("id", id);
 		return "/admin/admin_index";
 	}
