@@ -10,7 +10,7 @@
 				<div class="am-btn-toolbar">
 					<div class="am-btn-group am-btn-group-xs">
 						<button type="button" id="addAdmin"
-							class="am-btn am-btn-default am-btn-success">
+							class="am-btn am-btn-default am-btn-success" resource="admin/addAdminIndex.do">
 							<span class="am-icon-plus"></span> 新增
 						</button>
 						<!--	<button type="button"
@@ -21,7 +21,7 @@
 							<span class="am-icon-archive"></span> 审核
 						</button>-->
 						<button type="button" id="deleteAdmin"
-							class="am-btn am-btn-default am-btn-danger">
+							class="am-btn am-btn-default am-btn-danger" resource="admin/deleteAdmin.do">
 							<span class="am-icon-trash-o"></span> 删除
 						</button>
 					</div>
@@ -141,17 +141,17 @@
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs' style='display:block' onclick='checkAdmin(" + row.id + ")'>"
+											"class='am-btn am-btn-default am-btn-xs' style='display:block' onclick='checkAdmin(" + row.id + ")' resource='admin/readAdminIndex.do'>"
 												+ "<span class='am-icon-file-text-o'></span>查看"
 												+ "</button>"
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editAdmin(" + row.id + ")'>"
+											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editAdmin(" + row.id + ")' resource='admin/updateAdminIndex.do'>"
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
 												+ "<button type='button' "
 												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteAdmin("
 												+ row.id
-												+ ",this)'>"
+												+ ",this)' resource='admin/deleteAdmin.do'>"
 												+ "<span class='am-icon-trash-o'></span> 删除"
 												+ "</button>"
 												+ "</div>"

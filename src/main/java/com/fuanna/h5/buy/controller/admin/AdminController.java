@@ -1,6 +1,7 @@
 package com.fuanna.h5.buy.controller.admin;
 
 import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fuanna.h5.buy.base.BaseConfig;
 import com.fuanna.h5.buy.base.BaseController;
+import com.fuanna.h5.buy.base.HttpsClient;
 import com.fuanna.h5.buy.constraints.ErrorCode;
 import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.Admin;
@@ -452,6 +455,56 @@ public class AdminController extends BaseController {
 	public @ResponseBody RstResult listResources() {
 		List<Resource> resources = adminService.queryResources();
 		return new RstResult(ErrorCode.CG, "查询成功", resources);
+	}
+	
+	@RequestMapping("/getLocationInfo.do")
+	public @ResponseBody RstResult getLocationInfo() {
+		RstResult rstResult = null;
+		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> nameValuePair = new HashMap<String, String>();
+		nameValuePair.put("ip", request().getRemoteAddr());
+		nameValuePair.put("ak", BaseConfig.getBaseConfig("baidu_ak"));
+		nameValuePair.put("coor", "bd09ll");
+		String locationString = HttpsClient.post(BaseConfig.getBaseConfig("baidu_location_url"), nameValuePair, "utf-8");
+		logger.info("地址信息:" + locationString);
+		if (StringUtils.isBlank(locationString)) {
+			rstResult = new RstResult(ErrorCode.SB, "获取地址信息失败");
+		}
+		else {
+			JSONObject location = JSONObject.fromObject(locationString);
+			if (!location.getString("status").equals("0")) {
+				rstResult = new RstResult(ErrorCode.SB, "获取地址信息失败");
+			}else {
+				String city = location.getJSONObject("content").getJSONObject("address_detail").getString("city");
+				logger.info("城市信息:" + city);
+				nameValuePair.clear();
+				nameValuePair.put("location", city);
+				nameValuePair.put("ak", BaseConfig.getBaseConfig("baidu_ak"));
+				nameValuePair.put("output", "json");
+				String weatherString = HttpsClient.post(BaseConfig.getBaseConfig("baidu_weather_url"), nameValuePair, "utf-8");
+				logger.info("天气信息:" + weatherString);
+				if (StringUtils.isBlank(locationString)) {
+					rstResult = new RstResult(ErrorCode.SB, "获取天气信息失败");
+				}
+				else {
+					JSONObject weatherObject = JSONObject.fromObject(weatherString);
+					if (!weatherObject.getString("status").equals("0")) {
+						rstResult = new RstResult(ErrorCode.SB, "获取天气信息失败");
+					}
+					else {
+						JSONObject result = weatherObject.getJSONArray("results").getJSONObject(0);
+						String pm25 = result.getString("pm25");
+						logger.info("pm25信息:" + pm25);
+						JSONObject weatherData = result.getJSONArray("weather_data").getJSONObject(0);
+						String weather = weatherData.getString("weather");
+						logger.info("weather信息:" + weather);
+						String temperature = weatherData.getString("temperature");
+						logger.info("temperature信息:" + temperature);
+					}
+				}
+			}
+		}
+		return rstResult;
 	}
 	
 //	@RequestMapping("/exportExcel.do")

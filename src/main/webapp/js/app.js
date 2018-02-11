@@ -110,7 +110,11 @@ function permission() {
 	if ($("#btnResources")) {
 		$("#btnResources").remove();
 	}
-	$("*[resource]");
+	$("*[resource]").each(function(index, data) {
+		if(btnResources.indexOf($(data).attr("resource")) < 0) {
+			$(this).remove();
+		}
+	});
 }
 
 // 页面数据

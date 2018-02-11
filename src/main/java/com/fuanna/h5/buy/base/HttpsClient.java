@@ -148,6 +148,7 @@ public class HttpsClient {
 			} else {
 				logger.info("http return status error:"
 						+ response.getStatusLine().getStatusCode());
+				throw new Exception("http请求失败");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -77,5 +77,10 @@
 			</div>
 		</div>
 	</div>
+	<script>
+	$.post("admin/getLocationInfo.do", {}, function(data) {
+		
+	});
+	</script>
 </body>
 </html>
