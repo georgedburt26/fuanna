@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="<%=sourcePath%>css/amazeui.tree.min.css">
 <script src="<%=sourcePath%>js/renderFile.js"></script>
 <script src="<%=sourcePath%>js/echarts.min.js"></script>
+<script src="http://api.map.baidu.com/getscript?v=2.0&ak=3pB2Y3ZQ5Xfn8wsQzVSTnNPIEHloPzkG"></script>
 </head>
 <style>
 .am-icon-list:before {

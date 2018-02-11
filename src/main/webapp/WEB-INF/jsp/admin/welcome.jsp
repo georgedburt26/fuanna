@@ -70,6 +70,7 @@
 						<div class="tpl-page-state-content tpl-error-content">
 							<p>天气：多云 </p>
 							<p>温度：0-9 °C </p>
+							<p>PM2.5：0-9 °C </p>
 							<p>位置：郑州市</p>
 						</div>
 					</div>
@@ -77,10 +78,29 @@
 			</div>
 		</div>
 	</div>
-	<script>
-	$.post("admin/getLocationInfo.do", {}, function(data) {
-		
-	});
-	</script>
 </body>
+<div id="allmap"></div>
+<script>
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point();
+	map.centerAndZoom(point,12);
+
+	function myFun(result){
+		var cityName = result.name;
+		map.setCenter(cityName);
+		$.ajax({
+		    url:'http://api.map.baidu.com/telematics/v3/weather?location=' + cityName + '&output=json&ak=3pB2Y3ZQ5Xfn8wsQzVSTnNPIEHloPzkG',//可以不是本地域名 
+		    type:'get',
+		    dataType:'jsonp',  //jsonp格式访问
+		})
+		.done(function(data){
+		    console.log(data);
+		})
+		.fail(function() {
+		    alert('服务器超时，请重试！');
+		});
+	}
+	var myCity = new BMap.LocalCity();
+	myCity.get(myFun);
+</script>
 </html>
