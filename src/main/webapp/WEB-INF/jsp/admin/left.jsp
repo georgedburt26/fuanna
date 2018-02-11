@@ -45,4 +45,5 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
+	<span id="btnResources" style="display:none">${btnResources}</span>
 </div>

@@ -10,7 +10,7 @@
 				<div class="am-btn-toolbar">
 					<div class="am-btn-group am-btn-group-xs">
 						<button type="button" id="addAdmin"
-							class="am-btn am-btn-default am-btn-success" resource>
+							class="am-btn am-btn-default am-btn-success">
 							<span class="am-icon-plus"></span> 新增
 						</button>
 						<!--	<button type="button"
@@ -101,7 +101,7 @@
 						"sZeroRecords" : "没有检索到数据",
 						"retrieve" : true,//保证只有一个table实例  
 						"fnInitComplete": function() {
-							permission()
+							permission();
 							},
 						"aoColumns" : [
 								{

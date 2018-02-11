@@ -14,6 +14,8 @@ import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.service.AdminService;
 
+import net.sf.json.JSONArray;
+
 @Controller
 @RequestMapping("/admin")
 public class LoginController extends BaseController {
@@ -51,7 +53,7 @@ public class LoginController extends BaseController {
 		}
 		session().setAttribute("leftResources", leftResources);
 		session().setAttribute("topResource", topResources);
-		session().setAttribute("btnResources", btnResources);
+		session().setAttribute("btnResources", JSONArray.fromObject(btnResources));
 		session().setAttribute("allResources", allResources);
 		return "/admin/index";
 	}
@@ -71,5 +73,10 @@ public class LoginController extends BaseController {
 		model.addFlashAttribute("errorCode", "9999");
 		model.addFlashAttribute("errorMsg", "没有权限访问");
 		return "redirect:/admin/index.do";
+	}
+	
+	@RequestMapping("/welcome.do")
+	public String welcome() {
+		return "/admin/welcome";
 	}
 }

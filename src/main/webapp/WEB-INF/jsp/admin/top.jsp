@@ -80,7 +80,7 @@
 
 				</ul>
 			</li>
-			<li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+			<!--<li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
 				<a class="am-dropdown-toggle tpl-header-list-link"
 				href="javascript:;"> <span class="am-icon-calendar"></span> 进度 <span
 					class="am-badge tpl-badge-primary am-round">4</span></span>
@@ -124,7 +124,7 @@
 					</a></li>
 
 				</ul>
-			</li>
+			</li>  -->
 			<li class="am-hide-sm-only"><a href="javascript:;"
 				id="admin-fullscreen" class="tpl-header-list-link"><span
 					class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>

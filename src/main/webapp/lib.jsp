@@ -22,4 +22,3 @@
 		sourcePath = BaseConfig.getUploadConfig("tencent_host");
 	}
 %>
-<base href="<%=basePath%>">

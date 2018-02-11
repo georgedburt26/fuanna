@@ -105,9 +105,12 @@ function pageContent(url) {
 				});
 	}
 }
-
+var btnResources = $("#btnResources").text();
 function permission() {
-	$("*[resource]").remove();
+	if ($("#btnResources")) {
+		$("#btnResources").remove();
+	}
+	$("*[resource]");
 }
 
 // 页面数据
