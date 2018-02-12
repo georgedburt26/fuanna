@@ -8,7 +8,7 @@
 			<c:forEach var="resource" items="${leftResources}" varStatus="status">
 				<li class="tpl-left-nav-item"><a href="javascript:void(0);"
 					onclick="pageContent('${resource.url}')"
-					class="nav-link tpl-left-nav-link-list <c:if test='${status.index == 0}'>active</c:if>">
+					class="nav-link tpl-left-nav-link-list">
 						<i class="${resource.icon}"></i> <span>${resource.name}</span> <c:if
 							test="${not empty resource.resources}">
 							<i

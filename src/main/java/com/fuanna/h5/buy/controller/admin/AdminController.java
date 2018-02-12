@@ -286,7 +286,7 @@ public class AdminController extends BaseController {
 		return "/admin/admin_index";
 	}
 	
-	@RequestMapping("/updateIndex.do")
+	@RequestMapping("/updateAdminIndex.do")
 	public String updateAdminIndex() {
 		String id = request().getParameter("id");
 		request().setAttribute("admin", adminService.queryAdminById(Long.parseLong(id)));
@@ -400,12 +400,26 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/addRoleIndex.do")
 	public String addRoleIndex() {
-		String type = request().getParameter("type");
+		request().setAttribute("type", "1");
+		return "/admin/role_index";
+	}
+	
+	@RequestMapping("/readRoleIndex.do")
+	public String readRoleIndex() {
 		String id = request().getParameter("id");
-		if ("2".equals(type) || "3".equals(type)) {// 查看
-			request().setAttribute("role", adminService.queryRoleById(Long.parseLong(id)));
-		}
-		request().setAttribute("type", type);
+		request().setAttribute("role", adminService.queryRoleById(Long.parseLong(id)));
+		request().setAttribute("treeResources", JSONArray.fromObject(BaseConfig.getTreeResources()));
+		request().setAttribute("type", 2);
+		request().setAttribute("id", id);
+		return "/admin/role_index";
+	}
+	
+	@RequestMapping("/updateRoleIndex.do")
+	public String updateRoleIndex() {
+		String id = request().getParameter("id");
+		request().setAttribute("role", adminService.queryRoleById(Long.parseLong(id)));
+		request().setAttribute("treeResources", JSONArray.fromObject(BaseConfig.getTreeResources()));
+		request().setAttribute("type", "3");
 		request().setAttribute("id", id);
 		return "/admin/role_index";
 	}
@@ -453,8 +467,7 @@ public class AdminController extends BaseController {
 
 	@RequestMapping("/listResources.do")
 	public @ResponseBody RstResult listResources() {
-		List<Resource> resources = adminService.queryResources();
-		return new RstResult(ErrorCode.CG, "查询成功", resources);
+		return new RstResult(ErrorCode.CG, "查询成功", BaseConfig.getTreeResources());
 	}
 	
 	@RequestMapping("/getLocationInfo.do")

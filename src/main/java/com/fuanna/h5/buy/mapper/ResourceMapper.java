@@ -42,7 +42,7 @@ public interface ResourceMapper {
 			  "</script>"})
 	public List<Resource> queryResourceByParentId(Long parentId);
 	
-	@Select({ "select * from f_resource where parentId is null" })
+	@Select({ "select * from f_resource where parentId is null order by type" })
 	public List<Resource> queryResourceParent();
 	
 	@Select({ "select * from f_resource" })

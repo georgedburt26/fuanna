@@ -9,7 +9,7 @@
 				<div class="am-btn-toolbar">
 					<div class="am-btn-group am-btn-group-xs">
 						<button type="button" id="addRole"
-							class="am-btn am-btn-default am-btn-success">
+							class="am-btn am-btn-default am-btn-success" resource="admin/addRoleIndex.do">
 							<span class="am-icon-plus"></span> 新增
 						</button>
 						<!--	<button type="button"
@@ -20,7 +20,7 @@
 							<span class="am-icon-archive"></span> 审核
 						</button>-->
 						<button type="button" id="deleteRole"
-							class="am-btn am-btn-default am-btn-danger">
+							class="am-btn am-btn-default am-btn-danger" resource="admin/deleteRole.do">
 							<span class="am-icon-trash-o"></span> 删除
 						</button>
 					</div>
@@ -88,6 +88,9 @@
 						"sAjaxDataProp" : "rows",//是服务器分页的标志，必须有
 						"sZeroRecords" : "没有检索到数据",
 						"retrieve" : true,//保证只有一个table实例  
+						"fnInitComplete": function() {
+							permission();
+							},
 						"aoColumns" : [
 								{
 									//自定义列
@@ -114,17 +117,17 @@
 										return "<div class='am-btn-toolbar' style='display: inline-block'>"
 												+ "<div class='am-btn-group am-btn-group-xs'> "
 												+ "<button type='button' onclick=checkRole('" + row.id + "') " +
-											"class='am-btn am-btn-default am-btn-xs' style='display:block'>"
+											"class='am-btn am-btn-default am-btn-xs' style='display:block' resource='admin/readRoleIndex.do'>"
 												+ "<span class='am-icon-file-text-o'></span>查看"
 												+ "</button>"
 												+ "<button type='button' " +
-											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editRole(" + row.id + ")'>"
+											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editRole(" + row.id + ")'  resource='admin/updateRoleIndex.do'>"
 												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 												+ "</button>"
 												+ "<button type='button' "
 												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteRole("
 												+ row.id
-												+ ",this)'>"
+												+ ",this)'  resource='admin/deleteRole.do'>"
 												+ "<span class='am-icon-trash-o'></span> 删除"
 												+ "</button>"
 												+ "</div>"
@@ -154,7 +157,7 @@
 						}
 					});
 	$("#addRole").click(function() {
-		pageContent("admin/addRoleIndex.do?type=1");
+		pageContent("admin/addRoleIndex.do");
 	});
 	$("#deleteRole").click(function() {
 		if ($(".tpl-table-fz-data-check:checked").length == 0) {
@@ -188,9 +191,9 @@
 		d.show();
 	}
 	function editRole(id) {
-		pageContent("admin/addRoleIndex.do?id=" + id + "&type=3");
+		pageContent("admin/updateRoleIndex.do?id=" + id);
 	}
 	function checkRole(id) {
-		pageContent("admin/addRoleIndex.do?id=" + id + "&type=2");
+		pageContent("admin/readRoleIndex.do?id=" + id);
 	}
 </script>

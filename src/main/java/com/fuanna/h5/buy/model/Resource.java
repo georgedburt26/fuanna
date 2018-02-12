@@ -103,7 +103,7 @@ public class Resource implements Serializable{
 	
 	@Override
 	public int hashCode() {
-		return url.hashCode();
+		return url == null ? "".hashCode() : url.hashCode();
 	}
 	
 	@Override

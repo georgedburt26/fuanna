@@ -83,8 +83,7 @@ public class AdminServiceImpl implements AdminService{
 	public List<Resource> queryResources() {
 		List<Resource> topResources = resourceMapper.queryResourceParent();
 		for (Resource topResource : topResources) {
-			List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
-			topResource.setResources(resources);
+			findResources(topResource);
 		}
 		return topResources;
 	}
@@ -93,16 +92,6 @@ public class AdminServiceImpl implements AdminService{
 	public List<Resource> queryResourcesByAdminIdType(long adminId, Integer type) {
 		return resourceMapper.queryResourceByAdminId(adminId, false, type);
 	}
-	
-//	private void findResources(Resource topResource) {
-//		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
-//		if (resources != null && !resources.isEmpty()) {
-//			topResource.setResources(resources);
-//			for (Resource resource : resources) {
-//				findResources(resource);
-//			}
-//		}
-//	}
 
 	@Override
 	public int countAdmin(String name, String mobilePhone, String username, Long companyId) {
@@ -220,5 +209,15 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Map<String, Object> queryNoticeByCompanyId(Long companyId) {
 		return adminMapper.queryNoticeByCompanyId(companyId);
+	}
+	
+	private void findResources(Resource topResource) {
+		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
+		if (resources != null && !resources.isEmpty()) {
+			topResource.setResources(resources);
+			for (Resource resource : resources) {
+				findResources(resource);
+			}
+		}
 	}
 }

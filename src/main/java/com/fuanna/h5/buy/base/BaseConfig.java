@@ -30,6 +30,8 @@ public class BaseConfig {
 	private static final String CONFIG_PATH = "//config.properties";
 	
 	private static final List<Resource> resources = new ArrayList<Resource>();
+	
+	private static List<Resource> treeResources = null;
 
 	private static final Map<String, ReadWriteLock> rwls = new HashMap<String, ReadWriteLock>();
 	
@@ -71,5 +73,13 @@ public class BaseConfig {
 	
     public static List<Resource> getResources() {
 		return resources;
+	}
+
+	public static List<Resource> getTreeResources() {
+		return treeResources;
+	}
+
+	protected static void setTreeResources(List<Resource> treeResources) {
+		BaseConfig.treeResources = treeResources;
 	}
 }

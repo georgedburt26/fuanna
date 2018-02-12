@@ -36,7 +36,7 @@
 					</c:if>
 					<div class="am-form-group">
 						<label class="am-u-sm-3 am-form-label">权限模块</label>
-						<div class="am-u-sm-9">
+						<div class="am-u-sm-9" style="max-height:305px;overflow-y:scroll;">
 							<span class="am-icon-spin am-icon-spinner" id="treeloading"></span>
 							<ul class="am-tree am-tree-folder-select" role="tree"
 								id="resourceTree">
@@ -81,53 +81,33 @@
 	</div>
 </div>
 <script>
+console.log();
 	var resourceTree = $('#resourceTree').tree({
 		multiSelect : true,
 		cacheItems : true,
 		folderSelect : true,
 		dataSource : function(options, callback) {
 			var data = new Array();
-			$.post("admin/listResources.do", {}, function(result) {
-				if (result.errorCode != '0000') {
-					showmsg(result.errorCode, result.errorMsg);
-					return;
-				}
-				$.each(result.data, function(index, value) {
+				$.each(JSON.parse('${treeResources}'), function(index, value) {
 					var item = {};
-					item.title = value.name;
-					item.type = value.resources.length > 0 ? "folder" : "item";
-					item.attr = {};
-					item.attr.id = value.id;
-					item.attr.icon = value.icon;
-					if (value.resources.length > 0) {
-						item.products = new Array();
-						$.each(value.resources, function(index, value) {
-							item.products.push({
-								title : value.name,
-								type : "item",
-								attr : {
-									id : value.id
-								}
-							});
-						});
-					}
+					treeData(item, value);
 					data.push(item);
 				});
 				callback({
 					data : options.products || data
 				});
-				$('#resourceTree').on('disclosedAll.tree.amui', function(event, data) {
-					$.each("${role.resources}".split(","), function(index, value) {
-						resourceTree.tree('selectItem', $('#' + value));	
-					});
-				});
-				if ("${type}" == 2 || "${type}" == 3) {
-				resourceTree.tree('discloseAll');
-				}
-				$("#treeloading").remove();
-			});
+				console.log(data);
 		}
 	});
+	$('#resourceTree').on('disclosedAll.tree.amui', function(event, data) {
+		$.each("${role.resources}".split(","), function(index, value) {
+			resourceTree.tree('selectItem', $('#' + value));
+		});
+	});
+	if ("${type}" == 2 || "${type}" == 3) {
+	resourceTree.tree('discloseAll');
+	}
+	$("#treeloading").remove();
 	$('#doc-vld-msg').validator(
 			{
 				ignore : '',
@@ -179,4 +159,25 @@
 			});
 		}
 	});
+	function treeData(topItem, resourceData) {
+		topItem.title = resourceData.name;
+		topItem.type = resourceData.resources != null && resourceData.resources.length > 0 ? "folder" : "item";
+		topItem.attr = {};
+		topItem.attr.id = resourceData.id;
+		topItem.attr.icon = resourceData.icon;
+		if (topItem.type == "folder") {
+			topItem.products = new Array();
+				$.each(resourceData.resources, function(index, value) {
+					var item = {}
+					item.title = value.name;
+					item.type = value.resources != null && value.resources.length > 0 ? "folder" : "item";
+					item.attr = {};
+					item.attr.id = value.id;
+					item.attr.icon = value.icon;
+					topItem.products.push(item);
+					treeData(item, value);
+				});
+			}
+
+	}
 </script>
