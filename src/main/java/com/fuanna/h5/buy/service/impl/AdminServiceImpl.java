@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fuanna.h5.buy.base.BaseConfig;
 import com.fuanna.h5.buy.mapper.AdminMapper;
 import com.fuanna.h5.buy.mapper.ResourceMapper;
 import com.fuanna.h5.buy.model.Admin;
@@ -155,6 +159,22 @@ public class AdminServiceImpl implements AdminService{
 		rtn = adminMapper.deleteRoleResource(ids);
 		for (String resourceId : resources) {
 			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
+		}
+		//更新对应角色session权限信息
+		for (Entry<String, HttpSession> entry : BaseConfig.getSessionMap(companyId).entrySet()) { 
+			boolean needUpdate = false;
+			HttpSession session = entry.getValue();
+			Admin admin = (Admin)session.getAttribute("admin");
+			for (String roleId : admin.getRole().split(",")) {
+				if ((id + "").equals(roleId)) {
+					needUpdate =  true;
+					break;
+				}
+			}
+			if (needUpdate) {
+				List<Resource> allResources = resourceMapper.queryResourceByAdminId(admin.getId(), false, null);
+				session.setAttribute("allResources", allResources);
+			}
 		}
 		return rtn;
 	}

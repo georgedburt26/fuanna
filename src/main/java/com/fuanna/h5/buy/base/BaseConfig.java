@@ -7,7 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -31,9 +35,11 @@ public class BaseConfig {
 	
 	private static final List<Resource> resources = new ArrayList<Resource>();
 	
-	private static List<Resource> treeResources = null;
+	private static final List<Resource> treeResources = new ArrayList<Resource>();
+	
+	private static final Map<Long, Map<String, HttpSession>> sessionMap = new HashMap<Long, Map<String, HttpSession>>();
 
-	private static final Map<String, ReadWriteLock> rwls = new HashMap<String, ReadWriteLock>();
+	private static final ConcurrentHashMap<Long, ReentrantLock> rtls = new ConcurrentHashMap<Long, ReentrantLock>();
 	
     static {
         try(InputStream in = BaseConfig.class.getResourceAsStream(JDBC_PATH)){
@@ -78,8 +84,40 @@ public class BaseConfig {
 	public static List<Resource> getTreeResources() {
 		return treeResources;
 	}
+	
+	public static Map<String, HttpSession> getSessionMap(Long companyId) {
+		return BaseConfig.sessionMap.get(companyId);
+	}
 
 	protected static void setTreeResources(List<Resource> treeResources) {
-		BaseConfig.treeResources = treeResources;
+		BaseConfig.treeResources.addAll(treeResources);
+	}
+	
+	protected static void putSessionMap(Long companyId, String key, HttpSession value) {
+		ReentrantLock rtl = null;
+		synchronized (logger) {
+			if(rtls.get(companyId) == null) {
+				rtl = new ReentrantLock();
+				rtls.put(companyId, rtl);
+			}
+			else {
+				rtl = rtls.get(companyId);
+			}
+		}
+		rtl.lock();
+		Map<String, HttpSession> map = BaseConfig.sessionMap.get(companyId);
+		if (map != null && !map.isEmpty()) {
+			map.put(key, value);
+		}
+		else {
+			map = new HashMap<String, HttpSession>();
+			map.put(key, value);
+			BaseConfig.sessionMap.put(companyId, new HashMap<String, HttpSession>());
+		}
+		rtl.unlock();
+	}
+	
+	protected static void removeSessionMap(Long companyId, String key) {
+		BaseConfig.sessionMap.get(companyId).remove(key);
 	}
 }
