@@ -475,6 +475,7 @@ public class AdminController extends BaseController {
 		String city = admin().getLocation();
 		if (StringUtils.isBlank(city)) {
 		   rstResult = new RstResult(ErrorCode.SB, "无法定位获取到天气信息");
+		   return rstResult;
 		}
 		ConcurrentHashMap<String, Map<String, Weather>> map = BaseConfig.getWeatherMap();
 		Map<String, Weather> weatherMap = map.get(BaseConfig.sdf.format(new Date()));
