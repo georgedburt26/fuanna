@@ -75,9 +75,9 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public List<Resource> queryResourcesByAdminId(long adminId) {
-		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, true, 1);
+		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, null, true, 1);
 		for (Resource topResource : topResources) {
-			List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
+			List<Resource> resources = resourceMapper.queryResourceByAdminId(adminId, topResource.getId(), false, 1);
 			topResource.setResources(resources);
 		}
 		return topResources;
@@ -94,7 +94,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public List<Resource> queryResourcesByAdminIdType(long adminId, Integer type) {
-		return resourceMapper.queryResourceByAdminId(adminId, false, type);
+		return resourceMapper.queryResourceByAdminId(adminId, null, false, type);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class AdminServiceImpl implements AdminService{
 				}
 			}
 			if (needUpdate) {
-				List<Resource> allResources = resourceMapper.queryResourceByAdminId(admin.getId(), false, null);
+				List<Resource> allResources = resourceMapper.queryResourceByAdminId(admin.getId(), null, false, null);
 				session.setAttribute("allResources", allResources);
 			}
 		}

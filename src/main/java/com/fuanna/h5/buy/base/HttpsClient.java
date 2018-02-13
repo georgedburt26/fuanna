@@ -29,6 +29,7 @@ public class HttpsClient {
 		CloseableHttpResponse response = null;
 		try {
 			HttpGet httpGet = new HttpGet(url);
+			httpGet.setURI( new java.net.URI(url));
 			httpGet.setHeader("Content-Type", contentType);
 			response = httpClient.execute(httpGet);
 			int status = response.getStatusLine().getStatusCode();

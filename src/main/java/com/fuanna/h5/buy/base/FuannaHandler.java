@@ -63,10 +63,10 @@ public class FuannaHandler{
 		}
 	}
 	
-	public void afterReturn() {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		if (request.getRequestURL().toString().contains("/adminLogin.do")) {
-			request.getSession().removeAttribute("admin_imageCode");	
-		}
-	}
+//	public void afterReturn() {
+//		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+//		if (request.getRequestURL().toString().contains("/adminLogin.do")) {
+//			request.getSession().removeAttribute("admin_imageCode");	
+//		}
+//	}
 }

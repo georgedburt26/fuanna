@@ -22,11 +22,20 @@
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
 		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<!--在web.xml文件中的配置 -->
+	<!-- 防止SQL注入的过滤器 -->
+	<!--<filter> <filter-name>SqlInjectionfilter</filter-name> <filter-class>com.fuanna.h5.buy.base.SqlInjectionfilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>SqlInjectionfilter</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
 	<!-- Spring监听器 -->
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
@@ -72,5 +81,9 @@
 	<error-page>
 		<error-code>500</error-code>
 		<location>/500.html</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/403.html</location>
 	</error-page>
 </web-app>

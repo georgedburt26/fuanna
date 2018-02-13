@@ -96,7 +96,6 @@ console.log();
 				callback({
 					data : options.products || data
 				});
-				console.log(data);
 		}
 	});
 	$('#resourceTree').on('disclosedAll.tree.amui', function(event, data) {

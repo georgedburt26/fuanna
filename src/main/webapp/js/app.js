@@ -83,7 +83,7 @@ function pageContent(url) {
 		// });
 		// progress.start();
 		$(".tpl-content-wrapper").html("");
-		$(".tpl-content-wrapper").mLoading({
+		$("html").mLoading({
 			mask : false
 		});
 		$(".tpl-content-wrapper").load(url,
@@ -94,6 +94,14 @@ function pageContent(url) {
 					}
 					if (xhr.status == 200) {
 						permission();
+						var result = {};
+						try {
+							result = JSON.parse(responseTxt);
+							showmsg(result.errorCode, result.errorMsg);
+							$(this).load("403.html");
+						}catch(e) {
+							
+						}
 					}
 					if (xhr.status == 404) {
 						$(this).load("404.html");
@@ -101,7 +109,7 @@ function pageContent(url) {
 					if (xhr.status == 500) {
 						$(this).load("500.html");
 					}
-					$(".tpl-content-wrapper").mLoading("hide");
+					$("html").mLoading("hide");
 				});
 	}
 }
@@ -115,26 +123,6 @@ function permission() {
 			$(this).remove();
 		}
 	});
-}
-
-function terminal() {
-    var u = navigator.userAgent;
-    var u2 = navigator.userAgent.toLowerCase();
-    return { //移动终端浏览器版本信息
-        trident: u.indexOf('Trident') > -1, //IE内核
-        presto: u.indexOf('Presto') > -1, //opera内核
-        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
-        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
-        iPad: u.indexOf('iPad') > -1, //是否iPad
-        webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
-        iosv: u.substr(u.indexOf('iPhone OS') + 9, 3),
-        weixin: u2.match(/MicroMessenger/i) == "micromessenger",
-        ali: u.indexOf('AliApp') > -1,
-    };
 }
 
 // 页面数据

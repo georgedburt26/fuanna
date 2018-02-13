@@ -23,6 +23,9 @@ public interface ResourceMapper {
 	
 	@Select({"<script>" + 
 		     "select * from f_resource as r where id in (select DISTINCT(resourceId) from f_role_resource where 1 = 1 and roleId in (select role from f_admin where id = #{adminId})) " +
+			 "<if test='parentId != null'>" +
+			 " and r.parentId = #{parentId} " +
+	         "</if>" +
 			 "<if test='isTop'>" +
 			 " and r.parentId is null " +
 	         "</if>" +
@@ -31,7 +34,7 @@ public interface ResourceMapper {
 	         "</if>" + 
 			 " order by r.index " + 
 			 "</script>"})
-	public List<Resource> queryResourceByAdminId(@Param("adminId")long adminId, @Param("isTop")boolean isTop, @Param("type")Integer type);
+	public List<Resource> queryResourceByAdminId(@Param("adminId")long adminId, @Param("parentId")Long parentId, @Param("isTop")boolean isTop, @Param("type")Integer type);
 
 	@Select({ "<script>" +
 			  "select * from f_resource as r where 1 = 1 " + 

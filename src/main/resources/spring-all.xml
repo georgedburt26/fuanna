@@ -100,8 +100,8 @@
 			id="pointcut" />
 		<aop:aspect id="fuannaErrorAspect" ref="fuannaHandler">
 			<aop:around method="round" pointcut-ref="pointcut" />
-			<aop:after-returning method="afterReturn"
-				pointcut-ref="pointcut" />
+			<!--<aop:after-returning method="afterReturn"
+				pointcut-ref="pointcut" />-->
 		</aop:aspect>
 	</aop:config>
 </beans>

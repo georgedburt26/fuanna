@@ -1,18 +1,14 @@
 package com.fuanna.h5.buy.controller.admin;
 
 import java.text.SimpleDateFormat;
-import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-
-import javax.enterprise.inject.New;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -27,16 +23,14 @@ import com.fuanna.h5.buy.base.BaseConfig;
 import com.fuanna.h5.buy.base.BaseController;
 import com.fuanna.h5.buy.base.HttpsClient;
 import com.fuanna.h5.buy.constraints.ErrorCode;
-import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.DataTable;
 import com.fuanna.h5.buy.model.ProductSku;
-import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.model.RstResult;
+import com.fuanna.h5.buy.model.Weather;
 import com.fuanna.h5.buy.service.AdminService;
 import com.fuanna.h5.buy.service.ProductService;
 import com.fuanna.h5.buy.util.MD5;
-import com.google.gson.JsonArray;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -88,6 +82,9 @@ public class AdminController extends BaseController {
 		if (admin.getEnable() != 1) {
 			error("用户被禁用", url);
 		}
+		admin.setIp(request().getRemoteAddr());
+		admin.setLocation(params.get("location").equals("全国") ? null : params.get("location"));
+		admin.setTerminal(params.get("terminal"));
 		session().setAttribute("admin", admin);
 		session().removeAttribute("admin_imageCode");
 		url = "redirect:/admin/index.do";// 登陆成功
@@ -473,51 +470,54 @@ public class AdminController extends BaseController {
 	}
 	
 	@RequestMapping("/getLocationInfo.do")
-	public @ResponseBody RstResult getLocationInfo() {
+	public @ResponseBody RstResult getLocationInfo() throws Exception {
 		RstResult rstResult = null;
-		Map<String, String> map = new HashMap<String, String>();
-		Map<String, String> nameValuePair = new HashMap<String, String>();
-		nameValuePair.put("ip", request().getRemoteAddr());
-		nameValuePair.put("ak", BaseConfig.getBaseConfig("baidu_ak"));
-		nameValuePair.put("coor", "bd09ll");
-		String locationString = HttpsClient.post(BaseConfig.getBaseConfig("baidu_location_url"), nameValuePair, "utf-8");
-		logger.info("地址信息:" + locationString);
-		if (StringUtils.isBlank(locationString)) {
-			rstResult = new RstResult(ErrorCode.SB, "获取地址信息失败");
+		String city = admin().getLocation();
+		if (StringUtils.isBlank(city)) {
+		   rstResult = new RstResult(ErrorCode.SB, "无法定位获取到天气信息");
+		}
+		ConcurrentHashMap<String, Map<String, Weather>> map = BaseConfig.getWeatherMap();
+		Map<String, Weather> weatherMap = map.get(BaseConfig.sdf.format(new Date()));
+		if (weatherMap != null && weatherMap.get(city) != null) {
+			rstResult = new RstResult(ErrorCode.CG, "", weatherMap.get(city));
 		}
 		else {
-			JSONObject location = JSONObject.fromObject(locationString);
-			if (!location.getString("status").equals("0")) {
-				rstResult = new RstResult(ErrorCode.SB, "获取地址信息失败");
-			}else {
-				String city = location.getJSONObject("content").getJSONObject("address_detail").getString("city");
-				logger.info("城市信息:" + city);
-				nameValuePair.clear();
-				nameValuePair.put("location", city);
-				nameValuePair.put("ak", BaseConfig.getBaseConfig("baidu_ak"));
-				nameValuePair.put("output", "json");
-				String weatherString = HttpsClient.post(BaseConfig.getBaseConfig("baidu_weather_url"), nameValuePair, "utf-8");
-				logger.info("天气信息:" + weatherString);
-				if (StringUtils.isBlank(locationString)) {
+			Weather weatherObject = new Weather();
+			Map<String, String> nameValuePair = new HashMap<String, String>();
+			nameValuePair.put("location", city);
+			nameValuePair.put("ak", BaseConfig.getBaseConfig("baidu_ak"));
+			nameValuePair.put("output", "json");
+			StringBuffer urlBuffer = new StringBuffer();
+			urlBuffer.append(BaseConfig.getBaseConfig("baidu_weather_url"))
+			         .append("?")
+			         .append("ak=" + BaseConfig.getBaseConfig("baidu_ak"))
+			         .append("&")
+			         .append("output=json")
+			         .append("&")
+			         .append("location=")
+			         .append(city);
+			String weatherString = HttpsClient.get(urlBuffer.toString(), null, "application/json;charset=utf-8");
+				JSONObject weatherJson = JSONObject.fromObject(weatherString);
+				if (!weatherJson.getString("error").equals("0")) {
 					rstResult = new RstResult(ErrorCode.SB, "获取天气信息失败");
 				}
 				else {
-					JSONObject weatherObject = JSONObject.fromObject(weatherString);
-					if (!weatherObject.getString("status").equals("0")) {
-						rstResult = new RstResult(ErrorCode.SB, "获取天气信息失败");
-					}
-					else {
-						JSONObject result = weatherObject.getJSONArray("results").getJSONObject(0);
-						String pm25 = result.getString("pm25");
-						logger.info("pm25信息:" + pm25);
-						JSONObject weatherData = result.getJSONArray("weather_data").getJSONObject(0);
-						String weather = weatherData.getString("weather");
-						logger.info("weather信息:" + weather);
-						String temperature = weatherData.getString("temperature");
-						logger.info("temperature信息:" + temperature);
-					}
-				}
-			}
+					JSONObject result = weatherJson.getJSONArray("results").getJSONObject(0);
+					String pm25 = result.getString("pm25");
+					JSONObject weatherData = result.getJSONArray("weather_data").getJSONObject(0);
+					String weather = weatherData.getString("weather");
+					String wind = weatherData.getString("win");
+					String temperature = weatherData.getString("temperature");
+					String date = weatherJson.getString("date");
+					weatherObject.setLocation(city);
+					weatherObject.setPm25(pm25);
+					weatherObject.setWeatherInfo(weather);
+					weatherObject.setDate(date);
+					weatherObject.setWind(wind);
+					weatherObject.setTemperature(temperature);
+					BaseConfig.putWeatherMap(date, city, weatherObject);
+					rstResult = new RstResult(ErrorCode.CG, "", weatherObject);
+				}	
 		}
 		return rstResult;
 	}

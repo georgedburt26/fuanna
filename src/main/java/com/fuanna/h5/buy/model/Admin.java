@@ -21,6 +21,27 @@ public class Admin implements Serializable{
 	private Date createTime;
 	private long companyId;
 	private int enable;
+	private String ip;
+	private String location;
+	private String terminal;
+	public String getTerminal() {
+		return terminal;
+	}
+	public void setTerminal(String terminal) {
+		this.terminal = terminal;
+	}
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	public long getId() {
 		return id;
 	}

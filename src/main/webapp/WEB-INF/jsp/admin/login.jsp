@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>扶沟富安娜库存管理后台</title>
+<title>富安娜库存管理系统</title>
 <meta name="keywords" content="index">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="renderer" content="webkit">
@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="<%=sourcePath%>css/amazeui.min.css" />
 <link rel="stylesheet" href="<%=sourcePath%>css/admin.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/app.css">
+<script src="http://api.map.baidu.com/getscript?v=2.0&ak=3pB2Y3ZQ5Xfn8wsQzVSTnNPIEHloPzkG"></script>
 </head>
 <style>
 html, body {
@@ -73,6 +74,8 @@ html, body {
 								id="doc-ipt-pwd-1" placeholder="请输入密码"
 								style="border-radius: 0px; border-bottom: 1px solid #e9ecf3;"
 								required />
+							<input type="hidden" name="terminal" id="terminal" />
+							<input type="hidden" name="location" id="location" />
 						</div>
 						<div class="am-form-group"
 							style="width: 100%; white-space: nowrap; overflow: hidden;">
@@ -99,6 +102,33 @@ html, body {
 	<script src="<%=sourcePath%>js/jquery.actual.min.js"></script>
 	<script>
 		showmsg('${errorCode}', '${errorMsg}');
+		function terminal() {
+		    var u = navigator.userAgent;
+		    var u2 = navigator.userAgent.toLowerCase();
+		    return { //移动终端浏览器版本信息
+		        trident: u.indexOf('Trident') > -1, //IE内核
+		        presto: u.indexOf('Presto') > -1, //opera内核
+		        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+		        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+		        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+		        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+		        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+		        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+		        iPad: u.indexOf('iPad') > -1, //是否iPad
+		        webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+		        iosv: u.substr(u.indexOf('iPhone OS') + 9, 3),
+		        weixin: u2.match(/MicroMessenger/i) == "micromessenger",
+		        ali: u.indexOf('AliApp') > -1,
+		    };
+		}
+	    var terminal = !terminal().mobile ? "电脑端" : "移动端"; 
+	    $("#terminal").val(terminal);
+		function myFun(result){
+			var cityName = result.name;
+		    $("#location").val(cityName);
+		}
+		var myCity = new BMap.LocalCity();
+		myCity.get(myFun);
 		$.post("admin/listCompany.do", {}, function(data) {
 			if (data.errorCode != "0000") {
 				showmsg(data.errorCode, data.errorMsg);
