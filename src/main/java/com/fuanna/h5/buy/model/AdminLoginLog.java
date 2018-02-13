@@ -14,6 +14,21 @@ public class AdminLoginLog {
 	private Date loginTime;
 	private long companyId;
 	private String companyName;
+	private String location;
+	private String terminal;
+
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getTerminal() {
+		return terminal;
+	}
+	public void setTerminal(String terminal) {
+		this.terminal = terminal;
+	}
 	public long getId() {
 		return id;
 	}

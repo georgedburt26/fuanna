@@ -75,16 +75,19 @@ public class AdminController extends BaseController {
 		if (!imageCode.equals(session().getAttribute("admin_imageCode"))) {
 			error("请输入正确验证码", url);
 		}
-		Admin admin = adminService.adminLogin(username, password, company);
+		String ip = request().getRemoteAddr();
+		String location = params.get("location").equals("全国") ? null : params.get("location");
+		String terminal = params.get("terminal");
+		Admin admin = adminService.adminLogin(username, password, company, ip, location, terminal);
 		if (admin == null) {
 			error("用户名或密码错误", url);
 		}
 		if (admin.getEnable() != 1) {
 			error("用户被禁用", url);
 		}
-		admin.setIp(request().getRemoteAddr());
-		admin.setLocation(params.get("location").equals("全国") ? null : params.get("location"));
-		admin.setTerminal(params.get("terminal"));
+		admin.setIp(ip);
+		admin.setLocation(location);
+		admin.setTerminal(terminal);
 		session().setAttribute("admin", admin);
 		session().removeAttribute("admin_imageCode");
 		url = "redirect:/admin/index.do";// 登陆成功
@@ -469,6 +472,7 @@ public class AdminController extends BaseController {
 		return new RstResult(ErrorCode.CG, "查询成功", BaseConfig.getTreeResources());
 	}
 	
+	/******** 欢迎页面 *********/
 	@RequestMapping("/getLocationInfo.do")
 	public @ResponseBody RstResult getLocationInfo() throws Exception {
 		RstResult rstResult = null;
@@ -507,7 +511,7 @@ public class AdminController extends BaseController {
 					String pm25 = result.getString("pm25");
 					JSONObject weatherData = result.getJSONArray("weather_data").getJSONObject(0);
 					String weather = weatherData.getString("weather");
-					String wind = weatherData.getString("win");
+					String wind = weatherData.getString("wind");
 					String temperature = weatherData.getString("temperature");
 					String date = weatherJson.getString("date");
 					weatherObject.setLocation(city);
@@ -519,6 +523,43 @@ public class AdminController extends BaseController {
 					BaseConfig.putWeatherMap(date, city, weatherObject);
 					rstResult = new RstResult(ErrorCode.CG, "", weatherObject);
 				}	
+		}
+		return rstResult;
+	}
+	/******** 扩展管理 *********/
+	@RequestMapping("/adminLoginLog.do")
+	public String adminLoginLog() {
+		return "/admin/admin_login_log";
+	}
+
+	@RequestMapping("/adminManageList.do")
+	public @ResponseBody RstResult adminManageList() throws Exception {
+		Long companyId = admin().getCompanyId();
+		RstResult rstResult = null;
+		String data = request().getParameter("rows");
+		String username = StringUtils.isBlank(request().getParameter("username")) ? null
+				: request().getParameter("username");
+		String name = StringUtils.isBlank(request().getParameter("name")) ? null : request().getParameter("name");
+		String mobilePhone = StringUtils.isBlank(request().getParameter("mobilePhone")) ? null
+				: request().getParameter("mobilePhone");
+		if (StringUtils.isNotBlank(data)) {
+			Integer sEcho = null, iDisplayStart = null, iDisplayLength = null;
+			JSONArray json = JSONArray.fromObject(data);
+			for (int i = 0; i < json.size(); i++) {
+				if (json.getJSONObject(i).getString("name").equals("sEcho")) {
+					sEcho = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayStart")) {
+					iDisplayStart = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+				if (json.getJSONObject(i).getString("name").equals("iDisplayLength")) {
+					iDisplayLength = Integer.parseInt(json.getJSONObject(i).getString("value"));
+				}
+			}
+			List<Admin> rows = adminService.listAdmin(name, mobilePhone, username, companyId, iDisplayStart, iDisplayLength);
+			int count = adminService.countAdmin(name, mobilePhone, username, companyId);
+			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
+			rstResult = new RstResult(ErrorCode.CG, "获取列表成功", dataTable);
 		}
 		return rstResult;
 	}

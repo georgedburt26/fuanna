@@ -45,12 +45,11 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	@Transactional
-	public Admin adminLogin(String username, String password, String company) {
+	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal) {
 		long companyId = Long.parseLong(company);
 		Map<String, Object> map = adminMapper.queryCompanyById(companyId);
 		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password), companyId);
 		if (admin != null) {
-			String ip = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getRemoteAddr();
 			AdminLoginLog adminLoginLog = new AdminLoginLog();
 			adminLoginLog.setAdminId(admin.getId());
 			adminLoginLog.setUsername(admin.getUsername());
@@ -61,6 +60,8 @@ public class AdminServiceImpl implements AdminService{
 			adminLoginLog.setLoginTime(new Date());
 			adminLoginLog.setCompanyId(companyId);
 			adminLoginLog.setCompanyName(map != null && !map.isEmpty() ? map.get("name") + "" : "");
+			adminLoginLog.setTerminal(terminal);
+			adminLoginLog.setLocation(location);
 			adminMapper.addLoginLog(adminLoginLog);
 		}
 		return admin;

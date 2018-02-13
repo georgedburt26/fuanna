@@ -11,7 +11,7 @@ public interface AdminService {
 
 	public List<Map<String, Object>> listCompany();
 	
-	public Admin adminLogin(String username, String password, String company);
+	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal);
 	
 	public long addAdmin(Admin admin);
 	

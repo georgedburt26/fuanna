@@ -31,7 +31,7 @@ public interface AdminMapper {
 	public Admin adminLogin(String username, String password, long company);
 
 	@Insert({
-			"insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime, companyId, companyName) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime},#{companyId},#{companyName})" })
+			"insert into f_admin_login_log(adminId, username, name, mobilePhone, email, ip, loginTime, companyId, companyName, location, terminal) values(#{adminId},#{username},#{name},#{mobilePhone},#{email},#{ip},#{loginTime},#{companyId},#{companyName},#{location},#{terminal})" })
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public long addLoginLog(AdminLoginLog adminLoginLog);
 

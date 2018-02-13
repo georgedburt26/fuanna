@@ -82,7 +82,7 @@
 </body>
 <script>
 $.post("admin/getLocationInfo.do", {}, function(data) {
-	$("#weather").text(data.data.weather);
+	$("#weather").text(data.data.weatherInfo);
 	$("#temperature").text(data.data.temperature);
 	$("#pm25").text(data.data.pm25);
 	$("#wind").text(data.data.wind);
