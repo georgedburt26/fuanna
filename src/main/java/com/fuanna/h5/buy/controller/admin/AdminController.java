@@ -533,7 +533,7 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping("/adminManageList.do")
-	public @ResponseBody RstResult adminManageList() throws Exception {
+	public @ResponseBody RstResult adminLoginLogList() throws Exception {
 		Long companyId = admin().getCompanyId();
 		RstResult rstResult = null;
 		String data = request().getParameter("rows");
