@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-<title>扶沟富安娜家纺仓库管理系统</title>
+<title>富安娜库存管理系统</title>
 <script>
 window.location.href = "admin/login.do";
 </script>

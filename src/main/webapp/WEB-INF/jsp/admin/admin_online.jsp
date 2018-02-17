@@ -93,7 +93,7 @@
 						"bDestroy" : true,
 						"bServerSide" : true,
 						"bSortCellsTop" : true,
-						"sAjaxSource" : "admin/adminLoginLogList.do",
+						"sAjaxSource" : "admin/adminOnlineList.do",
 						"bPaginate" : true, //显示分页器
 						"sPaginationType" : "full_numbers",
 						"iDisplayLength " : 10, //一页显示条数

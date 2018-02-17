@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-<title>扶沟富安娜</title>
+<title>富安娜库存管理系统</title>
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <link href="http://www.swiper.com.cn/dist/css/swiper.min.css" rel="stylesheet" type="text/css" />
 <style type="text/css">

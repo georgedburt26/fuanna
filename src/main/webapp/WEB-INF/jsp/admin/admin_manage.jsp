@@ -190,9 +190,7 @@
 		var username = $("#datatable-search-username").val();
 		var name = $("#datatable-search-name").val();
 		var mobilePhone = $("#datatable-search-mobilePhone").val();
-		if (username != '' || name != '' || mobilePhone != '') {
-			dataTable.fnDraw();	
-		}
+		dataTable.fnDraw();	
 	});
 	$("#deleteAdmin").click(function() {
 		if ($(".tpl-table-fz-data-check:checked").length == 0) {

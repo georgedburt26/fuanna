@@ -1,7 +1,10 @@
 package com.fuanna.h5.buy.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,8 +15,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fuanna.h5.buy.base.BaseConfig;
 import com.fuanna.h5.buy.mapper.AdminMapper;
@@ -45,7 +46,7 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	@Transactional
-	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal) {
+	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal, Date loginTime) {
 		long companyId = Long.parseLong(company);
 		Map<String, Object> map = adminMapper.queryCompanyById(companyId);
 		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password), companyId);
@@ -57,7 +58,7 @@ public class AdminServiceImpl implements AdminService{
 			adminLoginLog.setMobilePhone(admin.getMobilePhone());
 			adminLoginLog.setEmail(admin.getEmail());
 			adminLoginLog.setIp(ip);
-			adminLoginLog.setLoginTime(new Date());
+			adminLoginLog.setLoginTime(loginTime);
 			adminLoginLog.setCompanyId(companyId);
 			adminLoginLog.setCompanyName(map != null && !map.isEmpty() ? map.get("name") + "" : "");
 			adminLoginLog.setTerminal(terminal);
@@ -106,6 +107,17 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Admin> listAdmin(String name, String mobilePhone, String username, Long companyId, Integer offset, Integer limit) {
 		return adminMapper.listAdmin(name, mobilePhone, username, companyId, offset, limit);
+	}
+	
+	@Override
+	public List<AdminLoginLog> listAdminLoginLog(String name, String mobilePhone, String username, Long companyId,
+			Integer offset, Integer limit) {
+		return adminMapper.listAdminLoginLog(name, mobilePhone, username, companyId, offset, limit);
+	}
+
+	@Override
+	public int countAdminLoginLog(String name, String mobilePhone, String username, Long companyId) {
+		return adminMapper.countAdminLoginLog(name, mobilePhone, username, companyId);
 	}
 
 	@Override
@@ -240,5 +252,43 @@ public class AdminServiceImpl implements AdminService{
 				findResources(resource);
 			}
 		}
+	}
+
+	@Override
+	public List<Map<String, Object>> listAdminOnline(Long companyId,
+			Integer offset, Integer limit) {
+		List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
+		Map<String, HttpSession> sessionMap = BaseConfig.getSessionMap(companyId);
+		for (Entry<String, HttpSession> entry : sessionMap.entrySet()) {
+			String sessionId = entry.getKey();
+			Admin admin = (Admin)entry.getValue().getAttribute("admin");
+			Map<String, Object> row = new HashMap<String, Object>();
+			row.put("sessionId", sessionId);
+			row.put("name", admin.getName());
+			row.put("username", admin.getUsername());
+			row.put("mobilePhone", admin.getMobilePhone());
+			row.put("email", admin.getEmail());
+			row.put("ip", admin.getIp());
+			row.put("location", admin.getLocation());
+			row.put("terminal", admin.getTerminal());
+			row.put("loginTime", admin.getLoginTime());
+			rows.add(row);
+		}
+        Collections.sort(rows, new Comparator<Map<String, Object>>() {  
+            @Override  
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {  
+                Long i = ((Date)o1.get("loginTime")).getTime() - ((Date)o1.get("loginTime")).getTime();
+                if(i.intValue() == 0){  
+                    return 0;  
+                }  
+                return i.intValue();  
+            }  
+        });  
+		return rows.subList(offset, limit);
+	}
+
+	@Override
+	public int countAdminOnline(Long companyId) {
+		return BaseConfig.getSessionMap(companyId).size();
 	}
 }

@@ -58,12 +58,33 @@ public interface AdminMapper {
 	public List<Admin> listAdmin(@Param("name") String name, @Param("mobilePhone") String mobilePhone,
 			@Param("username") String username, @Param("companyId") Long companyId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-	@Select({ "<script>" + "select count(id) from f_admin where 1 = 1 " + "<if test='name != null'>"
+	@Select({ "<script>" + "select count(id) from f_admin as admin where 1 = 1 " + "<if test='name != null'>"
 			+ " and name like CONCAT('%',#{name},'%') " + "</if>" + "<if test='mobilePhone != null'>"
 			+ " and mobilePhone = #{mobilePhone} " + "</if>" + "<if test='username != null'>" 
+			+ " and username like CONCAT('%',#{username},'%') " + "</if>" 
 			+ "<if test='companyId != null'>" + " and admin.companyId = #{companyId} " + "</if>"
-			+ " and username like CONCAT('%',#{username},'%') " + "</if>" + "</script>" })
+			+ "</script>" })
 	public int countAdmin(@Param("name") String name, @Param("mobilePhone") String mobilePhone,
+			@Param("username") String username, @Param("companyId") Long companyId);
+	
+	@Select({ "<script>"
+			+ "select * from f_admin_login_log where 1 = 1 "
+			+ "<if test='name != null'>" + " and name like CONCAT('%',#{name},'%') " + "</if>"
+			+ "<if test='mobilePhone != null'>" + " and mobilePhone = #{mobilePhone} " + "</if>"
+			+ "<if test='username != null'>" + " and username like CONCAT('%',#{username},'%') " + "</if>"
+			+ "<if test='companyId != null'>" + " and companyId = #{companyId} " + "</if>"
+			+ " order by loginTime desc " + "<if test='offset != null and limit != null'>"
+			+ " limit #{offset}, #{limit} " + "</if>" + "</script>" })
+	public List<AdminLoginLog> listAdminLoginLog(@Param("name") String name, @Param("mobilePhone") String mobilePhone,
+			@Param("username") String username, @Param("companyId") Long companyId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+	
+	@Select({ "<script>" + "select count(id) from f_admin_login_log where 1 = 1 " + "<if test='name != null'>"
+			+ " and name like CONCAT('%',#{name},'%') " + "</if>" + "<if test='mobilePhone != null'>"
+			+ " and mobilePhone = #{mobilePhone} " + "</if>" + "<if test='username != null'>" 
+			+ " and username like CONCAT('%',#{username},'%') " + "</if>" 
+			+ "<if test='companyId != null'>" + " and companyId = #{companyId} " + "</if>"
+			+ "</script>" })
+	public int countAdminLoginLog(@Param("name") String name, @Param("mobilePhone") String mobilePhone,
 			@Param("username") String username, @Param("companyId") Long companyId);
 
 	@Delete("<script>" + " delete from f_admin where id in "

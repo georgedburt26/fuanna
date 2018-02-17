@@ -1,9 +1,11 @@
 package com.fuanna.h5.buy.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.fuanna.h5.buy.model.Admin;
+import com.fuanna.h5.buy.model.AdminLoginLog;
 import com.fuanna.h5.buy.model.Resource;
 import com.fuanna.h5.buy.model.Role;
 
@@ -11,7 +13,7 @@ public interface AdminService {
 
 	public List<Map<String, Object>> listCompany();
 	
-	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal);
+	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal, Date loginTime);
 	
 	public long addAdmin(Admin admin);
 	
@@ -48,6 +50,14 @@ public interface AdminService {
 	public Map<String, Object> queryNoticeByCompanyId(Long companyId);
 	
 	public Map<String, Object> getTotal();
+	
+	public List<AdminLoginLog> listAdminLoginLog(String name, String mobilePhone, String username, Long companyId, Integer offset, Integer limit);
+	
+	public int countAdminLoginLog(String name, String mobilePhone, String username, Long companyId);
+	
+	public List<Map<String, Object>> listAdminOnline(Long companyId, Integer offset, Integer limit);
+	
+	public int countAdminOnline(Long companyId);
 	
 	public List<Map<String, Object>> listByContracts();
 	

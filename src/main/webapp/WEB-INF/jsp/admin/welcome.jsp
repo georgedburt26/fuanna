@@ -68,11 +68,11 @@
 					<div class="tpl-page-state">
 						<div class="tpl-page-state-title am-text-center tpl-error-title">欢迎使用富安娜库存管理系统</div>
 						<div class="tpl-page-state-content tpl-error-content">
-							<p>天气：<span id="weather">无法获取</span></p>
-							<p>温度：<span id="temperature">无法获取</span></p>
-							<p>PM2.5：<span id="pm25">无法获取</span></p>
-							<p>风级：<span id="wind">无法获取</span></p>
-							<p>位置：<span id="location">无法定位</span></p>
+							<p>天气：<span id="weather">正在加载...</span></p>
+							<p>温度：<span id="temperature">正在加载...</span></p>
+							<p>PM2.5：<span id="pm25">正在加载...</span></p>
+							<p>风级：<span id="wind">正在加载...</span></p>
+							<p>位置：<span id="location">正在加载...</span></p>
 						</div>
 					</div>
 				</div>
@@ -82,6 +82,15 @@
 </body>
 <script>
 $.post("admin/getLocationInfo.do", {}, function(data) {
+	if(data.errorCode == "9999") {
+		showmsg(data.errorCode, data.errorMsg);
+		$("#weather").text("无法获取");
+		$("#temperature").text("无法获取");
+		$("#pm25").text("无法获取");
+		$("#wind").text("无法获取");
+		$("#location").text("无法获取");
+		return ;
+	}
 	$("#weather").text(data.data.weatherInfo);
 	$("#temperature").text(data.data.temperature);
 	$("#pm25").text(data.data.pm25);
