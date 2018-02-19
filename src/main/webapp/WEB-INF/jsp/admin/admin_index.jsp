@@ -192,18 +192,26 @@ $.post("admin/listRoles.do", {}, function(data) {
 			params.headImg = $("#headImgValue").val();
 			params.type = "${type}";
 			params.adminId = $("#adminId").val();
+			$("#save").text("保存中...");
+			$("#save").attr('disabled',"true");
 			$.ajax({
 				cache : true,
 				type : "POST",
 				url : "admin/addAdmin.do",
 				data : params,
 				error : function(data) {
-					showmsg("9999", "保存失败")
+					showmsg("9999", "保存失败");
+					$("#save").removeAttr("disabled");
+					$("#save").text("保存");
 				},
 				success : function(data) {
 					showmsg(data.errorCode, data.errorMsg);
 					if (data.errorCode == "0000") {
 						pageContent('admin/adminManage.do');
+					}
+					else {
+						$("#save").removeAttr("disabled");
+						$("#save").text("保存");
 					}
 				}
 			});

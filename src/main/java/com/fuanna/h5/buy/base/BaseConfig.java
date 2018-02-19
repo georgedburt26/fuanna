@@ -149,7 +149,7 @@ public class BaseConfig {
 		// rtl.unlock();
 	}
 
-	protected static void removeSessionMap(Long companyId, String key) {
+	public static void removeSessionMap(Long companyId, String key) {
 		sessionMap.get(companyId).remove(key);
 	}
 }

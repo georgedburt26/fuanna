@@ -605,6 +605,25 @@ public class AdminController extends BaseController {
 		}
 		return rstResult;
 	}
+	
+	@RequestMapping("/forceLogOut.do")
+	public @ResponseBody RstResult forceLogOut(@RequestParam Map<String, String> params) {
+		RstResult rstResult = null;
+		
+		return rstResult;
+	}
+	
+	@RequestMapping("/destorySession.do")
+	public @ResponseBody RstResult destorySession(@RequestParam Map<String, String> params) {
+		String interval = params.get("interval");
+		Long companyId = admin().getCompanyId();
+		String sessionId = session().getId();
+		if (StringUtils.isNotBlank(interval) && Long.parseLong(interval) < 1000) {
+			BaseConfig.removeSessionMap(companyId, sessionId);
+			logger.info("移除session" + sessionId);
+		}
+		return new RstResult(ErrorCode.CG, "");
+	}
 
 	// @RequestMapping("/exportExcel.do")
 	// // @Prev(module = "Registration", oprator = "add")

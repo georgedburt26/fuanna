@@ -52,7 +52,7 @@
 						"oLanguage" : { //语言设置
 							"sLengthMenu" : "每页显示 _MENU_ 条记录",
 							"sZeroRecords" : "对不起，查询不到相关数据！",
-							"sEmptyTable" : "表中无数据存在！",
+							"sEmptyTable" : "没有数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条",
 							"sInfoFiltered" : "，共 _MAX_ 条记录",
 							"sSearch" : "搜索",

@@ -22,8 +22,8 @@
 						</button>
 						<button type="button" id="deleteAdmin"
 							class="am-btn am-btn-default am-btn-danger" resource="admin/deleteAdmin.do">
-							<span class="am-icon-trash-o"></span> 删除-->
-						</button>
+							<span class="am-icon-trash-o"></span> 删除
+						</button>-->
 					</div>
 				</div>
 			</div>
@@ -44,17 +44,17 @@
 					<table class="am-table am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
-								<th class="table-check"
+							<!--	<th class="table-check"
 									style="text-align: center; padding: 0px; vertical-align: middle;"><input
-									type="checkbox" class="tpl-table-fz-check"></th>
+									type="checkbox" class="tpl-table-fz-check"></th>-->
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
 								<th class="table-email">邮箱</th>
-								<th class="table-ip">ip</th>
+								<th class="table-ip">IP地址</th>
 								<th class="table-terminal">终端</th>
 								<th class="table-location">地址</th>
-								<th class="table-loginTime">登录日期</th>
+								<th class="table-loginTime">登录时间</th>
 							</tr>
 						</thead>
 					</table>
@@ -72,7 +72,7 @@
 						"oLanguage" : { //语言设置
 							"sLengthMenu" : "每页显示 _MENU_ 条记录",
 							"sZeroRecords" : "对不起，查询不到相关数据！",
-							"sEmptyTable" : "表中无数据存在！",
+							"sEmptyTable" : "没有数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条",
 							"sInfoFiltered" : "，共 _MAX_ 条记录",
 							"sSearch" : "搜索",
@@ -105,14 +105,14 @@
 							permission();
 							},
 						"aoColumns" : [
-								{
-									//自定义列
-									"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
-									"mDataProp" : "id", //获取数据列名
-									"render" : function(data, type, row) { //列渲染
-										return '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>';
-									}
-								},
+						//		{
+						//			//自定义列
+						//			"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
+						//			"mDataProp" : "id", //获取数据列名
+						//			"render" : function(data, type, row) { //列渲染
+						//				return '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>';
+						//			}
+						//		},
 								{
 									"sName" : "username",
 									"mDataProp" : "username",

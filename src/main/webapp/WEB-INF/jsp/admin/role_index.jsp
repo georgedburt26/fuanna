@@ -81,7 +81,6 @@
 	</div>
 </div>
 <script>
-console.log();
 	var resourceTree = $('#resourceTree').tree({
 		multiSelect : true,
 		cacheItems : true,
@@ -141,18 +140,26 @@ console.log();
 			params.resources = resources.join(",");
 			params.type="${type}";
 			params.id="${id}";
+			$("#save").text("保存中...");
+			$("#save").attr('disabled',"true");
 			$.ajax({
 				cache : true,
 				type : "POST",
 				url : "admin/addRole.do",
 				data : params,
 				error : function(data) {
-					showmsg("9999", "保存失败")
+					showmsg("9999", "保存失败");
+					$("#save").removeAttr("disabled");
+					$("#save").text("保存");
 				},
 				success : function(data) {
 					showmsg(data.errorCode, data.errorMsg);
 					if (data.errorCode == "0000") {
 						pageContent('admin/roleManage.do');
+					}
+					else {
+						$("#save").removeAttr("disabled");
+						$("#save").text("保存");
 					}
 				}
 			});

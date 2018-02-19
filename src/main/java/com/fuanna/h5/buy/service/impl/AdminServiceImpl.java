@@ -28,25 +28,25 @@ import com.fuanna.h5.buy.service.AdminService;
 import com.fuanna.h5.buy.util.MD5;
 
 @Component
-public class AdminServiceImpl implements AdminService{
-	
+public class AdminServiceImpl implements AdminService {
+
 	private static final Logger logger = Logger.getLogger(AdminServiceImpl.class);
-	
+
 	@Autowired
 	AdminMapper adminMapper;
-	
+
 	@Autowired
 	ResourceMapper resourceMapper;
-
 
 	@Override
 	public List<Map<String, Object>> listCompany() {
 		return adminMapper.listCompany();
 	}
-	
+
 	@Override
 	@Transactional
-	public Admin adminLogin(String username, String password, String company, String ip, String location, String terminal, Date loginTime) {
+	public Admin adminLogin(String username, String password, String company, String ip, String location,
+			String terminal, Date loginTime) {
 		long companyId = Long.parseLong(company);
 		Map<String, Object> map = adminMapper.queryCompanyById(companyId);
 		Admin admin = adminMapper.adminLogin(username, MD5.encrypt(password), companyId);
@@ -67,14 +67,13 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return admin;
 	}
-	
 
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
 	public long addAdmin(Admin admin) {
 		return adminMapper.addAdmin(admin);
 	}
-	
+
 	@Override
 	public List<Resource> queryResourcesByAdminId(long adminId) {
 		List<Resource> topResources = resourceMapper.queryResourceByAdminId(adminId, null, true, 1);
@@ -84,7 +83,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return topResources;
 	}
-	
+
 	@Override
 	public List<Resource> queryResources() {
 		List<Resource> topResources = resourceMapper.queryResourceParent();
@@ -105,10 +104,11 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<Admin> listAdmin(String name, String mobilePhone, String username, Long companyId, Integer offset, Integer limit) {
+	public List<Admin> listAdmin(String name, String mobilePhone, String username, Long companyId, Integer offset,
+			Integer limit) {
 		return adminMapper.listAdmin(name, mobilePhone, username, companyId, offset, limit);
 	}
-	
+
 	@Override
 	public List<AdminLoginLog> listAdminLoginLog(String name, String mobilePhone, String username, Long companyId,
 			Integer offset, Integer limit) {
@@ -131,12 +131,10 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.listRoles(companyId, offset, limit);
 	}
 
-
 	@Override
 	public int countRoles(Long companyId) {
 		return adminMapper.countRoles(companyId);
 	}
-
 
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
@@ -145,7 +143,6 @@ public class AdminServiceImpl implements AdminService{
 		rtn = adminMapper.deleteRoleResource(ids);
 		return rtn;
 	}
-
 
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
@@ -157,7 +154,7 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return rtn;
 	}
-	
+
 	@Override
 	@Transactional(rollbackFor = { RuntimeException.class, Exception.class })
 	public long updateRole(long id, String name, String description, Long companyId, String[] resources) {
@@ -173,14 +170,14 @@ public class AdminServiceImpl implements AdminService{
 		for (String resourceId : resources) {
 			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
 		}
-		//更新对应角色session权限信息
-		for (Entry<String, HttpSession> entry : BaseConfig.getSessionMap(companyId).entrySet()) { 
+		// 更新对应角色session权限信息
+		for (Entry<String, HttpSession> entry : BaseConfig.getSessionMap(companyId).entrySet()) {
 			boolean needUpdate = false;
 			HttpSession session = entry.getValue();
-			Admin admin = (Admin)session.getAttribute("admin");
+			Admin admin = (Admin) session.getAttribute("admin");
 			for (String roleId : admin.getRole().split(",")) {
 				if ((id + "").equals(roleId)) {
-					needUpdate =  true;
+					needUpdate = true;
 					break;
 				}
 			}
@@ -192,47 +189,40 @@ public class AdminServiceImpl implements AdminService{
 		return rtn;
 	}
 
-
 	@Override
 	public Role queryRoleById(long roleId) {
 		return adminMapper.queryRoleById(roleId);
 	}
-
 
 	@Override
 	public Admin queryAdminById(long adminId) {
 		return adminMapper.queryAdminById(adminId);
 	}
 
-
 	@Override
 	public long updateAdmin(Admin admin) {
 		return adminMapper.updateAdmin(admin);
 	}
-	
+
 	@Override
 	public long publicNotice(String content, Long companyId) {
 		return adminMapper.publishNotice(content, companyId);
 	}
-
 
 	@Override
 	public Map<String, Object> getTotal() {
 		return adminMapper.getTotal();
 	}
 
-
 	@Override
 	public List<Map<String, Object>> listByContracts() {
 		return adminMapper.listByContracts();
 	}
 
-
 	@Override
 	public List<Map<String, Object>> listByPersons() {
 		return adminMapper.listByPersons();
 	}
-
 
 	@Override
 	public List<Map<String, Object>> listByPersonsDetail() {
@@ -243,7 +233,7 @@ public class AdminServiceImpl implements AdminService{
 	public Map<String, Object> queryNoticeByCompanyId(Long companyId) {
 		return adminMapper.queryNoticeByCompanyId(companyId);
 	}
-	
+
 	private void findResources(Resource topResource) {
 		List<Resource> resources = resourceMapper.queryResourceByParentId(topResource.getId());
 		if (resources != null && !resources.isEmpty()) {
@@ -255,40 +245,46 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<Map<String, Object>> listAdminOnline(Long companyId,
-			Integer offset, Integer limit) {
+	public List<Map<String, Object>> listAdminOnline(Long companyId, Integer offset, Integer limit) {
 		List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
 		Map<String, HttpSession> sessionMap = BaseConfig.getSessionMap(companyId);
-		for (Entry<String, HttpSession> entry : sessionMap.entrySet()) {
-			String sessionId = entry.getKey();
-			Admin admin = (Admin)entry.getValue().getAttribute("admin");
-			Map<String, Object> row = new HashMap<String, Object>();
-			row.put("sessionId", sessionId);
-			row.put("name", admin.getName());
-			row.put("username", admin.getUsername());
-			row.put("mobilePhone", admin.getMobilePhone());
-			row.put("email", admin.getEmail());
-			row.put("ip", admin.getIp());
-			row.put("location", admin.getLocation());
-			row.put("terminal", admin.getTerminal());
-			row.put("loginTime", admin.getLoginTime());
-			rows.add(row);
+		if (sessionMap != null) {
+			for (Entry<String, HttpSession> entry : sessionMap.entrySet()) {
+				String sessionId = entry.getKey();
+				Admin admin = (Admin) entry.getValue().getAttribute("admin");
+				Map<String, Object> row = new HashMap<String, Object>();
+				row.put("sessionId", sessionId);
+				row.put("id", admin.getId());
+				row.put("name", admin.getName());
+				row.put("username", admin.getUsername());
+				row.put("mobilePhone", admin.getMobilePhone());
+				row.put("email", admin.getEmail());
+				row.put("ip", admin.getIp());
+				row.put("location", admin.getLocation());
+				row.put("terminal", admin.getTerminal());
+				row.put("loginTime", admin.getLoginTime());
+				rows.add(row);
+			}
+			Collections.sort(rows, new Comparator<Map<String, Object>>() {
+				@Override
+				public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+					Long i = ((Date) o2.get("loginTime")).getTime() - ((Date) o1.get("loginTime")).getTime();
+					return i.intValue();
+				}
+			});
+			if (rows.size() - offset < limit) {
+				limit = rows.size() - offset;
+			}
 		}
-        Collections.sort(rows, new Comparator<Map<String, Object>>() {  
-            @Override  
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {  
-                Long i = ((Date)o1.get("loginTime")).getTime() - ((Date)o1.get("loginTime")).getTime();
-                if(i.intValue() == 0){  
-                    return 0;  
-                }  
-                return i.intValue();  
-            }  
-        });  
-		return rows.subList(offset, limit);
+		return rows == null || rows.isEmpty() ? null : rows.subList(offset, limit);
 	}
 
 	@Override
 	public int countAdminOnline(Long companyId) {
-		return BaseConfig.getSessionMap(companyId).size();
+		int size = 0;
+		if (BaseConfig.getSessionMap(companyId) != null && !BaseConfig.getSessionMap(companyId).isEmpty()) {
+			size = BaseConfig.getSessionMap(companyId).size();
+		}
+		return size;
 	}
 }

@@ -26,6 +26,7 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
 		if (admin != null) {
 			BaseConfig.removeSessionMap(admin.getCompanyId(), session.getId());
 		}
+		logger.info("销毁超时session");
 	}
 
 	@Override

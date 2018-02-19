@@ -79,7 +79,7 @@ html, body {
 						</div>
 						<div class="am-form-group"
 							style="width: 100%; white-space: nowrap; overflow: hidden;">
-							<input type="text" class="am-form-field am-validate" name="imageCode" id="doc-ipt-pwd-1"
+							<input type="text" class="am-form-field am-validate" name="imageCode" id="doc-ipt-imageCode-1"
 								placeholder="验证码"
 								style="display: inline-block; border-radius: 0px 0px 6px 6px; width: 59%;"
 								pattern="^(\w){4}$" data-validation-message="请输入四位字符" required />
@@ -97,6 +97,7 @@ html, body {
 		</div>
 	</div>
 	<script src="<%=sourcePath%>js/jquery.min.js"></script>
+	<script src="<%=sourcePath%>js/jquery.cookie.js"></script>
 	<script src="<%=sourcePath%>js/amazeui.min.js"></script>
 	<script src="<%=sourcePath%>js/msg.js"></script>
 	<script src="<%=sourcePath%>js/jquery.actual.min.js"></script>

@@ -25,6 +25,14 @@ public class Admin implements Serializable{
 	private String location;
 	private String terminal;
 	private Date loginTime;
+	private Date lockTime;
+	
+	public Date getLockTime() {
+		return lockTime;
+	}
+	public void setLockTime(Date lockTime) {
+		this.lockTime = lockTime;
+	}
 	public Date getLoginTime() {
 		return loginTime;
 	}

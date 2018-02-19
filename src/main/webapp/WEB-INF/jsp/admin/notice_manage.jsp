@@ -48,6 +48,8 @@
 	
 	$("#save").on('click', function() {
 		if ($('#doc-vld-msg').validator('isFormValid')) {
+			$("#save").text("发布中...");
+			$("#save").attr('disabled',"true");
 			$.post("admin/publicNotice.do", {"content":$("#noticeContent").val()}, function(data) {
 				if (data.errorCode == "0000") {
 					$("#notice_content_value").text(data.data.content);
@@ -55,6 +57,8 @@
 				}
 				$("#noticeContent").val("");
 				showmsg(data.errorCode, data.errorMsg);
+				$("#save").text("发布");
+				$("#save").removeAttr("disabled");
 			});
 		}
 	});

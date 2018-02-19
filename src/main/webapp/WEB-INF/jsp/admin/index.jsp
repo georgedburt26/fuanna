@@ -17,7 +17,8 @@
 	href="<%=sourcePath%>img/admin/app-icon72x72@2x.png">
 <meta name="apple-mobile-web-app-title" content="Amaze UI" />
 <link rel="stylesheet" href="<%=sourcePath%>css/amazeui.min.css" />
-<link rel="stylesheet" href="<%=sourcePath%>css/amazeui.datatables.min.css" />
+<link rel="stylesheet"
+	href="<%=sourcePath%>css/amazeui.datatables.min.css" />
 <link rel="stylesheet" href="<%=sourcePath%>css/admin.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/app.css">
 <link rel="stylesheet" href="<%=sourcePath%>css/ui-dialog.css">
@@ -51,7 +52,26 @@
 	<script src="<%=sourcePath%>js/amazeui.tree.min.js"></script>
 </body>
 <script>
-showmsg('${errorCode}', '${errorMsg}');
-pageContent("admin/welcome.do");
+	showmsg('${errorCode}', '${errorMsg}');
+	pageContent("admin/welcome.do");
+	var beforeunloadTime = 0;
+	var unloadTime = 0;
+	$(window).unload(function(evt) {
+		unloadTime = new Date().getTime();
+		var interval = unloadTime - beforeunloadTime;
+		$.post("admin/destorySession.do", {
+			"interval" : interval
+		}, function(data) {
+			
+		});
+	});
+	window.onbeforeunload = function() {
+		beforeunloadTime = new Date().getTime();
+		$.post("admin/destorySession.do", {
+			
+		}, function(data) {
+
+		});
+	}
 </script>
 </html>

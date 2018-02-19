@@ -68,6 +68,25 @@ $(window).bind('resize', function() {
 	$("#datatable").dataTable().fnAdjustColumnSizing(false);
 });
 
+$('body').on(
+		'mouseover',
+		"button[delete]",
+		function() {
+			$(this).css("background", "#e6e6e6");
+			$(this).css("color", "#444");
+			$(this).css("transition",
+					"background-color .4s ease-out,border-color .4s ease-out");
+		});
+$('body').on(
+		'mouseout',
+		"button[delete]",
+		function() {
+			$(this).css("background", "#fff");
+			$(this).css("color", "#dd514c");
+			$(this).css("transition",
+					"background-color .4s ease-out,border-color .4s ease-out");
+		});
+
 function pageContent(url) {
 	if (url != null && url != "") {
 		// $(".tpl-content-wrapper").html("");
@@ -99,8 +118,8 @@ function pageContent(url) {
 							result = JSON.parse(responseTxt);
 							showmsg(result.errorCode, result.errorMsg);
 							$(this).load("403.html");
-						}catch(e) {
-							
+						} catch (e) {
+
 						}
 					}
 					if (xhr.status == 404) {
@@ -119,7 +138,7 @@ function permission() {
 		$("#btnResources").remove();
 	}
 	$("*[resource]").each(function(index, data) {
-		if(btnResources.indexOf($(data).attr("resource")) < 0) {
+		if (btnResources.indexOf($(data).attr("resource")) < 0) {
 			$(this).remove();
 		}
 	});

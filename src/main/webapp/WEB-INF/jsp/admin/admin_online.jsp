@@ -22,21 +22,22 @@
 						</button>
 						<button type="button" id="deleteAdmin"
 							class="am-btn am-btn-default am-btn-danger" resource="admin/deleteAdmin.do">
-							<span class="am-icon-trash-o"></span> 删除-->
-						</button>
+							<span class="am-icon-trash-o"></span> 删除
+						</button>-->
 					</div>
 				</div>
 			</div>
 			<div class="am-u-sm-12 am-u-md-3 datatable-search">
-				<label>用户名: <input type="text"
+				<!--<label>用户名: <input type="text"
 					id="datatable-search-username"></label> <label>姓名: <input
 					type="text" id="datatable-search-name"></label> <label>手机号:
 					<input type="text" id="datatable-search-mobilePhone">
 				</label>
 				<button
 					class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search"
-					type="button" id="datatable-search-btn"></button>
+					type="button" id="datatable-search-btn"></button>-->
 			</div>
+			
 		</div>
 		<div class="am-g">
 			<div class="am-u-sm-12">
@@ -44,17 +45,18 @@
 					<table class="am-table am-table-hover table-main" id="datatable">
 						<thead>
 							<tr>
-								<th class="table-check"
+								<!--<th class="table-check"
 									style="text-align: center; padding: 0px; vertical-align: middle;"><input
-									type="checkbox" class="tpl-table-fz-check"></th>
+									type="checkbox" class="tpl-table-fz-check"></th>-->
 								<th class="table-username">用户名</th>
 								<th class="table-name">姓名</th>
 								<th class="table-mobilePhone">手机号</th>
 								<th class="table-email">邮箱</th>
-								<th class="table-ip">ip</th>
+								<th class="table-ip">IP地址</th>
 								<th class="table-terminal">终端</th>
 								<th class="table-location">地址</th>
-								<th class="table-loginTime">登录日期</th>
+								<th class="table-loginTime">登录时间</th>
+								<th class="table-operate">操作</th>
 							</tr>
 						</thead>
 					</table>
@@ -72,7 +74,7 @@
 						"oLanguage" : { //语言设置
 							"sLengthMenu" : "每页显示 _MENU_ 条记录",
 							"sZeroRecords" : "对不起，查询不到相关数据！",
-							"sEmptyTable" : "表中无数据存在！",
+							"sEmptyTable" : "没有数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条",
 							"sInfoFiltered" : "，共 _MAX_ 条记录",
 							"sSearch" : "搜索",
@@ -105,14 +107,14 @@
 							permission();
 							},
 						"aoColumns" : [
-								{
-									//自定义列
-									"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
-									"mDataProp" : "id", //获取数据列名
-									"render" : function(data, type, row) { //列渲染
-										return '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>';
-									}
-								},
+//								{
+//									//自定义列
+//									"sName" : "id", //Ajax提交时的列明（此处不太明白，为什么用两个属性--sName，mDataProp）
+//									"mDataProp" : "id", //获取数据列名
+//									"render" : function(data, type, row) { //列渲染
+//										return '<input type="checkbox" class="tpl-table-fz-data-check" value="'+data+'"/>';
+//									}
+//								},
 								{
 									"sName" : "username",
 									"mDataProp" : "username",
@@ -145,12 +147,12 @@
 									"sName" : "loginTime",
 									"mDataProp" : "loginTime",
 								}
-//								,
-//								{
-//									"render" : function(data, type, row) {
-//										return "<div class='am-btn-toolbar' style='display: inline-block'>"
-//												+ "<div class='am-btn-group am-btn-group-xs'> "
-//												+ "<button type='button' " +
+								,
+								{
+								"render" : function(data, type, row) {
+										return "<div class='am-btn-toolbar' style='display: inline-block'>"
+											+ "<div class='am-btn-group am-btn-group-xs'> "
+//											+ "<button type='button' " +
 //											"class='am-btn am-btn-default am-btn-xs' style='display:block' onclick='checkAdmin(" + row.id + ")' resource='admin/readAdminIndex.do'>"
 //												+ "<span class='am-icon-file-text-o'></span>查看"
 //												+ "</button>"
@@ -158,25 +160,25 @@
 //											"class='am-btn am-btn-default am-btn-xs am-text-secondary' onclick='editAdmin(" + row.id + ")' resource='admin/updateAdminIndex.do'>"
 //												+ "<span class='am-icon-pencil-square-o'></span> 编辑"
 //												+ "</button>"
-//												+ "<button type='button' "
-//												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteAdmin("
-//												+ row.id
-//												+ ",this)' resource='admin/deleteAdmin.do'>"
-//												+ "<span class='am-icon-trash-o'></span> 删除"
-//												+ "</button>"
-//												+ "</div>"
-//												+ "</div>";
-//									}
-//								} 
+												+ "<button type='button' "
+												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='forceLogOut(\""
+												+ row.sessionId
+												+ "\"," + row.id + ",this)' resource='admin/forceLogOut.do' delete>"
+												+ "强制退出"
+												+ "</button>"
+												+ "</div>"
+												+ "</div>";
+									}
+								} 
 								],
 						"fnServerData" : function(source, rows, fnCallback) {
 							$.ajax({
 								url : source,//这个就是请求地址对应sAjaxSource
 								data : {
 									"rows" : JSON.stringify(rows),
-									"username" : $("#datatable-search-username").val(),
-									"name" : $("#datatable-search-name").val(),
-									"mobilePhone" : $("#datatable-search-mobilePhone").val()
+//									"username" : $("#datatable-search-username").val(),
+//									"name" : $("#datatable-search-name").val(),
+//									"mobilePhone" : $("#datatable-search-mobilePhone").val()
 								},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
 								type : 'post',
 								dataType : 'json',
@@ -200,4 +202,25 @@
 		var mobilePhone = $("#datatable-search-mobilePhone").val();
 		dataTable.fnDraw();	
 	});
+	
+	function forceLogOut(sessionId, adminId, object) {
+		var d = dialog({
+			title : '强制退出',
+			content : '<input type="text" placeholder="锁定时间" style="padding:8px;"></input>',
+			okValue : '确 定',
+			ok : function() {
+				$.post("admin/deleteAdmin.do", {
+					"ids" : ids
+				}, function(data) {
+					showmsg(data.errorCode, data.errorMsg);
+					dataTable.fnDraw(false);
+				});
+			},
+			cancelValue : '取消',
+			cancel : function() {
+				
+			}
+		});
+		d.show();
+	}
 </script>

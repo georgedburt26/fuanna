@@ -80,7 +80,7 @@
 							"oLanguage" : { //语言设置
 								"sLengthMenu" : "每页显示 _MENU_ 条记录",
 								"sZeroRecords" : "对不起，查询不到相关数据！",
-								"sEmptyTable" : "表中无数据存在！",
+								"sEmptyTable" : "没有数据存在！",
 								"sInfo" : "当前显示 _START_ 到 _END_ 条",
 								"sInfoFiltered" : "，共 _MAX_ 条记录",
 								"sSearch" : "搜索",
@@ -191,6 +191,8 @@
 				content : '是否确定入库？',
 				okValue : '确 定',
 				ok : function() {
+					$("#save").text("入库中...");
+					$("#save").attr('disabled',"true");
 					var array = new Array();
 					for (var i = 0; i < nTrs.length; i++) {
 						array.push(dataTable.fnGetData(nTrs[i]));//fnGetData获取一行的数据  
@@ -222,6 +224,8 @@
 							})
 						}
 						showmsg(data.errorCode, data.errorMsg);
+						$("#save").removeAttr("disabled");
+						$("#save").text("入库");
 					});
 				},
 				cancelValue : '取消',
