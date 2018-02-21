@@ -600,7 +600,7 @@ public class AdminController extends BaseController {
 			List<Map<String, Object>> rows = adminService.listAdminOnline(companyId,
 					iDisplayStart, iDisplayLength);
 			int count = adminService.countAdminOnline(companyId);
-			DataTable dataTable = new DataTable(sEcho + 1, rows.size(), count, rows);
+			DataTable dataTable = new DataTable(sEcho + 1, rows == null ? 0 : rows.size(), count, rows);
 			rstResult = new RstResult(ErrorCode.CG, "在线人员获取成功", dataTable);
 		}
 		return rstResult;
@@ -618,7 +618,7 @@ public class AdminController extends BaseController {
 		String interval = params.get("interval");
 		Long companyId = admin().getCompanyId();
 		String sessionId = session().getId();
-		if (StringUtils.isNotBlank(interval) && Long.parseLong(interval) < 1000) {
+		if (StringUtils.isNotBlank(interval) && Long.parseLong(interval) < 200) {
 			BaseConfig.removeSessionMap(companyId, sessionId);
 			logger.info("移除session" + sessionId);
 		}

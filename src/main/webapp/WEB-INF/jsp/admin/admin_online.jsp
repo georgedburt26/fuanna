@@ -206,7 +206,19 @@
 	function forceLogOut(sessionId, adminId, object) {
 		var d = dialog({
 			title : '强制退出',
-			content : '<input type="text" placeholder="锁定时间" style="padding:8px;"></input>',
+			content : '<input type="text" class="am-u-sm-12 am-u-lg-6" placeholder="锁定时间" style="border:1px solid #ddd;padding:6px;"></input>' + 
+			          '<div class="am-selected am-dropdown am-dropdown-down" ' +
+								'id="am-selected-c8n6r" style="display:inline-block;height:30px;" data-am-dropdown>' + 
+								'<button type="button"' + 
+									'class="am-selected-btn am-btn am-dropdown-toggle am-btn-default" style="am-u-sm-12 am-u-lg-4">' + 
+									'<span class="am-selected-status am-fl" id="select-value">点击选择...</span>' + 
+									'<i class="am-selected-icon am-icon-caret-down"></i>' + 
+								'</button>' + 
+								'<div class="am-selected-content am-dropdown-content">' + 
+									'<ul class="am-selected-list">' + 
+									'</ul>' + 
+								'</div>' + 
+							'</div>',
 			okValue : '确 定',
 			ok : function() {
 				$.post("admin/deleteAdmin.do", {
@@ -223,4 +235,5 @@
 		});
 		d.show();
 	}
+$('[data-am-dropdown]').dropdown();
 </script>
