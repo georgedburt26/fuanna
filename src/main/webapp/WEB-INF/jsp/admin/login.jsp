@@ -97,7 +97,6 @@ html, body {
 		</div>
 	</div>
 	<script src="<%=sourcePath%>js/jquery.min.js"></script>
-	<script src="<%=sourcePath%>js/jquery.cookie.js"></script>
 	<script src="<%=sourcePath%>js/amazeui.min.js"></script>
 	<script src="<%=sourcePath%>js/msg.js"></script>
 	<script src="<%=sourcePath%>js/jquery.actual.min.js"></script>

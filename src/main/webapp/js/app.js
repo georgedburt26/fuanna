@@ -108,18 +108,19 @@ function pageContent(url) {
 		$(".tpl-content-wrapper").load(url,
 				function(responseTxt, statusTxt, xhr) {
 					// progress.done();
-					if (responseTxt.indexOf("adminLogin.do") >= 0) {
-						window.location.href = "admin/login.do";
-					}
 					if (xhr.status == 200) {
-						permission();
 						var result = {};
 						try {
 							result = JSON.parse(responseTxt);
 							showmsg(result.errorCode, result.errorMsg);
-							$(this).load("403.html");
+							if (result.errorCode == "0001") {
+								$(this).load("401.html");	
+							}
+							if (result.errorCode == "0002") {
+								$(this).load("403.html");	
+							}
 						} catch (e) {
-
+							permission();
 						}
 					}
 					if (xhr.status == 404) {

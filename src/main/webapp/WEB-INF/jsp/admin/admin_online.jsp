@@ -37,7 +37,7 @@
 					class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search"
 					type="button" id="datatable-search-btn"></button>-->
 			</div>
-			
+
 		</div>
 		<div class="am-g">
 			<div class="am-u-sm-12">
@@ -206,27 +206,44 @@
 	function forceLogOut(sessionId, adminId, object) {
 		var d = dialog({
 			title : '强制退出',
-			content : '<input type="text" class="am-u-sm-12 am-u-lg-6" placeholder="锁定时间" style="border:1px solid #ddd;padding:6px;"></input>' + 
-			          '<div class="am-selected am-dropdown am-dropdown-down" ' +
-								'id="am-selected-c8n6r" style="display:inline-block;height:30px;" data-am-dropdown>' + 
+			content : '<input type="text" id="time" class="am-u-sm-12 am-u-md-6 am-u-lg-6" placeholder="锁定时间" style="border:1px solid #ddd;border-radius:3px;padding:9px;" ></input>' + 
+			          '<input type="hidden" id="unit"></input>' + 
+			          '<div class="am-u-sm-12 am-u-md-6 am-u-lg-6 am-dropdown am-dropdown-down" ' +
+								'id="am-selected-c8n6r" style="display:inline-block;padding:0px;" data-am-dropdown>' + 
 								'<button type="button"' + 
-									'class="am-selected-btn am-btn am-dropdown-toggle am-btn-default" style="am-u-sm-12 am-u-lg-4">' + 
-									'<span class="am-selected-status am-fl" id="select-value">点击选择...</span>' + 
+									'class="am-selected-btn am-btn am-dropdown-toggle am-btn-default" style="height:39.1px;color:#757575">' + 
+									'<span class="am-selected-status am-fl" id="select-value">时间单位</span>' + 
 									'<i class="am-selected-icon am-icon-caret-down"></i>' + 
 								'</button>' + 
-								'<div class="am-selected-content am-dropdown-content">' + 
+								'<div class="am-u-sm-12 am-u-md-4 am-u-lg-4 am-selected-content am-dropdown-content">' + 
 									'<ul class="am-selected-list">' + 
+									'<li class="" data-index="0" data-group="0" data-value="0"><span class="am-selected-text">天</span> <i class="am-icon-check"></i></li>' + 
+									'<li class="" data-index="1" data-group="0" data-value="1"><span class="am-selected-text">时</span> <i class="am-icon-check"></i></li>' + 
+									'<li class="" data-index="2" data-group="0" data-value="2"><span class="am-selected-text">分</span> <i class="am-icon-check"></i></li>' + 
 									'</ul>' + 
 								'</div>' + 
 							'</div>',
 			okValue : '确 定',
 			ok : function() {
-				$.post("admin/deleteAdmin.do", {
-					"ids" : ids
+				var time = $("#time").val();
+				var unit = $("#unit").val();
+				var timeValidate = true;
+				var unitValidate = true;
+				if (!/^[0-9]*$/.test(time)) {
+					showmsg("9999", "锁定时间必须是数字");
+					timeValidate = false;
+				}
+				if (unit == null || unit == "") {
+					showmsg("9999", "时间单位不能为空");
+					unitValidate = false;
+				}
+				if (timeValidate && unitValidate) {
+				$.post("admin/forceLogOut.do", {
+					"time" : time, "unit" : unit
 				}, function(data) {
 					showmsg(data.errorCode, data.errorMsg);
-					dataTable.fnDraw(false);
 				});
+				}
 			},
 			cancelValue : '取消',
 			cancel : function() {
@@ -234,6 +251,16 @@
 			}
 		});
 		d.show();
+		$('[data-am-dropdown]').dropdown();
 	}
-$('[data-am-dropdown]').dropdown();
+	$('body').on(
+			'click',
+			".am-selected-list li",
+			function() {
+				$(this).addClass("am-checked");
+				$(this).siblings().removeClass("am-checked");
+				$("#select-value").text($(this).find(".am-selected-text").text());
+				$("#unit").val($(this).attr("data-value"));
+				$("#am-selected-c8n6r").dropdown('close');
+			});
 </script>

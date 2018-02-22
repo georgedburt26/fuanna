@@ -151,7 +151,7 @@
 												+ "<button type='button' "
 												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteAdmin("
 												+ row.id
-												+ ",this)' resource='admin/deleteAdmin.do'>"
+												+ ",this)' resource='admin/deleteAdmin.do' delete >"
 												+ "<span class='am-icon-trash-o'></span> 删除"
 												+ "</button>"
 												+ "</div>"

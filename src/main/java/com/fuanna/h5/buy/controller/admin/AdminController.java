@@ -2,6 +2,7 @@ package com.fuanna.h5.buy.controller.admin;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +25,7 @@ import com.fuanna.h5.buy.base.BaseConfig;
 import com.fuanna.h5.buy.base.BaseController;
 import com.fuanna.h5.buy.base.HttpsClient;
 import com.fuanna.h5.buy.constraints.ErrorCode;
+import com.fuanna.h5.buy.exception.FuannaErrorException;
 import com.fuanna.h5.buy.model.Admin;
 import com.fuanna.h5.buy.model.AdminLoginLog;
 import com.fuanna.h5.buy.model.DataTable;
@@ -607,9 +609,35 @@ public class AdminController extends BaseController {
 	}
 	
 	@RequestMapping("/forceLogOut.do")
-	public @ResponseBody RstResult forceLogOut(@RequestParam Map<String, String> params) {
+	public @ResponseBody RstResult forceLogOut(@RequestParam Map<String, String> params) throws Exception {
 		RstResult rstResult = null;
-		
+		String time = params.get("time");
+		if (StringUtils.isBlank(time)) {
+			error("锁定时间不能为空");
+		}
+		boolean isMatch = Pattern.matches("^[0-9]*$", time);
+		if (!isMatch) {
+			error("锁定时间必须为数字");
+		}
+		String unit = params.get("unit");
+		if (StringUtils.isBlank(unit)) {
+			error("时间单位不能为空");
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		switch (Integer.parseInt(unit)) {
+		case 0://天
+			c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(time));
+			break;
+		case 1://时
+			c.add(Calendar.HOUR_OF_DAY, Integer.parseInt(time));
+			break;
+		case 2://分
+			c.add(Calendar.MINUTE, Integer.parseInt(time));
+			break;
+		default:
+			break;
+		}
 		return rstResult;
 	}
 	
@@ -620,6 +648,7 @@ public class AdminController extends BaseController {
 		String sessionId = session().getId();
 		if (StringUtils.isNotBlank(interval) && Long.parseLong(interval) < 200) {
 			BaseConfig.removeSessionMap(companyId, sessionId);
+			session().removeAttribute("admin");
 			logger.info("移除session" + sessionId);
 		}
 		return new RstResult(ErrorCode.CG, "");
@@ -810,16 +839,4 @@ public class AdminController extends BaseController {
 	// throw e;
 	// }
 	// }
-	
-	public static void main(String[] args) {
-		ConcurrentHashMap<String, String> map = new ConcurrentHashMap<String, String>();
-		map.putIfAbsent("张文涛", "张文涛");
-		map.putIfAbsent("张松涛", "张松涛");
-		map.putIfAbsent("王盼盼", "王盼盼");
-		map.putIfAbsent("张朝阳", "张朝阳");
-		map.putIfAbsent("张朝阳1", "张朝阳1");
-		for (Entry<String, String> entry : map.entrySet()) {
-			System.out.println(entry.getValue());
-		}
-	}
 }

@@ -164,7 +164,7 @@
 													+ "<button type='button' "
 													+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteRow("
 													+ row.barcode
-													+ ",this)'>"
+													+ ",this)' delete >"
 													+ "<span class='am-icon-trash-o'></span> 删除"
 													+ "</button>"
 													+ "</div>"

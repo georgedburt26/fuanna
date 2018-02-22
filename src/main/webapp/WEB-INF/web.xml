@@ -75,6 +75,10 @@
 		<session-timeout>30</session-timeout>
 	</session-config>
 	<error-page>
+		<error-code>401</error-code>
+		<location>/401.html</location>
+	</error-page>
+	<error-page>
 		<error-code>404</error-code>
 		<location>/404.html</location>
 	</error-page>

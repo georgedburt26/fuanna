@@ -29,9 +29,15 @@ function showmsg(errorCode, errorMsg) {
 		}
 	}
 }
-(function() {
-	var test;
-	this.test = function(a, b) {
-		alert(123);
-	};
-}).call(this);
+$('body').on(
+		'click',
+		"#fuana-success-alert",
+		function() {
+			$(this).remove();
+		});
+$('body').on(
+		'click',
+		"#fuanna-fail-alert",
+		function() {
+			$(this).remove();
+		});

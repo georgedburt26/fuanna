@@ -127,7 +127,7 @@
 												+ "<button type='button' "
 												+ "class='am-btn am-btn-default am-btn-xs am-text-danger' onclick='deleteRole("
 												+ row.id
-												+ ",this)'  resource='admin/deleteRole.do'>"
+												+ ",this)'  resource='admin/deleteRole.do' delete >"
 												+ "<span class='am-icon-trash-o'></span> 删除"
 												+ "</button>"
 												+ "</div>"

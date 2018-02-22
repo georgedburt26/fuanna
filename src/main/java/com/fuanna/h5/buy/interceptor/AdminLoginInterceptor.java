@@ -27,18 +27,24 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 		// 创建session
 		HttpSession session = request.getSession();
 		Admin admin = (Admin) session.getAttribute("admin");
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if (admin == null) {
+			if (ajax) {
+				RstResult rstResult = new RstResult(ErrorCode.NL, "请重新登录");
+				JsonUtils.printObject(rstResult);
+			}
+			else {
 			// 重定向
 			response.sendRedirect("login.do");
+			}
 			return false;
 		} else {
 			Resource resource = new Resource();
 			resource.setUrl(url.substring(1, url.length()));
 			if (BaseConfig.getResources().contains(resource)
 					&& !((List<Resource>) session.getAttribute("allResources")).contains(resource)) {
-				boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 				if (ajax) {
-					RstResult rstResult = new RstResult(ErrorCode.SB, "没有权限访问");
+					RstResult rstResult = new RstResult(ErrorCode.NP, "没有权限访问");
 					JsonUtils.printObject(rstResult);
 				} else {
 					response.sendRedirect("noPermission.do");

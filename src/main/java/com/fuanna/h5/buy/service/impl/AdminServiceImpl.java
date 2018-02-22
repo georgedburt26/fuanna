@@ -171,19 +171,25 @@ public class AdminServiceImpl implements AdminService {
 			adminMapper.addRoleResource(new RoleResource(role.getId(), Long.parseLong(resourceId)));
 		}
 		// 更新对应角色session权限信息
-		for (Entry<String, HttpSession> entry : BaseConfig.getSessionMap(companyId).entrySet()) {
-			boolean needUpdate = false;
-			HttpSession session = entry.getValue();
-			Admin admin = (Admin) session.getAttribute("admin");
-			for (String roleId : admin.getRole().split(",")) {
-				if ((id + "").equals(roleId)) {
-					needUpdate = true;
-					break;
+		if (BaseConfig.getSessionMap(companyId) != null && !BaseConfig.getSessionMap(companyId).isEmpty()) {
+			for (Entry<String, HttpSession> entry : BaseConfig.getSessionMap(companyId).entrySet()) {
+				boolean needUpdate = false;
+				HttpSession session = entry.getValue();
+				Admin admin = (Admin) session.getAttribute("admin");
+				if (admin == null) {
+					continue;
 				}
-			}
-			if (needUpdate) {
-				List<Resource> allResources = resourceMapper.queryResourceByAdminId(admin.getId(), null, false, null);
-				session.setAttribute("allResources", allResources);
+				for (String roleId : admin.getRole().split(",")) {
+					if ((id + "").equals(roleId)) {
+						needUpdate = true;
+						break;
+					}
+				}
+				if (needUpdate) {
+					List<Resource> allResources = resourceMapper.queryResourceByAdminId(admin.getId(), null, false,
+							null);
+					session.setAttribute("allResources", allResources);
+				}
 			}
 		}
 		return rtn;
@@ -252,6 +258,9 @@ public class AdminServiceImpl implements AdminService {
 			for (Entry<String, HttpSession> entry : sessionMap.entrySet()) {
 				String sessionId = entry.getKey();
 				Admin admin = (Admin) entry.getValue().getAttribute("admin");
+				if (admin == null) {
+					continue;
+				}
 				Map<String, Object> row = new HashMap<String, Object>();
 				row.put("sessionId", sessionId);
 				row.put("id", admin.getId());
@@ -265,15 +274,17 @@ public class AdminServiceImpl implements AdminService {
 				row.put("loginTime", admin.getLoginTime());
 				rows.add(row);
 			}
-			Collections.sort(rows, new Comparator<Map<String, Object>>() {
-				@Override
-				public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-					Long i = ((Date) o2.get("loginTime")).getTime() - ((Date) o1.get("loginTime")).getTime();
-					return i.intValue();
+			if (rows.size() > 0) {
+				Collections.sort(rows, new Comparator<Map<String, Object>>() {
+					@Override
+					public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+						Long i = ((Date) o2.get("loginTime")).getTime() - ((Date) o1.get("loginTime")).getTime();
+						return i.intValue();
+					}
+				});
+				if (rows.size() - offset < limit) {
+					limit = rows.size() - offset;
 				}
-			});
-			if (rows.size() - offset < limit) {
-				limit = rows.size() - offset;
 			}
 		}
 		return rows == null || rows.isEmpty() ? null : rows.subList(offset, limit);

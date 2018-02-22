@@ -482,7 +482,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 	width: 235px;
 	float: left;
 	background: #fff;
-	border-radius: 6px;
+	border-radius: 3px;
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	padding-bottom: 20px;
 }
